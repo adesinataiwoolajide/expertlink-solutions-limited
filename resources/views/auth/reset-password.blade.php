@@ -4,11 +4,13 @@
 		@csrf
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 		<div class="auth-box border border-dark">
-			<a href="" class="mb-4 d-flex">
-				<img src="{{ asset('elsAdmin/auth-access/logo-dark.svg')}}" class="img-fluid login-logo" alt="" />
-            </a>
+			@include('layouts.logo')
+			
+			@php 
+				$user = getInformation('users', 'email',$request->email, 'first');
+			@endphp
 			<h5 class="fw-light mb-5 lh-2">
-                Kindly fill the below form to update ypur password.
+                <b>Hello {{ $user->first_name. ' '. $user->last_name }}, Kindly fill the below form to update ypur password.</b>
             </h5>
 			@include('layouts.alert')
 			<div class="mb-3">

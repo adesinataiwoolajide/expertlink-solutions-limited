@@ -4,9 +4,7 @@
 	<form action="{{ route('login') }}" class="my-5" method="POST">
 		@csrf
 		<div class="auth-box border border-dark" style="width: ;">
-			<a href="index.html" class="mb-4 d-flex">
-				<img src="{{ asset('elsAdmin/auth-access/logo-dark.svg')}}" class="img-fluid login-logo" alt="AdminPro Admin Dashboard" />
-			</a>
+			@include('layouts.logo')
 			<h4 class="my-4">User Login</h4>
 			@include('layouts.alert')
 			<div class="mb-3">

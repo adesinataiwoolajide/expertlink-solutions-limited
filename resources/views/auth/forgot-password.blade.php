@@ -3,9 +3,7 @@
 	<form action="{{ route('password.email') }}" class="my-5" method="POST">
 		@csrf
 		<div class="auth-box border border-dark">
-			<a href="" class="mb-4 d-flex">
-				<img src="{{ asset('elsAdmin/auth-access/logo-dark.svg')}}" class="img-fluid login-logo" alt="" />
-            </a>
+			@include('layouts.logo')
 			<h5 class="fw-light mb-5 lh-2">
                 In order to access your account, please enter the email id you
                 provided during the registration process.
