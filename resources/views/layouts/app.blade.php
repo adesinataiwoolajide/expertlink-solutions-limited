@@ -9,7 +9,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <link rel="shortcut icon" href="{{ asset('elsAdmin/images/favicon.svg')}}" />
+        <link rel="shortcut icon" href="{{ asset('elsAdmin/images/els.png')}}" />
         <link href="{{ asset('elsAdmin/css/remi.css')}}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('elsAdmin/fonts/remix/remixicon.css')}}" />
