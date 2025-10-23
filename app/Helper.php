@@ -11,11 +11,36 @@
         return \DB::table($table_name)->orderBy('created_at', 'desc')->$opt();
     }
 
+    function getDateDiff($dateOne, $dateTwo){
+        $time1 = new DateTime($dateOne);
+        $time2 = new DateTime($dateTwo);
+        $timediff = $time1->diff($time2);
+        return $timediff->format('%h hour %i minute %s second');
+    }
+
     function getInformation($table_name, $column_name, $val, $opt)
     {
         return \DB::table($table_name)->where([
             "$column_name" => $val,
         ])->orderBy('created_at', 'desc')->$opt();
+    }
+
+    function getIPAddress()
+    {
+        $ip = Request::ip();
+        return $ip;
+    }
+    function getDeviceType($device_name){
+        return is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), $device_name));
+    }
+
+    function createLog($activities){
+        $data=array(
+            'user_id'=> Auth::user()->id,
+            "activities"=>$activities, "ip_address"=>getIPAddress(),
+            'created_at' =>now(), 'updated_at' => now()
+        );
+        return \DB::table('logs')->insert($data);
     }
 
 ?>

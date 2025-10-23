@@ -23,6 +23,16 @@ class RoleTableSeeder extends Seeder
                 'guard_name' => 'web'
             ],
 
+            [
+                'name' => 'Student',
+                'guard_name' => 'web'
+            ],
+
+            [
+                'name' => 'Instructor',
+                'guard_name' => 'web'
+            ],
+
         ]);
     }
 }
