@@ -62,61 +62,120 @@
                             
                         </div>
                     
-                        <button type="submit" class="btn btn-primary">Create a User</button>
+                        <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a User</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const firstNameInput = document.querySelector('input[name="first_name"]');
-            const lastNameInput = document.querySelector('input[name="last_name"]');
-            const emailInput = document.querySelector('input[name="email"]');
-            const feedbackDiv = document.getElementById('email-feedback');
+    document.addEventListener('DOMContentLoaded', function () {
+        const firstNameInput = document.querySelector('input[name="first_name"]');
+        const lastNameInput = document.querySelector('input[name="last_name"]');
+        const emailInput = document.querySelector('input[name="email"]');
+        const phoneInput = document.querySelector('input[name="phone_number"]');
+        const feedbackEmail = document.getElementById('email-feedback');
+        const feedbackPhone = document.getElementById('phone-feedback');
+        const submitBtn = document.getElementById('submit-btn');
 
-            function updateEmail() {
-                const firstName = firstNameInput.value.trim();
-                const lastName = lastNameInput.value.trim();
-                if (firstName && lastName) {
-                    const email = `${firstName}.${lastName}@expertlinksolutions.org`;
-                    emailInput.value = email;
-                    checkEmailExists(email);
-                }
-            }
-            async function checkEmailExists(email) {
-                try {
-                    const response = await fetch("{{ route('check.email') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ email })
-                    });
-                    const data = await response.json();
-                    if (data.exists) {
-                        emailInput.classList.add("is-invalid");
-                        emailInput.classList.remove("is-valid");
-                        feedbackDiv.textContent = "This email already exists for a user in the system.";
-                        feedbackDiv.className = "mt-2 text-danger";
-                        feedbackDiv.style.display = "block";
-                    } else {
-                        emailInput.classList.remove("is-invalid");
-                        emailInput.classList.add("is-valid");
-                        feedbackDiv.textContent = "Email is available.";
-                        feedbackDiv.className = "mt-2 text-success";
-                        feedbackDiv.style.display = "block";
-                    }
+        let isEmailValid = false;
+        let isPhoneValid = false;
 
-                } catch (error) {
-                    console.error("Error checking email:", error);
-                }
+        function updateEmail() {
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            if (firstName && lastName) {
+                const cleanFirstName = firstName.replace(/\s+/g, '');
+                const cleanLastName = lastName.replace(/\s+/g, '');
+                const email = `${cleanFirstName}.${cleanLastName}@expertlinksolutions.com`;
+                emailInput.value = email;
+                checkEmailExists(email);
             }
-            firstNameInput.addEventListener('input', updateEmail);
-            lastNameInput.addEventListener('input', updateEmail);
+        }
+
+        async function checkEmailExists(email) {
+            try {
+                const response = await fetch("{{ route('check.email') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                if (data.exists) {
+                    emailInput.classList.add("is-invalid");
+                    emailInput.classList.remove("is-valid");
+                    feedbackEmail.textContent = "This email already exists in the system.";
+                    feedbackEmail.className = "mt-2 text-danger";
+                    feedbackEmail.style.display = "block";
+                    isEmailValid = false;
+                } else {
+                    emailInput.classList.remove("is-invalid");
+                    emailInput.classList.add("is-valid");
+                    feedbackEmail.textContent = "Email is available.";
+                    feedbackEmail.className = "mt-2 text-success";
+                    feedbackEmail.style.display = "block";
+                    isEmailValid = true;
+                }
+                toggleSubmitButton();
+            } catch (error) {
+                console.error("Error checking email:", error);
+            }
+        }
+
+        async function checkPhoneNumber(phone) {
+            try {
+                const response = await fetch("{{ route('check.phone') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ phone_number: phone })
+                });
+                const data = await response.json();
+                if (data.exists) {
+                    phoneInput.classList.add("is-invalid");
+                    phoneInput.classList.remove("is-valid");
+                    feedbackPhone.textContent = "This phone number already exists in the system.";
+                    feedbackPhone.className = "mt-2 text-danger";
+                    feedbackPhone.style.display = "block";
+                    isPhoneValid = false;
+                } else {
+                    phoneInput.classList.remove("is-invalid");
+                    phoneInput.classList.add("is-valid");
+                    feedbackPhone.textContent = "Phone number is available.";
+                    feedbackPhone.className = "mt-2 text-success";
+                    feedbackPhone.style.display = "block";
+                    isPhoneValid = true;
+                }
+                toggleSubmitButton();
+            } catch (error) {
+                console.error("Error checking phone number:", error);
+            }
+        }
+
+        function toggleSubmitButton() {
+            submitBtn.disabled = !(isEmailValid && isPhoneValid);
+        }
+
+        firstNameInput.addEventListener('input', updateEmail);
+        lastNameInput.addEventListener('input', updateEmail);
+
+            phoneInput.addEventListener('input', function () {
+                const phone = phoneInput.value.trim();
+                if (phone.length >= 7) {
+                    checkPhoneNumber(phone);
+                } else {
+                    phoneInput.classList.remove("is-valid", "is-invalid");
+                    feedbackPhone.style.display = "none";
+                    isPhoneValid = false;
+                    toggleSubmitButton();
+                }
+            });
         });
-
     </script>
 
 </x-app-layout>

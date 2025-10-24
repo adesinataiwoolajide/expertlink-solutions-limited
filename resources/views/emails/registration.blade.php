@@ -1,80 +1,135 @@
 <!doctype html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="x-apple-disable-message-reformatting">
-    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
     <title>{{ config('app.name') }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        font-family: 'Roboto', Arial, sans-serif;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 40px 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        color: #333333;
+        text-align: left;
+      }
+      .logo {
+        display: block;
+        margin-bottom: 30px;
+      }
+      h2 {
+        font-size: 26px;
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+      .greeting {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .message {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      }
+      .cta-button {
+        background-color: #007BFF;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 14px 28px;
+        border-radius: 6px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 10px;
+      }
+      .support {
+        font-size: 14px;
+        margin-top: 30px;
+      }
+      .support a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .social-icons {
+        margin-top: 20px;
+      }
+      .social-icons img {
+        width: 28px;
+        margin: 0 8px;
+        vertical-align: middle;
+      }
+      .footer {
+        font-size: 12px;
+        color: #999999;
+        margin-top: 40px;
+      }
+      .footer a {
+        color: #666666;
+        font-weight: bold;
+        text-decoration: none;
+      }
+    </style>
   </head>
-  <body style="margin:0; padding:0; background:#eeeeee;">
+  <body>
 
-    <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
-      Invisable preheader text the text you put here helps towards an opened email.
-    </div>
+    <div style="display: none;">Invisible preheader text to improve open rates.</div>
 
-    <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
-	    &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
-    </div>
-
-    <center>
-
-    <div style="width:100%; max-width:600px; background:#ffffff; padding:30px 20px; text-align:left; font-family: 'Arial', sans-serif;">
+    <div class="email-container">
 
       <a href="{{ route('login') }}">
-        <img src="{{ asset('elsAdmin/images/els.png')}}" width="100" height="100" style="display:block; margin-bottom:30px;">
+        <img src="{{ asset('elsAdmin/images/els.png') }}" width="150" height="100" alt="Logo" class="logo">
       </a>
-      <img src="{{ asset('elsAdmin/images/els.png')}}" width="100" height="1" style="display:block; margin-bottom:30px;">
 
-      <h2>Registration Notification</h2>
-      <p style="font-size:16px; line-height:24px; color:#666666; margin-bottom:30px;">
-          <h1 style="font-size:16px; line-height:22px; font-weight:normal; color:#333333;">
-          Dear {{ $user->first_name }} {{ $user->last_name }},<br>
-        </h1>
-        Welcome aboard!
-        Your account on {{ config('app.name') }} has been successfully set up as a <b>{{ $user->role }}</b>. 🎉 <br>
-        Your login username is: <b>{{$user->email}}</b>
-        To access your dashboard and get started, please click the link below:
+      <h2 style="text-align: center;">🎉 Welcome to {{ config('app.name') }} Portal</h2>
+
+      <p class="greeting">Dear {{ $user->first_name }} {{ $user->last_name }},</p>
+
+      <p class="message">
+        We are excited to have you join us!<br>
+        Your account has been successfully created as a <strong>{{ $user->role }}</strong>.<br>
+        Your login username is: <strong>{{ $user->email }}</strong><br>
+        To access your dashboard and begin your journey, click the button below to reset your password:
       </p>
 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td>
-            <table border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td bgcolor="#556270"
-                    style="padding: 12px 26px 12px 26px; border-radius:4px"
-                    align="center">
-                    <a href="{{ route('login') }}"
-                       target="_blank"
-                       style="font-family: 'Arial', sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; display: inline-block;">
-                         Click Here to Login
-                    </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td width="100%" height="30">&nbsp;</td>
-        </tr>
-      </table>
+        <div style="text-align: center;">
+            <a href="{{ route('password.request') }}" target="_blank" class="cta-button">Password Reset</a>
+        
+            <div class="support">
+                <p>
+                Need help? Contact our support team at<br>
+                <a href="mailto:info@expertlinksolutions.org">info@expertlinksolutions.org</a> or call <strong>+234 813 813 9333</strong>.
+                </p>
+            </div>
 
-      <hr style="border:none; height:1px; color:#dddddd; background:#dddddd; width:100%; margin-bottom:20px;">
+            <div class="social-icons">
+                <a href="https://facebook.com">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+                </a>
+                <a href="https://twitter.com">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+                </a>
+                <a href="https://linkedin.com">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn">
+                </a>
+                <a href="https://instagram.com">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer" style="text-align: center;">
+            <hr style="border:none; height:1px; background:#dddddd; margin:30px 0;">
+            &copy; {{ date('Y') }} <a href="{{ route('login') }}">{{ config('app.name') }}</a> — All Rights Reserved.
+        </div>
 
-      <p style="font-size:12px; line-height:18px; color:#999999; margin-bottom:10px;">
-        &copy; Copyright {{ date('Y') }}<br>
-        <a href="{{ route('login') }}"
-           style="font-size:12px; line-height:18px; color:#666666; font-weight:bold;">
-           {{ config('app.name') }}</a>, <br>All Rights Reserved.
-      </p>
     </div>
-
-    </center>
-
-  </body>
-</html>

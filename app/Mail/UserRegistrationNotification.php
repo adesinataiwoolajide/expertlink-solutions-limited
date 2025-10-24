@@ -28,7 +28,7 @@ class UserRegistrationNotification extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'User Registration Notification',
-            from: new Address('tolajide75@gmail.com', 'Admin Team.'),
+            from: new Address('info@expertlinksolutions.org', 'Admin Team.'),
         );
     }
 
