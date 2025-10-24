@@ -57,6 +57,17 @@ class UserController extends Controller implements HasMiddleware
         }
     }
 
+    public function checkEmail(Request $request)
+    {
+        $exists = User::where('email', $request->email)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
+    public function checkPhone(Request $request)
+    {
+        $exists = User::where('phone_number', $request->phone_number)->exists();
+        return response()->json(['exists' => $exists]);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -64,7 +75,7 @@ class UserController extends Controller implements HasMiddleware
     {
         if(Auth::user()->hasAnyRole(['Administrator'])){
             $request->user()->fill($request->validated());
-            $email = $request->input("email");
+            $email = strtolower($request->input("email"));
             $role = $request->input("role");
             $slug = RandomString(7);
             if ((Str::contains($email, 'expertlinksolutions')) || (Str::contains($email, 'gmail.com'))) {
@@ -88,7 +99,7 @@ class UserController extends Controller implements HasMiddleware
                     $details = [
                         'user' => User::where('slug',$slug)->first(),
                     ];
-                    //Mail::to($email)->send(new UserRegistrationNotification($details));
+                    Mail::to($email)->send(new UserRegistrationNotification($details));
                     return redirect()->route('user.show',$slug)->with("success", "You have created the user successfully");
                 }else{
                     return redirect()->back()->with("error", "Network Failure, Please try again later");
@@ -118,18 +129,10 @@ class UserController extends Controller implements HasMiddleware
                 $roles = Role::where('name', Auth::user()->role)->get();
             }
             $role = Role::where('name', $user->role)->first();
-            $groupsWithRoles = $role->getPermissionNames();
-            $permission = DB::table('role_has_permissions')->where([
-                'role_id' => $role->id
-            ])->get();
-
-            $model = DB::table('model_has_permissions')->where([
-                'model_id' => $user->id
-            ])->get();
+         
             return view('home.users.show')->with([
                 'roles' => $roles,
-                'user' => $user, 'groupsWithRoles' => $groupsWithRoles,
-                'model' => $model, 'permission'=>$permission
+                'user' => $user, 'role' => $role
             ]);
         }else{
             return redirect()->back()->with([

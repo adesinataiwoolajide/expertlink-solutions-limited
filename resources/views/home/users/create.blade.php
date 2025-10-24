@@ -38,13 +38,15 @@
                             </div>
                             <div class="mb-3 col-md-4">
                                 <label class="form-label">Email:</label>
-                                <input type="email" class="form-control" placeholder="adesina@gmail.com" name="email" value="{{ old('email') }}" required>
+                                <input type="email" class="form-control" placeholder="taiwo.adesina@expertlinksolutions.com" name="email" value="{{ old('email') }}" required readonly>
                                 <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
+                                <div id="email-feedback" class="mt-2 text-danger" style="display: none;"></div>
                             </div>
                             <div class="mb-3 col-md-4">
                                 <label class="form-label">Phone number:</label>
                                 <input type="text" class="form-control" placeholder="Phone number" name="phone_number" value="{{ old('phone_number') }}" required>
                                 <x-input-error :messages="$errors->get('phone_number')" class="mt-2 text-danger" />
+                                <div id="phone-feedback" class="mt-2" style="display: none;"></div>
                             </div>
 
                             <div class="mb-3 col-md-4">
@@ -66,4 +68,55 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const firstNameInput = document.querySelector('input[name="first_name"]');
+            const lastNameInput = document.querySelector('input[name="last_name"]');
+            const emailInput = document.querySelector('input[name="email"]');
+            const feedbackDiv = document.getElementById('email-feedback');
+
+            function updateEmail() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                if (firstName && lastName) {
+                    const email = `${firstName}.${lastName}@expertlinksolutions.org`;
+                    emailInput.value = email;
+                    checkEmailExists(email);
+                }
+            }
+            async function checkEmailExists(email) {
+                try {
+                    const response = await fetch("{{ route('check.email') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await response.json();
+                    if (data.exists) {
+                        emailInput.classList.add("is-invalid");
+                        emailInput.classList.remove("is-valid");
+                        feedbackDiv.textContent = "This email already exists for a user in the system.";
+                        feedbackDiv.className = "mt-2 text-danger";
+                        feedbackDiv.style.display = "block";
+                    } else {
+                        emailInput.classList.remove("is-invalid");
+                        emailInput.classList.add("is-valid");
+                        feedbackDiv.textContent = "Email is available.";
+                        feedbackDiv.className = "mt-2 text-success";
+                        feedbackDiv.style.display = "block";
+                    }
+
+                } catch (error) {
+                    console.error("Error checking email:", error);
+                }
+            }
+            firstNameInput.addEventListener('input', updateEmail);
+            lastNameInput.addEventListener('input', updateEmail);
+        });
+
+    </script>
+
 </x-app-layout>

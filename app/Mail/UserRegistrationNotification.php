@@ -8,26 +8,27 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-
-class UserRegistrationNotification extends Mailable
+use Illuminate\Mail\Mailables\Address;
+class UserRegistrationNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(private $details)
     {
-        //
+        $this->details = $details;
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
+     public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'User Registration Notification',
+            from: new Address('tolajide75@gmail.com', 'Admin Team.'),
         );
     }
 
@@ -37,7 +38,10 @@ class UserRegistrationNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.registration',
+            with: [
+                'user' => $this->details["user"],
+            ]
         );
     }
 

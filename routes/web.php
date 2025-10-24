@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::get('/email/resend', [VerificationController::class, 'resend']);
+Route::get('/email/resend', [VerificationController::class, 'resend']);
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
@@ -29,6 +29,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post("/store",[UserController::class, "store"])->name("user.store");
         Route::get("/edit/{slug}", [UserController::class, "edit"])->name("user.edit");
         Route::post("/update/{slug}", [UserController::class, "update"])->name("user.update");
+        Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
+        Route::post('/check-phone', [UserController::class, 'checkPhone'])->name('check.phone');
        
         Route::group(["prefix" => "Action"], function () {
             Route::post("/change-Password/{slug}", [UserController::class, "changingPassword"])->name("changingPassword");
