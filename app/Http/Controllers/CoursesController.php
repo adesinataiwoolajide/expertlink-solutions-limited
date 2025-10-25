@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Courses;
+use App\Models\{Log, Courses};
 use Illuminate\Http\Request;
-
-class CoursesController extends Controller
+use App\Repositories\GeneralRepository;
+use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+use Illuminate\Support\Facades\{Auth};
+class CoursesController extends  Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth', new Middleware('role:Administrator|Admin|Instructor'),
+        ];
+    }
+    public function __construct(Courses $courses){
+        $this->model = new GeneralRepository($courses);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+            return view('home.courses.index')->with([
+                
+            ]);
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
     }
 
     /**
@@ -20,7 +38,14 @@ class CoursesController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+            return view('home.courses.create')->with([
+                
+            ]);
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
     }
 
     /**

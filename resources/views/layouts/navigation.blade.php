@@ -33,33 +33,24 @@
 				</ul>
 			</li>
 
-			<li class="{{ request()->routeIs('signout') ? 'active current-page' : '' }}">
-				<a href="{{ route('signout') }}">
-					<i class="ri-list-settings-line"></i>
-					<span class="menu-text">Programs</span>
-				</a>
-			</li>
-
+	
 			<li class="treeview">
 				<a href="#!">
 					<i class="ri-file-list-3-line"></i>
-					<span class="menu-text">Forms</span>
+					<span class="menu-text">Courses</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="basic-inputs.html">Basic Inputs</a></li>
-					<li><a href="checkbox-radio.html">Checkbox & Radio</a></li>
-					<li><a href="date-time-picker.html">Date & Time Picker</a></li>
-					<li><a href="file-upload.html">File Upload</a></li>
-					<li><a href="form-layouts.html">Form Layouts</a></li>
-					<li><a href="form-mask.html">Form Mask</a></li>
-					<li><a href="form-quill-editor.html">Quill Editor</a></li>
-					<li><a href="form-steppers.html">Form Steppers</a></li>
-					<li><a href="input-groups.html">Input Groups</a></li>
-					<li><a href="range-slider.html">Range Slider</a></li>
-					<li><a href="select-dropdowns.html">Select & Dropdowns</a></li>
-					<li><a href="validations.html">Validations</a></li>
-					<li><a href="wizard.html">Wizard</a></li>
+					<li><a href="{{ route('course.create') }}">Add New Course</a></li>
+					<li><a href="{{ route('course.create') }}">View All Courses</a></li>
+					
 				</ul>
+			</li>
+
+			<li class="{{ request()->routeIs('allocation.index') ? 'active current-page' : '' }}">
+				<a href="{{ route('allocation.index') }}">
+					<i class="ri-list-settings-line"></i>
+					<span class="menu-text">Course Allocations</span>
+				</a>
 			</li>
 
 			<li class="treeview ">
