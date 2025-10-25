@@ -80,7 +80,7 @@ class UserController extends Controller implements HasMiddleware
             $slug = RandomString(7);
             if ((Str::contains($email, 'expertlinksolutions')) || (Str::contains($email, 'gmail.com'))) {
                 $users = new User([
-                    "email" => $request->input("email"),
+                    "email" => $email,
                     "first_name" => $request->input("first_name"),
                     "last_name" => $request->input("last_name"),
                     "password" => bcrypt( $request->input("phone_number")),
@@ -93,8 +93,8 @@ class UserController extends Controller implements HasMiddleware
                     $users->assignRole($role);
                     $users->syncRoles([$role]);
                     
-                    createLog('Added ' . $request->input("email") . ' As an '. $role);
-                    $message = "You Have Added ". $request->input("email") . " as an $role Successfully";
+                    createLog('Created ' . $email . ' As an '. $role);
+                    $message = "You Have Added ". $email . " as an $role Successfully";
                     
                     $details = [
                         'user' => User::where('slug',$slug)->first(),
@@ -157,15 +157,11 @@ class UserController extends Controller implements HasMiddleware
         
         if(User::where(['slug' => Auth::user()->slug])->exists()) {
             
-            $log = new Log([
-                "user_id" => Auth::user()->id,
-                "activities" => 'Changed Password for User: ' . $slug,
-                'ip_address' => getIPAddress(),
-            ]);
+            
             if(Auth::user()->hasAnyRole(['Administrator','Admin'])){
                 $details = User::where('slug', $slug)->first();
                 if($details->fill(['password' => bcrypt($request->password)])->save()){
-                    $log->save();
+                    createLog('Changed Password for User: ' . $slug);
                     return redirect()->back()->with(['success' => 'Password changed successfully']);
                 }else{
                     return redirect()->back()->with([
@@ -176,7 +172,7 @@ class UserController extends Controller implements HasMiddleware
                 $details = User::where('slug', Auth::user()->slug)->first();
                 if (Hash::check($request->old_password, $details->password)) {
                     $details->fill(['password' => bcrypt($request->password)])->save();
-                    $log->save();
+                    createLog('Changed Password for User: ' . $slug);
                     Auth::logout();
                     return redirect()->route('login')->with(['success' => 'Password changed successfully, Please kindly login using the new password']);
                 } else {
@@ -204,7 +200,7 @@ class UserController extends Controller implements HasMiddleware
             $email = $request->input("email");
             $role = $request->input("role");
             $user = User::where(['slug' => $slug])->first();
-            if ((Str::contains($email, 'ibbu.edu.ng')) || (Str::contains($email, 'gmail.com'))) {
+            if ((Str::contains($email, 'expertlinksolutions')) || (Str::contains($email, 'gmail.com'))) {
                 
                 $data = User::where(['slug' => $slug])->update([
                     "email" => $request->input("email"),
@@ -219,12 +215,7 @@ class UserController extends Controller implements HasMiddleware
                     DB::table('model_has_roles')->where('model_id', $user_id)->delete();
                     $user->assignRole($role);
                     $message = "You Have Updated The User Successfully";
-                    $log = new Log([
-                        "user_id" => Auth::user()->id,
-                        "activities" => "Updated User ID: $slug Details",
-                        'ip_address' => getIPAddress(),
-                    ]);
-                    $log->save();
+                    createLog("Updated User ID: $slug Details");
                     return redirect()->back()->with([
                         "success" => $message
                     ]);

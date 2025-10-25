@@ -33,18 +33,7 @@
 				LOGIN
 				</button>
 			</div>
-			<div class="text-center py-2">or Login with</div>
-			<div class="btn-group w-100">
-				<button type="button" class="btn btn-sm btn-outline-dark">
-				Facebook
-				</button>
-				<button type="button" class="btn btn-sm btn-outline-danger">
-				Google
-				</button>
-				<button type="button" class="btn btn-sm btn-outline-dark">
-				Twitter
-				</button>
-			</div>
+			
 			<div class="text-center pt-4">
 				<span>Not registered?</span>
 				<a href="/register" class="text-primary text-decoration-underline">
