@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleTableSeeder::class);
         $this->call(ModelHasRoleTableSeeder::class);
         $this->call(CoursesSeeder::class);
+        $this->call(ProgramSeeder::class);
     }
 }

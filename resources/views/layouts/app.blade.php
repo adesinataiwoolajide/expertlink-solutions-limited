@@ -21,6 +21,8 @@
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/dataTables.bs5-custom.css')}}">
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/buttons/dataTables.bs5-custom.css')}}">
 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
@@ -29,11 +31,8 @@
 
       <!-- Main container starts -->
       <div class="main-container">
-            @include('layouts.navigation')
-
-            <div class="app-container">
-
-          <!-- App header starts -->
+        @include('layouts.navigation')
+        <div class="app-container">
           <div class="app-header d-flex align-items-center">
 
             <!-- Toggle buttons starts -->
@@ -42,34 +41,25 @@
                 <i class="ri-menu-line lh-1"></i>
               </button>
 
-              <!-- App brand starts -->
               <div class="app-brand-sm d-flex align-items-center">
                 <a href="index.html" class="d-lg-none d-md-block">
                   <img src="assets/images/logo.svg" class="logo" alt="Bootstrap Gallery" />
                 </a>
               </div>
-              <!-- App brand ends -->
-
+             
             </div>
-            <!-- Toggle buttons ends -->
-
+            
             <div class="last-login d-lg-flex d-none">
               <i class="ri-time-line me-2 text-danger fs-5"></i> Last login at 2 hours ago.
             </div>
 
-            <!-- App header actions starts -->
+           
             <div class="header-actions">
-
-              <!-- Search container starts -->
               <div class="search-container d-lg-block d-none mx-3">
                 <input id="globalSearch" type="text" class="form-control" placeholder="Search">
                 <i class="ri-search-line"></i>
               </div>
-              <!-- Search container ends -->
-
-             
-
-              <!-- User settings start -->
+              
               <div class="dropdown ms-3">
                 <a id="userSettings" class="dropdown-toggle d-flex py-2 align-items-center" href="#!" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,16 +82,10 @@
                   </div>
                 </div>
               </div>
-              <!-- User settings end -->
-
+             
             </div>
-            <!-- App header actions ends -->
-
+           
           </div>
-          <!-- App header ends -->
-
-          <!-- App hero header starts -->
-          
           <div class="app-body">
               {{ $slot }}
           </div>
@@ -116,8 +100,6 @@
         <script src="{{ asset('elsAdmin/vendor/daterange/custom-daterange.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/apex/apexcharts.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/apex/custom/overview/overview.js')}}"></script>
-        
-
         <script src="{{ asset('elsAdmin/vendor/datatables/dataTables.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/dataTables.bootstrap.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/custom/custom-datatables.js')}}"></script>
@@ -130,8 +112,18 @@
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.html5.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.print.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.colVis.min.js')}}"></script>
-
         <script src="{{ asset('elsAdmin/js/custom.js')}}"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+        <script>
+          $(document).ready(function() {
+            $('.summernote').summernote({
+              placeholder: 'Start typing here...',
+              tabsize: 2,
+              height: 200
+            });
+          });
+        </script>
     </body>
 </html>

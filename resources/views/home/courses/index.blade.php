@@ -16,4 +16,5 @@
     </div>
     @include('layouts.alert')
 
+    
 </x-app-layout>

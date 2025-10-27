@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, HomeController, UserController, BlogController, CoursesController, CourseAllocationController};
+use App\Http\Controllers\{ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -48,6 +48,19 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/delete/{blog_id}', [BlogController::class, 'destroy'])->name('blog.delete');
         Route::get('/details/{eve_id}', [BlogController::class, 'show'])->name('blog.show');
     });
+
+    Route::prefix('programs')->group(function () {
+        Route::get('/', [ProgramsController::class, 'index'])->name('program.index');
+        Route::get('/create', [ProgramsController::class, 'create'])->name('program.create');
+        Route::post('/store', [ProgramsController::class, 'store'])->name('program.store');
+        Route::get('/edit/{course_id}', [ProgramsController::class, 'edit'])->name('program.edit');
+        Route::post('/update/{course_id}', [ProgramsController::class, 'update'])->name('program.update');
+        Route::get('/delete/{course_id}', [ProgramsController::class, 'destroy'])->name('program.delete');
+        Route::get('/details/{course_id}', [ProgramsController::class, 'show'])->name('program.show');
+
+        Route::post('/validate-program-name', [ProgramsController::class, 'checkProgramName'])->name('check.program.name');
+    });
+
 
     Route::prefix('courses')->group(function () {
         Route::get('/', [CoursesController::class, 'index'])->name('course.index');

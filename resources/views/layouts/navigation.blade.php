@@ -33,6 +33,12 @@
 				</ul>
 			</li>
 
+			<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">
+				<a href="{{ route('program.index') }}">
+					<i class="ri-list-settings-line"></i>
+					<span class="menu-text"> Course Program</span>
+				</a>
+			</li>
 	
 			<li class="treeview">
 				<a href="#!">

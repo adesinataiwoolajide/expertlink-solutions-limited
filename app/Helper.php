@@ -47,21 +47,28 @@
         return App::environment('local') ? public_path() : base_path();
     }
 
-    function createFileUpload($folderName, $uploadFile, $customName)
+   function createFileUpload($folderName, $uploadFile, $customName)
     {
+        if (!$uploadFile || !$uploadFile->isValid()) {
+            throw new \Exception('Invalid or missing file upload.');
+        }
+
         $publicPath = App::environment('local') ? public_path($folderName) : base_path($folderName);
         if (!File::exists($publicPath)) {
             File::makeDirectory($publicPath, 0777, true, true);
         }
+
         $safeName = preg_replace('/[^A-Za-z0-9_-]/', '_', $customName);
         $pngFileName = $safeName . '.png';
         $pngPath = $publicPath . '/' . $pngFileName;
+
         $uploadFile->move($publicPath, $pngFileName);
+
         return [
             'png' => $pngFileName,
-            'folder' => $folderName, 'pngPath' => $pngPath,
+            'folder' => $folderName,
+            'pngPath' => $pngPath,
             'png_url' => asset($folderName . '/' . $pngFileName)
         ];
-    }
-
+}
 ?>
