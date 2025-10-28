@@ -70,6 +70,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/update/{course_id}', [CoursesController::class, 'update'])->name('course.update');
         Route::get('/delete/{course_id}', [CoursesController::class, 'destroy'])->name('course.delete');
         Route::get('/details/{course_id}', [CoursesController::class, 'show'])->name('course.show');
+
+        Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
+
     });
 
     Route::prefix('course-allocations')->group(function () {

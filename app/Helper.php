@@ -47,28 +47,47 @@
         return App::environment('local') ? public_path() : base_path();
     }
 
-   function createFileUpload($folderName, $uploadFile, $customName)
+    function createFileUpload($folderName, $uploadFile, $customName)
     {
         if (!$uploadFile || !$uploadFile->isValid()) {
             throw new \Exception('Invalid or missing file upload.');
         }
-
         $publicPath = App::environment('local') ? public_path($folderName) : base_path($folderName);
         if (!File::exists($publicPath)) {
             File::makeDirectory($publicPath, 0777, true, true);
         }
-
         $safeName = preg_replace('/[^A-Za-z0-9_-]/', '_', $customName);
-        $pngFileName = $safeName . '.png';
-        $pngPath = $publicPath . '/' . $pngFileName;
-
-        $uploadFile->move($publicPath, $pngFileName);
+        $pngFileName = $safeName . '_' . Str::random(6) . '.png';
+        $pngPath = $publicPath . DIRECTORY_SEPARATOR . $pngFileName;
+        try {
+            $uploadFile->move($publicPath, $pngFileName);
+        } catch (\Exception $e) {
+            throw new \Exception('File move failed: ' . $e->getMessage());
+        }
 
         return [
             'png' => $pngFileName,
             'folder' => $folderName,
             'pngPath' => $pngPath,
-            'png_url' => asset($folderName . '/' . $pngFileName)
+            'png_url' => asset($folderName . '/' . $pngFileName),
         ];
-}
+    }
+
+    function getTrainings(){
+        $trainingTypes = [
+            'Online',
+            'Onsite',
+            'Hybrid',
+            'Virtual Instructor-Led',
+            'Self-Paced',
+            'Bootcamp',
+            'Workshop',
+            'Seminar',
+            'Webinar',
+            'Blended Learning'
+        ];
+        asort($trainingTypes);
+        return array_values($trainingTypes);
+    }
+
 ?>

@@ -14,7 +14,7 @@ class Courses extends Model
    protected $primaryKey = 'course_id';
 
     protected $fillable = [
-       'slug', 'course_name', 'course_price', 'banner', 'basic_requirements', 'course_outline', 'learning_module', 
+       'slug', 'course_name', 'user_id', 'programSlug', 'course_price', 'banner', 'basic_requirements', 'course_outline', 'learning_module', 
        'course_schedule', 'training_type', 'payment_structure', 'course_overview', 'course_technologies', 'packages_included', 'benefits',
     ];
 }

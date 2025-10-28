@@ -15,7 +15,8 @@ return new class extends Migration
             $table->bigIncrements('course_id');
             $table->string('slug')->default(RandomString(12));
             $table->string('course_name');
-            $table->longText('course_price')->default(100000);
+            $table->string('programSlug');
+            $table->longText('course_price')->default(10000);
             $table->string('user_id');
             $table->longText('banner')->nullable();
             $table->longText('basic_requirements')->nullable();

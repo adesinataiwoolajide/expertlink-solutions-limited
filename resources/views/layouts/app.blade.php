@@ -21,6 +21,8 @@
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/dataTables.bs5-custom.css')}}">
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/buttons/dataTables.bs5-custom.css')}}">
 
+        {{-- <link href="{{ asset('elsAdmin/vendor/select2/select2.min.css')}}" rel="stylesheet" /> --}}
+         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -87,7 +89,7 @@
            
           </div>
           <div class="app-body">
-              {{ $slot }}
+            {{ $slot }}
           </div>
       </div>
 
@@ -112,18 +114,40 @@
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.html5.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.print.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.colVis.min.js')}}"></script>
+
+        {{-- <script src="{{ asset('elsAdmin/vendor/select2/select2.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/select2/select2-custom.js')}}"></script> --}}
+
         <script src="{{ asset('elsAdmin/js/custom.js')}}"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+        <!-- Include Select2 CSS -->
+       
+
+        <!-- Include Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <!-- Initialize Select2 -->
+        <script>
+            $(document).ready(function() {
+                $('#multiSelect').select2({
+                    placeholder: "Select an option",
+                    tags: true,
+                    width: '100%'
+                });
+            });
+        </script>
+
         <script>
           $(document).ready(function() {
             $('.summernote').summernote({
-              placeholder: 'Start typing here...',
+              placeholder: 'Start typing the contents here...',
               tabsize: 2,
               height: 200
             });
           });
         </script>
+
     </body>
 </html>
