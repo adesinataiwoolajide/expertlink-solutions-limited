@@ -9,7 +9,7 @@
                 </div>
                 <div class="ms-3">
                 <h3 class="m-0 fw-semibold">35k</h3>
-                <h6 class="m-0 text-secondary small">Users</h6>
+                <h6 class="m-0 text-secondary small">Total Users</h6>
                 </div>
             </div>
             </div>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="ms-2">
                 <h3 class="m-0 fw-semibold">2k</h3>
-                <h6 class="m-0 text-secondary small">Agents</h6>
+                <h6 class="m-0 text-secondary small"> Total Agents</h6>
                 </div>
             </div>
             </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="ms-2">
                 <h3 class="m-0 fw-semibold">70k</h3>
-                <h6 class="m-0 text-secondary small">Visitors</h6>
+                <h6 class="m-0 text-secondary small">Total Visitors</h6>
                 </div>
             </div>
             </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="ms-2">
                 <h3 class="m-0 fw-semibold">89</h3>
-                <h6 class="m-0 text-secondary small">Sales</h6>
+                <h6 class="m-0 text-secondary small">Total Sales</h6>
                 </div>
             </div>
             </div>
