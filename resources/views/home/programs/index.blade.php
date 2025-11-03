@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three-tab">
-                 <div class="col-sm-12 col-12 mt-2">
+                <div class="col-sm-12 col-12 mt-2">
                     @if(count($programs) > 0)
                     
                         <div class="card mb-3">

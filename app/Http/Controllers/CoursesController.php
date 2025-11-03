@@ -26,10 +26,10 @@ class CoursesController extends  Controller implements HasMiddleware
      */
     public function index()
     {
-        $program = Programs::orderBy('program_name', 'asc')->get();
+        $courses = Courses::with(['user', 'program'])->orderBy('course_name', 'asc')->get();
         if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
             return view('home.courses.index')->with([
-                'programs' => $program
+                'courses' => $courses
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

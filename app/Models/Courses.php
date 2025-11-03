@@ -23,6 +23,14 @@ class Courses extends Model
       return $this->belongsTo(Programs::class, 'programSlug', 'slug');
    }
 
+   
+   public function user()
+   {
+      return $this->belongsTo(User::class);
+   }
+
+
+
 }
 
 ?>

@@ -47,7 +47,7 @@
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="{{ route('course.create') }}">Add New Course</a></li>
-					<li><a href="{{ route('course.create') }}">View All Courses</a></li>
+					<li><a href="{{ route('course.index') }}">View All Courses</a></li>
 					
 				</ul>
 			</li>
