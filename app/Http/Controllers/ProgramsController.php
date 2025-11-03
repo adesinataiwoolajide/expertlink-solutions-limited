@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
 use App\Http\Requests\{StoreProgramRequest, UpdateProgramRequest};
 use Illuminate\Support\Facades\{App, File};
-use Str; use DB;
 use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
 class ProgramsController extends Controller implements HasMiddleware
 {

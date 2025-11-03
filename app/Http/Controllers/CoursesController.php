@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
 use App\Http\Requests\{StoreCourseRequest, UpdateCourseRequest};
-
+use Illuminate\Support\Facades\{App, File};
 use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
 use Illuminate\Support\Facades\{Auth};
 class CoursesController extends  Controller implements HasMiddleware
@@ -70,7 +70,6 @@ class CoursesController extends  Controller implements HasMiddleware
         $course_price = $request->input('course_price');
         $user_id = Auth::id();
         $program_name = $request->input('program_name');
-        $banner = $request->file('banner');
         $basic_requirements = $request->input('basic_requirements');
         $course_outline = $request->input('course_outline');
         $learning_module = $request->input('learning_module');
@@ -81,14 +80,14 @@ class CoursesController extends  Controller implements HasMiddleware
         $course_technologies = $request->input('course_technologies');
         $packages_included = $request->input('packages_included');
         $benefits = $request->input('benefits');
-        
+        $slug = RandomString(10);
         $data = new Courses([
-            'slug' => RandomString(10),
+            'slug' =>$slug,
             'course_name' => $course_name,
             'course_price' => $course_price,
             'programSlug' => $program_name,
             'user_id' => $user_id,
-            'banner' => "no-file", 
+            'banner' => "els.png", 
             'basic_requirements' => $basic_requirements,
             'course_outline' => $course_outline,
             'learning_module' => $learning_module,
@@ -106,8 +105,25 @@ class CoursesController extends  Controller implements HasMiddleware
                 $file = createFileUpload('course-banner', $request->file('banner'), $request->input('course_name'));
                 $data->banner = $file['png'];
             }
-            createLog( 'Added ' . $$course_name . ' to the course list ');
-            $message = "You Have Added ". $$course_name . " to the course list Successfully";
+            // if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
+            //     $uploadFile = $request->file('banner');
+            //     $folderName = 'course-banner';
+            //     $publicPath = App::environment('local') ? public_path($folderName) : base_path($folderName);
+            //     if (!File::exists($publicPath)) {
+            //         File::makeDirectory($publicPath, 0777, true, true);
+            //     }
+            //     $safeName = preg_replace('/[^A-Za-z0-9_-]/', '_', $course_name);
+            //     $pngFileName = $safeName . '_' . $slug . '.' . $uploadFile->getClientOriginalExtension();
+            //     try {
+            //         $uploadFile->move($publicPath, $pngFileName);
+            //         Courses::where('slug', $slug)->update(['banner' => $pngFileName]);
+            //         // $data->banner = $pngFileName;
+            //     } catch (\Exception $e) {
+            //         throw new \Exception('File move failed: ' . $e->getMessage());
+            //     }
+            // }
+            createLog( 'Added ' . $course_name . ' to the course list ');
+            $message = "You Have Added ". $course_name . " to the course list Successfully";
             return redirect()->route("course.index")->with(["success" => $message]);
         }else{
             return redirect()->back()->with("error", "Network Failure, Please try again later");

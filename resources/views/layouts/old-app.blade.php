@@ -17,7 +17,9 @@
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/overlay-scroll/OverlayScrollbars.min.css')}}" />
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/daterange/daterange.css')}}" />
 
-      
+        {{-- <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/dataTables.bs5.css')}}">
+        <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/dataTables.bs5-custom.css')}}">
+        <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/datatables/buttons/dataTables.bs5-custom.css')}}"> --}}
 
         <link href="{{ asset('elsAdmin/vendor/select2/select2.min.css')}}" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -26,7 +28,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
    
@@ -101,18 +103,34 @@
         <script src="{{ asset('elsAdmin/vendor/overlay-scroll/custom-scrollbar.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/daterange/daterange.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/daterange/custom-daterange.js')}}"></script>
-        {{-- <script src="{{ asset('elsAdmin/vendor/apex/apexcharts.min.js')}}"></script>
-        <script src="{{ asset('elsAdmin/vendor/apex/custom/overview/overview.js')}}"></script> --}}
-        
+        <script src="{{ asset('elsAdmin/vendor/apex/apexcharts.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/apex/custom/overview/overview.js')}}"></script>
+        {{-- <script src="{{ asset('elsAdmin/vendor/datatables/dataTables.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/dataTables.bootstrap.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/custom/custom-datatables.js')}}"></script>
+
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/dataTables.buttons.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/jszip.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/dataTables.buttons.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/pdfmake.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/vfs_fonts.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.html5.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.print.min.js')}}"></script>
+        <script src="{{ asset('elsAdmin/vendor/datatables/buttons/buttons.colVis.min.js')}}"></script> --}}
+
         <script src="{{ asset('elsAdmin/vendor/select2/select2.min.js')}}"></script>
         <script src="{{ asset('elsAdmin/vendor/select2/select2-custom.js')}}"></script>
 
         <script src="{{ asset('elsAdmin/js/custom.js')}}"></script>
 
         <script src="{{ asset('elsAdmin/js/file-upload.js')}}"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
         
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
         <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -149,7 +167,7 @@
 
           $(document).ready(function() {
             $('#basicExample').DataTable({
-                lengthMenu: [10, 20, 30, 40, 50, 100], // Sets the dropdown options
+                lengthMenu: [10, 20, 30, 40, 50], // Sets the dropdown options
                 pageLength: 10, // Default number of rows per page
                 dom: 'lfrtip' // Removes export buttons, keeps length filter, search, pagination
             });
