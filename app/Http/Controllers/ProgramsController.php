@@ -26,8 +26,8 @@ class ProgramsController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $program = Programs::orderBy('program_name', 'asc')->get();
-        $trashedPrograms = Programs::onlyTrashed()->get();
+        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+        $trashedPrograms = Programs::onlyTrashed()->with('courses')->get();
         return view("home.programs.index")->with([
             "programs" => $program, 'trashedPrograms' => $trashedPrograms
         ]);

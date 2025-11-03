@@ -57,8 +57,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/update/{slug}', [ProgramsController::class, 'update'])->name('program.update');
         Route::get('/delete/{slug}', [ProgramsController::class, 'destroy'])->name('program.delete');
         Route::get('/restore/{slug}', [ProgramsController::class, 'restore'])->name('program.restore');
-
         Route::post('/validate-program-name', [ProgramsController::class, 'checkProgramName'])->name('check.program.name');
+        Route::get('/courses/{slug}', [ProgramsController::class, 'show'])->name('program.courses');
     });
 
 
@@ -66,10 +66,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/', [CoursesController::class, 'index'])->name('course.index');
         Route::get('/create', [CoursesController::class, 'create'])->name('course.create');
         Route::post('/store', [CoursesController::class, 'store'])->name('course.store');
-        Route::get('/edit/{course_id}', [CoursesController::class, 'edit'])->name('course.edit');
-        Route::post('/update/{course_id}', [CoursesController::class, 'update'])->name('course.update');
-        Route::get('/delete/{course_id}', [CoursesController::class, 'destroy'])->name('course.delete');
-        Route::get('/details/{course_id}', [CoursesController::class, 'show'])->name('course.show');
+        Route::get('/edit/{slug}', [CoursesController::class, 'edit'])->name('course.edit');
+        Route::post('/update/{slug}', [CoursesController::class, 'update'])->name('course.update');
+        Route::get('/delete/{slug}', [CoursesController::class, 'destroy'])->name('course.delete');
+        Route::get('/details/{slug}', [CoursesController::class, 'show'])->name('course.show');
+        
 
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
@@ -86,10 +87,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
 });
 
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

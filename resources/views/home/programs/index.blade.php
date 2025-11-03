@@ -46,39 +46,39 @@
         </ul>
         <div class="tab-content border border-primary rounded p-4" id="bordered-tabs-content">
             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one-tab">
-                 <div class="col-lg-12 col-ms-12">
-            <!-- Basic Input Fields Column -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title text-dark">Please Fill the below form to create new Program</h5>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="mb-3 col-md-6">
-                                <label class="form-label">Program Name:</label>
-                                <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') }}" required>
-                                <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
-                                <div id="program-name-feedback" class="mt-2 text-danger"></div>
-                            </div>
-
-                            <div class="mb-3 col-md-6">
-                                <label for="imageUpload" class="form-label">Program Banner:</label>
-                                <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
-                                <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
-                                <div id="banner-feedback" class="mt-2 text-danger"></div>
-                                <div id="imagePreview" class="mt-3 border rounded p-3 bg-light text-center d-none" style="min-height: 220px;">
-                                    <small class="text-muted">Image preview will appear here</small>
-                                </div>
-                            </div>
-
+                <div class="col-lg-12 col-ms-12">
+                    <!-- Basic Input Fields Column -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title text-dark">Please Fill the below form to create new Program</h5>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
-                    </form>
+                        <div class="card-body">
+                            <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Program Name:</label>
+                                        <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') }}" required>
+                                        <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
+                                        <div id="program-name-feedback" class="mt-2 text-danger"></div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label for="imageUpload" class="form-label">Program Banner:</label>
+                                        <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
+                                        <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
+                                        <div id="banner-feedback" class="mt-2 text-danger"></div>
+                                        <div id="imagePreview" class="mt-3 border rounded p-3 bg-light text-center d-none" style="min-height: 220px;">
+                                            <small class="text-muted">Image preview will appear here</small>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
             </div>
             <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three-tab">
                  <div class="col-sm-12 col-12 mt-2">
@@ -96,7 +96,6 @@
                                                 <th>#</th>
                                                 <th>Program Name</th>
                                                 <th  class="text-center"> Total Courses</th>
-                                                <th  class="text-center">Total Students</th>
                                                 <th>Date Created</th>
                                                 <th>Action</th>
                                             </tr>
@@ -107,10 +106,18 @@
                                                 <tr>
                                                     <td>{{ $num }}</td>
                                                     <td>{{ $program->program_name }}</td>
-                                                    <td class="text-center">0</td>
-                                                    <td  class="text-center">
-                                                        0
+                                                    
+                                                    <td class="text-center">
+                                                        @php $courseCount = count($program->courses); @endphp
+                                                        @if ($courseCount > 0)
+                                                            <a href="{{ route('program.courses', $program->slug) }}" >
+                                                                <span class="badge bg-primary">View {{ $courseCount }} {{ Str::plural('Course', $courseCount) }}</span>
+                                                            </a>
+                                                        @else
+                                                            <span class="badge bg-danger">No Courses</span>
+                                                        @endif
                                                     </td>
+
                                                     <td><span class="badge bg-info">{{ $program->created_at }}</span></td>
                                                     <td>
                                                         <a href="" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $program->slug }}"><span class="badge bg-primary">Edit </span></a>
@@ -211,7 +218,7 @@
                                                 <th>#</th>
                                                 <th>Program Name</th>
                                                 <th  class="text-center"> Total Courses</th>
-                                                <th  class="text-center">Total Students</th>
+                                               
                                                 <th>Date Deleted</th>
                                                 <th>Action</th>
                                             </tr>
@@ -222,10 +229,18 @@
                                                 <tr>
                                                     <td>{{ $nums }}</td>
                                                     <td>{{ $trashed->program_name }}</td>
-                                                    <td class="text-center">0</td>
-                                                    <td  class="text-center">
-                                                        0
+                                                    
+                                                    <td class="text-center">
+                                                        @php $courseCount = count($trashed->courses); @endphp
+                                                        @if ($courseCount > 0)
+                                                            <a href="{{ route('program.courses', $program->slug) }}" >
+                                                                <span class="badge bg-primary">View {{ $courseCount }} {{ Str::plural('Course', $courseCount) }}</span>
+                                                            </a>
+                                                        @else
+                                                            <span class="badge bg-danger">No Courses</span>
+                                                        @endif
                                                     </td>
+                                                    
                                                     <td><span class="badge bg-info">{{ $trashed->deleted_at }}</span></td>
                                                     <td>
                                                     

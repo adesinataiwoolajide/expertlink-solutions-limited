@@ -17,4 +17,9 @@ class Programs extends Model
     ];
     protected $dates = ['deleted_at'];
 
+    public function courses()
+    {
+        return $this->hasMany(Courses::class, 'programSlug', 'slug');
+    }
+
 }
