@@ -197,7 +197,7 @@
                                     <div class="card-body p-4">
                                         <h6 class="card-title fw-bold text-primary mb-3">Course Allocation Form</h6>
                                         <div class="row mb-3">
-                                            <form action="" method="POST">
+                                            <form action="{{ route('allocation.store') }}" method="POST">
                                                 @csrf
                                                 <div class="container">
                                                     
@@ -205,32 +205,32 @@
 
                                                         <!-- Select Course -->
                                                         <div class="mb-3 col-md-6">
-                                                            <label for="course_id" class="form-label">Course Name:</label>
-                                                            <select name="course_id" id="course_id" class="form-select select2" required>
+                                                            <label for="courseSlug" class="form-label">Course Name:</label>
+                                                            <select name="courseSlug" id="courseSlug" class="form-select select2" required>
                                                                <option value="{{ $course->slug }}" selected>{{ $course->course_name }}</option>
                                                             </select>
-                                                            <x-input-error :messages="$errors->get('course_id')" class="mt-2 text-danger" />
+                                                            <x-input-error :messages="$errors->get('courseSlug')" class="mt-2 text-danger" />
                                                         </div>
 
                                                         <!-- Program -->
                                                         <div class="mb-3 col-md-6">
                                                             <label for="program_id" class="form-label">Program Name:</label>
-                                                            <select name="program_id" id="program_id" class="form-select select2" required>
+                                                            <select name="programSlug" id="programSlug" class="form-select select2" required>
                                                                 <option value="{{ $course->programSlug }}" selected>{{ $program_name }}</option>
                                                             </select>
-                                                            <x-input-error :messages="$errors->get('program_id')" class="mt-2 text-danger" />
+                                                            <x-input-error :messages="$errors->get('programSlug')" class="mt-2 text-danger" />
                                                         </div>
 
 
                                                         <div class="mb-3 col-md-12">
-                                                            <label for="user_id" class="form-label">Allocate To:</label>
-                                                            <select name="user_id" id="user_id" class="form-select select2" required>
+                                                            <label for="userSlug" class="form-label">Allocate To:</label>
+                                                            <select name="userSlug" id="userSlug" class="form-select select2" required>
                                                                 <option value="">-- Select an Instructor --</option>
                                                                 @foreach($users as $user)
                                                                     <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <x-input-error :messages="$errors->get('user_id')" class="mt-2 text-danger" />
+                                                            <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
                                                         </div>
 
                                                     </div>

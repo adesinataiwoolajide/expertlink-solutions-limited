@@ -70,8 +70,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/update/{slug}', [CoursesController::class, 'update'])->name('course.update');
         Route::get('/delete/{slug}', [CoursesController::class, 'destroy'])->name('course.delete');
         Route::get('/details/{slug}', [CoursesController::class, 'show'])->name('course.show');
-        
-
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
     });

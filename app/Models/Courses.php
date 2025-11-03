@@ -23,6 +23,12 @@ class Courses extends Model
       return $this->belongsTo(Programs::class, 'programSlug', 'slug');
    }
 
+   public function allocations()
+   {
+      return $this->hasMany(CourseAllocation::class, 'courseSlug', 'slug');
+   }
+
+
    
    public function user()
    {

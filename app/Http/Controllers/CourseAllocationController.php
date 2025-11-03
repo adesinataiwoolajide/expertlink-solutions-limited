@@ -2,17 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CourseAllocation;
+use App\Models\{Programs, Courses, CourseAllocation};
+use App\Http\Requests\{StoreCourseAllocationRequest, UpdateCourseAllocationRequest};
+use Illuminate\Support\Facades\{Auth};
+use App\Repositories\GeneralRepository;
 use Illuminate\Http\Request;
-
-class CourseAllocationController extends Controller
+use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+class CourseAllocationController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth', new Middleware('role:Administrator|Admin|Instructor'),
+        ];
+    }
+    public function __construct(CourseAllocation $courses){
+        $this->model = new GeneralRepository($courses);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+            return view('home.allocations.index')->with([
+                'allocations' => CourseAllocation::orderBy('created_at', 'desc')->get()
+            ]);
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
     }
 
     /**
@@ -26,9 +45,22 @@ class CourseAllocationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCourseAllocationRequest $request)
     {
-        //
+        $request->user()->fill($request->validated());
+        $courseSlug = $request->input('courseSlug');
+        $programSlug = $request->input('programSlug');
+        $userSlug = $request->input('userSlug');
+        $slug = RandomString(10);
+        $exists = CourseAllocation::where(['userSlug' => $userSlug, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug])->exists();
+        if ($exists) {
+            return redirect()->back()->with('warning', 'This course has already been allocated to this instructor.');
+        }
+        CourseAllocation::create([
+            'slug' => $slug, 'userSlug' => $userSlug, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
+        ]);
+        return redirect()->back()->with('success', 'Course successfully allocated.');
+
     }
 
     /**
@@ -50,7 +82,7 @@ class CourseAllocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CourseAllocation $courseAllocation)
+    public function update(UpdateCourseAllocationRequest $request, $slug)
     {
         //
     }
