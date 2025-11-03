@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses};
+use App\Models\{Programs, Courses, User};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
@@ -124,7 +124,24 @@ class CoursesController extends  Controller implements HasMiddleware
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        dd($course);
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+            $program = Programs::orderBy('program_name', 'asc')->get();
+            $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
+            if(!$course->program){
+                $program_name= "NIL"; 
+            }else{
+                $program_name = $course->program->program_name;
+            }
+            $users = User::where('role', 'Instructor')->orderBy('first_name', 'asc')->get();
+            return view('home.courses.show')->with([
+                'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
+                'users' => $users
+            ]);
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
+
     }
 
     /**

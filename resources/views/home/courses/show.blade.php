@@ -22,75 +22,122 @@
             </div>
             <div class="card-body">
                 <div class="row gx-3">
-                    <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
-                        <ul class="nav nav-pills flex-column vertical-form-wizard" id="verticalFormStepper"
-                        role="tablist">
+                    <div class="col-lg-3 col-md-12 mb-lg-0 mb-4">
+                        <ul class="nav nav-pills flex-column vertical-form-wizard" id="verticalFormStepper" role="tablist">
                             <li class="nav-item mb-3" role="presentation">
                                 <button type="button" class="nav-link active w-100 text-start" id="vStep1-tab"
-                                data-bs-toggle="pill" data-bs-target="#vStep1" role="tab" aria-controls="vStep1"
-                                aria-selected="true">
-                                <div class="d-flex align-items-center">
-                                    <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">1</span>
-                                    <div class="ms-2">
-                                        <span class="step-title fw-semibold d-block">Project Info</span>
-                                        <small>Project details</small>
+                                    data-bs-toggle="pill" data-bs-target="#vStep1" role="tab" aria-controls="vStep1"
+                                    aria-selected="true">
+                                    <div class="d-flex align-items-center">
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📘</span>
+                                        <div class="ms-2">
+                                            <span class="step-title fw-semibold d-block">Course Info</span>
+                                            <small>Course details</small>
+                                        </div>
                                     </div>
-                                </div>
                                 </button>
                             </li>
+
                             <li class="nav-item mb-3" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep2-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep2" role="tab" aria-controls="vStep2"
                                     aria-selected="false">
                                     <div class="d-flex align-items-center">
-                                    <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">2</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">🧑‍🎓</span>
                                         <div class="ms-2">
-                                            <span class="step-title fw-semibold d-block">Team Members</span>
-                                            <small>Add team members</small>
+                                            <span class="step-title fw-semibold d-block">Our Students</span>
+                                            <small>List of Students</small>
                                         </div>
                                     </div>
                                 </button>
                             </li>
+
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
                                     aria-selected="false">
                                     <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">3</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📋</span>
                                         <div class="ms-2">
-                                            <span class="step-title fw-semibold d-block">Completion</span>
-                                            <small>Review and submit</small>
+                                            <span class="step-title fw-semibold d-block">Course Allocation</span>
+                                            <small>Allocate course to an instructor</small>
                                         </div>
                                     </div>
                                 </button>
                             </li>
-                    </ul>
+                        </ul>
+                        <div class="mt-5 col-md-12">
+                            <img src="{{ asset('course-banner/' . $course->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Course Banner">
+                        </div>
                     </div>
-                    <div class="col-lg-8 col-md-12">
+                    <div class="col-lg-9 col-md-12">
                         <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                             <!-- Step 1 Content -->
                             <div class="tab-pane fade show active" id="vStep1" role="tabpanel"
                             aria-labelledby="vStep1-tab">
-                                <form>
-                                    <div class="mb-3">
-                                    <label for="projectName" class="form-label">Project Name</label>
-                                    <input type="text" class="form-control" id="projectName"
-                                        placeholder="Enter project name">
+                               
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h2 class="text-primary">Course Details</h2>
+                                    <a href="{{ route('course.edit', $course->slug) }}" class="btn btn-primary">
+                                        <i class="bi bi-pencil-square me-1"></i> Edit Details
+                                    </a>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label fw-bold">Course Name:</label>
+                                        <p class="form-control-plaintext">{{ $course->course_name }}</p>
                                     </div>
-                                    <div class="mb-3">
-                                    <label for="projectDescription" class="form-label">Project Description</label>
-                                    <textarea class="form-control" id="projectDescription" rows="3"
-                                        placeholder="Enter project description"></textarea>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label fw-bold">Program:</label>
+                                        <p class="form-control-plaintext">{{ $program_name }}</p>
                                     </div>
-                                    <div class="mb-3">
-                                    <label for="projectDeadline" class="form-label">Deadline</label>
-                                    <input type="date" class="form-control" id="projectDeadline">
+
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label fw-bold">Course Price (₦):</label>
+                                        <p class="form-control-plaintext">{{ number_format($course->course_price) }}</p>
                                     </div>
-                                    <div class="d-flex justify-content-end mt-4">
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="document.getElementById('vStep2-tab').click()">Next Step</button>
+
+                                    <div class="mb-4 col-md-12">
+                                        <label class="form-label fw-bold text-primary">Training Type:</label>
+                                        <p class="form-control-plaintext">
+                                            @foreach(explode(',', $course->training_type) as $type)
+                                                <span class="badge bg-info text-white me-1">{{ ucfirst(trim($type)) }}</span>
+                                            @endforeach
+                                        </p>
                                     </div>
-                                </form>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Basic Requirements:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->basic_requirements !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Outline:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_outline !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Learning Module:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->learning_module !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Schedule:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_schedule !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Overview:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_overview !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Benefits:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->benefits !!}</div>
+                                    </div>
+                                </div>
+                               
                             </div>
 
                             <!-- Step 2 Content -->
@@ -142,58 +189,61 @@
                                         <i class="ri-information-line fs-3"></i>
                                     </span>
                                     <div>
-                                        <strong>Almost there!</strong> Please review your project details carefully before final
-                                        submission.
-                                        <span class="d-block mt-1 small">Note: You wont be able to make changes once
-                                            submitted.</span>
+                                        <strong>You are nearly done!</strong> Kindly complete the form below to assign this course to an instructor.
+                                        <span class="d-block mt-1 small text-muted">Note: Each course can be allocated to only one instructor at a time.</span>
                                     </div>
                                 </div>
                                 <div class="card mb-3 bg-light-subtle">
                                     <div class="card-body p-4">
-                                        <h6 class="card-title fw-bold mb-3">Project Summary</h6>
+                                        <h6 class="card-title fw-bold text-primary mb-3">Course Allocation Form</h6>
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="text-muted d-block mb-1 small">Project Name</label>
-                                                    <p class="fw-semibold mb-0" id="summaryProjectName">E-commerce Redesign</p>
+                                            <form action="" method="POST">
+                                                @csrf
+                                                <div class="container">
+                                                    
+                                                    <div class="row">
+
+                                                        <!-- Select Course -->
+                                                        <div class="mb-3 col-md-6">
+                                                            <label for="course_id" class="form-label">Course Name:</label>
+                                                            <select name="course_id" id="course_id" class="form-select select2" required>
+                                                               <option value="{{ $course->slug }}" selected>{{ $course->course_name }}</option>
+                                                            </select>
+                                                            <x-input-error :messages="$errors->get('course_id')" class="mt-2 text-danger" />
+                                                        </div>
+
+                                                        <!-- Program -->
+                                                        <div class="mb-3 col-md-6">
+                                                            <label for="program_id" class="form-label">Program Name:</label>
+                                                            <select name="program_id" id="program_id" class="form-select select2" required>
+                                                                <option value="{{ $course->programSlug }}" selected>{{ $program_name }}</option>
+                                                            </select>
+                                                            <x-input-error :messages="$errors->get('program_id')" class="mt-2 text-danger" />
+                                                        </div>
+
+
+                                                        <div class="mb-3 col-md-12">
+                                                            <label for="user_id" class="form-label">Allocate To:</label>
+                                                            <select name="user_id" id="user_id" class="form-select select2" required>
+                                                                <option value="">-- Select an Instructor --</option>
+                                                                @foreach($users as $user)
+                                                                    <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <x-input-error :messages="$errors->get('user_id')" class="mt-2 text-danger" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <button type="submit" class="btn btn-primary mt-3">
+                                                        <i class="bi bi-check-circle me-1"></i> Allocate Course
+                                                    </button>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label class="text-muted d-block mb-1 small">Deadline</label>
-                                                    <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryDeadline">
-                                                    <i class="ri-calendar-line me-2 text-primary"></i>Aug 15, 2025
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="text-muted d-block mb-1 small">Team Lead</label>
-                                                    <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryTeamLead">
-                                                    <i class="ri-user-star-line me-2 text-primary"></i>Sarah Johnson
-                                                    </p>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="text-muted d-block mb-1 small">Team Size</label>
-                                                    <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryTeamSize">
-                                                    <i class="ri-group-line me-2 text-primary"></i>4 members
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                        <div class="progress small mb-2">
-                                            <div class="progress-bar bg-primary w-100" role="progressbar" aria-valuenow="100"
-                                            aria-valuemin="0" aria-valuemax="100" aria-label="Project completion progress">
-                                            </div>
-                                        </div>
-                                        <div class="badge bg-primary-subtle text-primary"><i class="ri-check-double-line"></i>
-                                            All
-                                            required information completed</div>
-                                        </div>
+                                        
                                     </div>
-                                    <div class="d-flex justify-content-between mt-4">
-                                        <button type="button" class="btn btn-outline-secondary"
-                                        onclick="document.getElementById('vStep2-tab').click()">Previous</button>
-                                        <button type="submit" class="btn btn-primary">Create Project</button>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->string('courseSlug')->references('slug')->on('courses')->onDelete('cascade');
             $table->unsignedBigInteger('programSlug')->references('slug')->on('programs')->onDelete('cascade');
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+
         });
     }
 

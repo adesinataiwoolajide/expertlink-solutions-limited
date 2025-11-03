@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('picture');
             $table->string('partner_name')->nullable();
             $table->string('others')->nullable();
-            $table->timestamps();
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
