@@ -22,7 +22,7 @@ class CoursesFactory extends Factory
         return [
             'slug' => Str::random(12),
             'course_name' => $this->faker->sentence(3),
-            'banner' => 'default-banner.png',
+            'banner' => 'els.png',
             'user_id' => 1,
             'programSlug' =>  Str::random(12),
             'basic_requirements' => $this->faker->paragraph(),

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Log, Programs};
+use App\Models\{Programs};
 use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
 use App\Http\Requests\{StoreProgramRequest, UpdateProgramRequest};
-
+use Illuminate\Support\Facades\{App, File};
 use Str; use DB;
 use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
 class ProgramsController extends Controller implements HasMiddleware
@@ -89,9 +89,39 @@ class ProgramsController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProgramRequest $request, )
+    public function update(UpdateProgramRequest $request, $slug)
     {
-        //
+        
+        $program = Programs::where('slug', $slug)->first();
+        if(!$program){
+            return redirect()->back()->with("error", "Program details does not exists");
+        }
+       
+        $request->user()->fill($request->validated());
+        $previous_name = $request->input("previous_name");
+        $program_name = $request->input("program_name");
+        if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
+            $uploadFile = $request->file('banner');
+            $folderName = 'program-banner';
+            $publicPath = App::environment('local') ? public_path($folderName) : base_path($folderName);
+            if (!File::exists($publicPath)) {
+                File::makeDirectory($publicPath, 0777, true, true);
+            }
+            $safeName = preg_replace('/[^A-Za-z0-9_-]/', '_', $program->program_name);
+            $pngFileName = $safeName . '_' . Str::random(6) . '.' . $uploadFile->getClientOriginalExtension();
+            $pngPath = $publicPath . DIRECTORY_SEPARATOR . $pngFileName;
+            try {
+                $uploadFile->move($publicPath, $pngFileName);
+                $program->banner = $pngFileName;
+            } catch (\Exception $e) {
+                throw new \Exception('File move failed: ' . $e->getMessage());
+            }
+        }
+        $program->program_name = $program_name;
+        $program->save();
+        createLog( "Updated Progam with Slug: $slug details and Changed the program name from $previous_name to $program_name");
+        $message = "You Have updated ". $request->input("program_name") . " Successfully";
+        return redirect()->route("program.index")->with(["success" => $message]);
     }
 
     /**

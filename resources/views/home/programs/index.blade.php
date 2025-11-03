@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="row gx-3">
+    <div class="row gx-3 mt-4">
         <div class="col-sm-12 col-12">
             <div class="card mb-3">
                 <div class="card-header">
@@ -62,9 +62,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Program Name</th>
-                                    <th>Total Courses</th>
-                                    <th>Total Students</th>
+                                    <th  class="text-center"> Total Courses</th>
+                                    <th  class="text-center">Total Students</th>
                                     <th>Date Created</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,11 +74,56 @@
                                     <tr>
                                         <td>{{ $num }}</td>
                                         <td>{{ $program->program_name }}</td>
-                                        <td>0</td>
-                                        <td>
-                                            
+                                        <td class="text-center">0</td>
+                                        <td  class="text-center">
+                                            0
                                         </td>
                                         <td><span class="badge bg-success">{{ $program->created_at }}</span></td>
+                                        <td>
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $program->slug }}"><span class="badge bg-primary">Edit </span></a>
+                                            <span class="badge bg-danger"> Delete </span>
+                                        </td>
+                                         <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="basicModalLabel">Edit {{ $program->program_name }} Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('program.update',$program->slug) }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Program Name:</label>
+                                                                    <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') ?? $program->program_name }}" required>
+                                                                    <input type="hidden" name="previous_name" value="{{ $program->program_name }}">
+                                                                    <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
+                                                                    <div id="program-name-feedback" class="mt-2 text-danger"></div>
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-12">
+                                                                    <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: 400px; height: 200px;" alt="" />
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Change Program Banner:</label>
+                                                                    <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
+                                                                    <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
+                                                                    <div id="banner-feedback" class="mt-2 text-danger"></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </tr>
                                     @php $num++; @endphp
