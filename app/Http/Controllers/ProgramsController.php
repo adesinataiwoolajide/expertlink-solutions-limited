@@ -29,7 +29,7 @@ class ProgramsController extends Controller implements HasMiddleware
     {
         $program = Programs::orderBy('program_name', 'asc')->get();
         return view("home.programs.index")->with([
-            "program" => $program,
+            "programs" => $program,
         ]);
     }
 

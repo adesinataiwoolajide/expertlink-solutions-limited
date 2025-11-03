@@ -23,6 +23,8 @@ class UserTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'slug' => RandomString(7),
                 'change_password' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
 
             [
@@ -36,6 +38,8 @@ class UserTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'slug' => RandomString(7),
                 'change_password' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

@@ -1,5 +1,6 @@
 @php $title = "View all Programms"; $segments = Request::segments();  @endphp
 <x-app-layout>
+    {{-- @include('layouts.tables') --}}
     <div class="app-hero-header d-flex align-items-center m-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb m-0">
@@ -34,7 +35,7 @@
 
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Program Banner:</label>
-                                <input type="file" class="form-control" id="banner" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
+                                <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
                                 <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
                                 <div id="banner-feedback" class="mt-2 text-danger"></div>
                             </div>
@@ -42,6 +43,49 @@
                         </div>
                         <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row gx-3">
+        <div class="col-sm-12 col-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">List of Progamms</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Table start -->
+                    <div class="table-responsive">
+                        <table id="basicExample" class="table custom-table">
+
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Program Name</th>
+                                    <th>Total Courses</th>
+                                    <th>Total Students</th>
+                                    <th>Date Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $num =1; @endphp
+                                @foreach($programs as $program)
+                                    <tr>
+                                        <td>{{ $num }}</td>
+                                        <td>{{ $program->program_name }}</td>
+                                        <td>0</td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td><span class="badge bg-success">{{ $program->created_at }}</span></td>
+
+                                    </tr>
+                                    @php $num++; @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
+                   
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +98,6 @@
         programInput.addEventListener('blur', function () {
             const name = this.value.trim();
 
-            // Reset button and feedback
             submitBtn.disabled = true;
             feedback.textContent = '';
             feedback.classList.remove('text-success', 'text-danger');
