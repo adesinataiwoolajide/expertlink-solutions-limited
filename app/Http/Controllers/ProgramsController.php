@@ -28,8 +28,9 @@ class ProgramsController extends Controller implements HasMiddleware
     public function index()
     {
         $program = Programs::orderBy('program_name', 'asc')->get();
+        $trashedPrograms = Programs::onlyTrashed()->get();
         return view("home.programs.index")->with([
-            "programs" => $program,
+            "programs" => $program, 'trashedPrograms' => $trashedPrograms
         ]);
     }
 
@@ -108,7 +109,7 @@ class ProgramsController extends Controller implements HasMiddleware
                 File::makeDirectory($publicPath, 0777, true, true);
             }
             $safeName = preg_replace('/[^A-Za-z0-9_-]/', '_', $program->program_name);
-            $pngFileName = $safeName . '_' . Str::random(6) . '.' . $uploadFile->getClientOriginalExtension();
+            $pngFileName = $safeName . '_' . $slug . '.' . $uploadFile->getClientOriginalExtension();
             $pngPath = $publicPath . DIRECTORY_SEPARATOR . $pngFileName;
             try {
                 $uploadFile->move($publicPath, $pngFileName);
@@ -127,8 +128,37 @@ class ProgramsController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Programs $programs)
+    public function destroy($slug)
     {
-        //
+        $program = Programs::where('slug', $slug)->first();
+        if (!$program) {
+            createLog( "Soft Deleted Progam Name $program->program_name with Slug: $slug details from the DB");
+            return redirect()->back()->with("error", "Program details do not exist");
+        }
+        $program->delete(); // This performs a soft delete
+        return redirect()->back()->with("success", "Program deleted successfully");
     }
+
+    public function restore($slug)
+    {
+        $program = Programs::withTrashed()->where('slug', $slug)->first();
+        if ($program) {
+            createLog( "Restores Progam Name $program->program_name with Slug: $slug details from the Bin");
+            $program->restore();
+            return redirect()->back()->with('success', 'Program restored from the Bin successfully!');
+        }
+        return redirect()->back()->with('error', 'Program not found.');
+    }
+
+    public function forceDelete($slug)
+    {
+        $program = Programs::withTrashed()->where('slug', $slug)->first();
+        if ($program) {
+            createLog( "Force Deleted Progam Name $program->program_name with Slug: $slug details from the DB");
+            $program->forceDelete();
+            return redirect()->back()->with('success', 'Program permanently deleted.');
+        }
+        return redirect()->back()->with('error', 'Program not found.');
+    }
+
 }

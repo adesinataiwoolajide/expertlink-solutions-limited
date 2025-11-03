@@ -15,4 +15,6 @@ class Programs extends Model
     protected $fillable = [
        'slug', 'program_name', 'banner', 
     ];
+    protected $dates = ['deleted_at'];
+
 }

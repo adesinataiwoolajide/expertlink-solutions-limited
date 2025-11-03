@@ -56,7 +56,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/edit/{slug}', [ProgramsController::class, 'edit'])->name('program.edit');
         Route::post('/update/{slug}', [ProgramsController::class, 'update'])->name('program.update');
         Route::get('/delete/{slug}', [ProgramsController::class, 'destroy'])->name('program.delete');
-        Route::get('/details/{slug}', [ProgramsController::class, 'show'])->name('program.show');
+        Route::get('/restore/{slug}', [ProgramsController::class, 'restore'])->name('program.restore');
 
         Route::post('/validate-program-name', [ProgramsController::class, 'checkProgramName'])->name('check.program.name');
     });
