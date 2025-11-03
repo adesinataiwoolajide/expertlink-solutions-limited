@@ -52,13 +52,16 @@ class CourseAllocationController extends Controller implements HasMiddleware
         $programSlug = $request->input('programSlug');
         $userSlug = $request->input('userSlug');
         $slug = RandomString(10);
-        $exists = CourseAllocation::where(['userSlug' => $userSlug, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug])->exists();
+        $exists = CourseAllocation::where(['courseSlug' => $courseSlug, 'programSlug' => $programSlug])->exists();
         if ($exists) {
-            return redirect()->back()->with('warning', 'This course has already been allocated to this instructor.');
+            CourseAllocation::where(['courseSlug' => $courseSlug, 'programSlug' => $programSlug])->update(['userSlug' => $userSlug,]);
+            createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
+            return redirect()->back()->with('success', 'This course updated successfully.');
         }
         CourseAllocation::create([
             'slug' => $slug, 'userSlug' => $userSlug, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
         ]);
+        createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
         return redirect()->back()->with('success', 'Course successfully allocated.');
 
     }

@@ -221,17 +221,34 @@
                                                             <x-input-error :messages="$errors->get('programSlug')" class="mt-2 text-danger" />
                                                         </div>
 
+                                                        @if(count($allocations) == 0)
+                                                            <div class="mb-3 col-md-12">
+                                                                <label for="userSlug" class="form-label">Allocate To:</label>
+                                                                <select name="userSlug" id="userSlug" class="form-select select2" required>
+                                                                    <option value="">-- Select an Instructor --</option>
+                                                                    @foreach($users as $user)
+                                                                        <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
+                                                            </div>
+                                                        @else
+                                                            @foreach ($allocations as $allocation) 
+                                                                @php $use = $allocation->user; @endphp 
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label for="userSlug" class="form-label">Allocated To:</label>
+                                                                    <select name="userSlug" id="userSlug" class="form-select select2" required>
+                                                                    <option value="{{ $use->slug }}">{{ $use->first_name. ' '. $use->last_name.' => '. $use->email }}</option>
+                                                                    <option value="">-- Select an Instructor --</option>
+                                                                        @foreach($users as $user)
+                                                                            <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
+                                                                </div>
+                                                            @endforeach
 
-                                                        <div class="mb-3 col-md-12">
-                                                            <label for="userSlug" class="form-label">Allocate To:</label>
-                                                            <select name="userSlug" id="userSlug" class="form-select select2" required>
-                                                                <option value="">-- Select an Instructor --</option>
-                                                                @foreach($users as $user)
-                                                                    <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
-                                                        </div>
+                                                        @endif
 
                                                     </div>
 

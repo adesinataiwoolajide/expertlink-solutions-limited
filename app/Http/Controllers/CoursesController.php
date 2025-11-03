@@ -120,10 +120,11 @@ class CoursesController extends  Controller implements HasMiddleware
      */
     public function show($slug)
     {
-        $course = Courses::where('slug', $slug)->with('program')->first();
+        $course = Courses::where('slug', $slug)->with('program', 'allocations')->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
+        
         if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
@@ -133,9 +134,10 @@ class CoursesController extends  Controller implements HasMiddleware
                 $program_name = $course->program->program_name;
             }
             $users = User::where('role', 'Instructor')->orderBy('first_name', 'asc')->get();
+            $allocations = $course->allocations()->with('user')->orderBy('created_at','desc')->get();
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
-                'users' => $users
+                'users' => $users, 'allocations' => $allocations
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

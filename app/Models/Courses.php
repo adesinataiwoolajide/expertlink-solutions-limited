@@ -28,11 +28,10 @@ class Courses extends Model
       return $this->hasMany(CourseAllocation::class, 'courseSlug', 'slug');
    }
 
-
    
    public function user()
    {
-      return $this->belongsTo(User::class);
+      return $this->belongsTo(User::class, 'user_id', 'id');
    }
 
 
