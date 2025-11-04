@@ -52,15 +52,14 @@ class CourseAllocationController extends Controller implements HasMiddleware
         $programSlug = $request->input('programSlug');
         $userSlug = $request->input('userSlug');
         $slug = RandomString(10);
-        $exists = CourseAllocation::where(['courseSlug' => $courseSlug, 'programSlug' => $programSlug])->exists();
+        $exists = CourseAllocation::where(['userSlug' => $userSlug,'courseSlug' => $courseSlug, 'programSlug' => $programSlug])->exists();
         if ($exists) {
-            CourseAllocation::where(['courseSlug' => $courseSlug, 'programSlug' => $programSlug])->update(['userSlug' => $userSlug,]);
-            createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
-            return redirect()->back()->with('success', 'This course updated successfully.');
+            return redirect()->back()->with('error', 'You have allocated this course to this instructor before.');
         }
         CourseAllocation::create([
             'slug' => $slug, 'userSlug' => $userSlug, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
         ]);
+        createCourseAllocationHistory($slug, $userSlug, $userSlug);
         createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
         return redirect()->back()->with('success', 'Course successfully allocated.');
 
@@ -87,7 +86,18 @@ class CourseAllocationController extends Controller implements HasMiddleware
      */
     public function update(UpdateCourseAllocationRequest $request, $slug)
     {
-        //
+        $request->user()->fill($request->validated());
+        $course = CourseAllocation::where(['slug' => $slug])->first();
+        if (!$course) {
+            return redirect()->back()->with('error', 'No record was found for this course allocation.');
+        }
+        $courseSlug = $request->input('courseSlug');
+        $userSlug = $request->input('userSlug');
+        $oldUserSlug = $request->input('oldUserSlug');
+        CourseAllocation::where(['slug' => $slug])->update(['userSlug' => $userSlug,]);
+        createLog("Updated Course Allocation with: $slug for $courseSlug to $userSlug Successfully");
+        createCourseAllocationHistory($slug, $oldUserSlug, $userSlug);
+        return redirect()->back()->with('success', 'You have updated the Course Allocation successfully.');
     }
 
     /**

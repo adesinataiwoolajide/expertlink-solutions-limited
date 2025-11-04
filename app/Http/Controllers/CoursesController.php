@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, User};
+use App\Models\{Programs, Courses, User, CourseAllocationHistories};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
@@ -124,7 +124,6 @@ class CoursesController extends  Controller implements HasMiddleware
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        
         if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
@@ -133,11 +132,19 @@ class CoursesController extends  Controller implements HasMiddleware
             }else{
                 $program_name = $course->program->program_name;
             }
-            $users = User::where('role', 'Instructor')->orderBy('first_name', 'asc')->get();
-            $allocations = $course->allocations()->with('user')->orderBy('created_at','desc')->get();
+            $users = User::where(['role' => 'Instructor', 'status' => 1])->orderBy('first_name', 'asc')->get();
+            $allocations = $course->allocations()->with(['user', 'allocationHistory'])->orderBy('created_at','desc')->get();
+            if ($allocations->isNotEmpty()) {
+
+                $allocation = $allocations->first();
+                $history = CourseAllocationHistories::where('allocationSlug', $allocation->slug)->with(['previousUser', 'newUser', 'addedBy'])->orderBy('created_at', 'desc')->get();
+            }else{
+               $history =  $history = collect();  
+            }
+            //$allocationHistory = $allocations->pluck('allocationHistory')->filter()->sortByDesc('created_at');
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
-                'users' => $users, 'allocations' => $allocations
+                'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
@@ -152,11 +159,9 @@ class CoursesController extends  Controller implements HasMiddleware
     public function edit($slug)
     {
         $course = Courses::where('slug', $slug)->with('program')->first();
-        
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-    
         $program = Programs::orderBy('program_name', 'asc')->get();
         if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
@@ -172,8 +177,6 @@ class CoursesController extends  Controller implements HasMiddleware
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
             return view('errors.403')->with(['message' => $message]);
         }
-
-
     }
 
     /**

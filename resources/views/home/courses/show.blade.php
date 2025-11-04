@@ -197,31 +197,30 @@
                                     <div class="card-body p-4">
                                         <h6 class="card-title fw-bold text-primary mb-3">Course Allocation Form</h6>
                                         <div class="row mb-3">
-                                            <form action="{{ route('allocation.store') }}" method="POST">
-                                                @csrf
-                                                <div class="container">
-                                                    
-                                                    <div class="row">
+                                            @if(count($allocations) == 0)
+                                                <form action="{{ route('allocation.store') }}" method="POST">
+                                                    @csrf
+                                                    <div class="container">
+                                                        
+                                                        <div class="row">
 
-                                                        <!-- Select Course -->
-                                                        <div class="mb-3 col-md-6">
-                                                            <label for="courseSlug" class="form-label">Course Name:</label>
-                                                            <select name="courseSlug" id="courseSlug" class="form-select select2" required>
-                                                               <option value="{{ $course->slug }}" selected>{{ $course->course_name }}</option>
-                                                            </select>
-                                                            <x-input-error :messages="$errors->get('courseSlug')" class="mt-2 text-danger" />
-                                                        </div>
+                                                            <!-- Select Course -->
+                                                            <div class="mb-3 col-md-6">
+                                                                <label for="courseSlug" class="form-label">Course Name:</label>
+                                                                <select name="courseSlug" id="courseSlug" class="form-select select2" required>
+                                                                <option value="{{ $course->slug }}" selected>{{ $course->course_name }}</option>
+                                                                </select>
+                                                                <x-input-error :messages="$errors->get('courseSlug')" class="mt-2 text-danger" />
+                                                            </div>
 
-                                                        <!-- Program -->
-                                                        <div class="mb-3 col-md-6">
-                                                            <label for="program_id" class="form-label">Program Name:</label>
-                                                            <select name="programSlug" id="programSlug" class="form-select select2" required>
-                                                                <option value="{{ $course->programSlug }}" selected>{{ $program_name }}</option>
-                                                            </select>
-                                                            <x-input-error :messages="$errors->get('programSlug')" class="mt-2 text-danger" />
-                                                        </div>
-
-                                                        @if(count($allocations) == 0)
+                                                            <!-- Program -->
+                                                            <div class="mb-3 col-md-6">
+                                                                <label for="program_id" class="form-label">Program Name:</label>
+                                                                <select name="programSlug" id="programSlug" class="form-select select2" required>
+                                                                    <option value="{{ $course->programSlug }}" selected>{{ $program_name }}</option>
+                                                                </select>
+                                                                <x-input-error :messages="$errors->get('programSlug')" class="mt-2 text-danger" />
+                                                            </div>
                                                             <div class="mb-3 col-md-12">
                                                                 <label for="userSlug" class="form-label">Allocate To:</label>
                                                                 <select name="userSlug" id="userSlug" class="form-select select2" required>
@@ -232,35 +231,97 @@
                                                                 </select>
                                                                 <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
                                                             </div>
-                                                        @else
-                                                            @foreach ($allocations as $allocation) 
-                                                                @php $use = $allocation->user; @endphp 
-                                                                <div class="mb-3 col-md-12">
-                                                                    <label for="userSlug" class="form-label">Allocated To:</label>
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-primary mt-3">
+                                                            <i class="bi bi-check-circle me-1"></i> Allocate the Course
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                @foreach ($allocations as $allocation) 
+                                                    @php $use = $allocation->user; @endphp 
+                                                    <form action="{{ route('allocation.update',$allocation->slug) }}" method="POST">
+                                                        @csrf
+                                                        <div class="container">
+                                                            
+                                                            <div class="row">
+
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label for="courseSlug" class="form-label">Course Name:</label>
+                                                                    <select name="courseSlug" id="courseSlug" class="form-select" required>
+                                                                        <option value="{{ $course->slug }}" selected>{{ $course->course_name }}</option>
+                                                                    </select>
+                                                                    <x-input-error :messages="$errors->get('courseSlug')" class="mt-2 text-danger" />
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label for="program_id" class="form-label">Program Name:</label>
+                                                                    <select name="programSlug" id="programSlug" class="form-select" required>
+                                                                        <option value="{{ $course->programSlug }}" selected>{{ $program_name }}</option>
+                                                                    </select>
+                                                                    <x-input-error :messages="$errors->get('programSlug')" class="mt-2 text-danger" />
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label for="oldUserSlug" class="form-label text-danger">Current Instructor:</label>
+                                                                    <select name="oldUserSlug" id="oldUserSlug" class="form-select" required>
+                                                                        <option value="{{ $use->slug }}" selected>{{ $use->email }}</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label for="userSlug" class="form-label text-success">Re-Allocated To:</label>
                                                                     <select name="userSlug" id="userSlug" class="form-select select2" required>
-                                                                    <option value="{{ $use->slug }}">{{ $use->first_name. ' '. $use->last_name.' => '. $use->email }}</option>
-                                                                    <option value="">-- Select an Instructor --</option>
+                                                                        <option value="">-- Select New Instructor --</option>
                                                                         @foreach($users as $user)
-                                                                            <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
+                                                                            @if($use->slug != $user->slug)
+                                                                                <option value="{{ $user->slug }}">{{ $user->first_name. ' '. $user->last_name.' => '. $user->email }}</option>
+                                                                            @endif
                                                                         @endforeach
                                                                     </select>
                                                                     <x-input-error :messages="$errors->get('userSlug')" class="mt-2 text-danger" />
                                                                 </div>
-                                                            @endforeach
+                                                                
+                                                            </div>
 
-                                                        @endif
-
-                                                    </div>
-
-                                                    <button type="submit" class="btn btn-primary mt-3">
-                                                        <i class="bi bi-check-circle me-1"></i> Allocate Course
-                                                    </button>
-                                                </div>
-                                            </form>
+                                                            <button type="submit" class="btn btn-info mt-3 text-white">
+                                                                <i class="bi bi-check-circle me-1"></i> Re-Allocate Course
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                @endforeach
+                                            @endif
                                         </div>
                                         
                                     </div>
                                    
+                                </div>
+                                <div class="card mb-3 bg-light-subtle">
+                                    <div class="card-body p-4">
+                                        <h6 class="card-title fw-bold text-primary mb-3">List Course Allocation Histories</h6>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Allocation Slug</th>
+                                                    <th>Previous Instructor</th>
+                                                    <th>New Instructor</th>
+                                                    <th>Added By</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($allocationHistories as $history)
+                                                    <tr>
+                                                        <td>{{ $history->allocationSlug }}</td>
+                                                        <td>{{ $history->previousUser->first_name ?? 'N/A' }} {{ $history->previousUser->last_name ?? '' }}</td>
+                                                        <td>{{ $history->newUser->first_name ?? 'N/A' }} {{ $history->newUser->last_name ?? '' }}</td>
+                                                        <td>{{ $history->addedBy->first_name ?? 'N/A' }} {{ $history->addedBy->last_name ?? '' }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

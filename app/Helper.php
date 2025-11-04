@@ -43,6 +43,20 @@
         return \DB::table('logs')->insert($data);
     }
 
+    function createCourseAllocationHistory($allocationSlug, $previousUserSlug, $newUserSlug) {
+        $data = [
+            'slug' => Str::random(7),
+            'allocationSlug' => $allocationSlug,
+            'previousUserSlug' => $previousUserSlug,
+            'newUserSlug' => $newUserSlug,
+            'addedByUserSlug' => Auth::user()->id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
+        return \DB::table('course_allocation_histories')->insert($data);
+    }
+
+
     function getEnvs() {
         return App::environment('local') ? public_path() : base_path();
     }

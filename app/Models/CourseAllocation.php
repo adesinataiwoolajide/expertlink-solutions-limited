@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseAllocation extends Model
 {
-use SoftDeletes;
+    use SoftDeletes;
     protected $table = 'course_allocations';
     protected $primaryKey = 'allocation_id';
     protected $fillable = [
@@ -29,6 +29,11 @@ use SoftDeletes;
     public function program()
     {
         return $this->belongsTo(Programs::class, 'programSlug', 'slug');
+    }
+
+    public function allocationHistory()
+    {
+        return $this->hasMany(CourseAllocationHistories::class, 'allocationSlug', 'slug');
     }
 
 }
