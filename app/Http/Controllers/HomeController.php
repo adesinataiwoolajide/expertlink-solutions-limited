@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use App\Models\{User};
+use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
 
 class HomeController extends Controller
 {
@@ -28,9 +28,21 @@ class HomeController extends Controller
         $user->syncRoles([$user->role]);
         if(Auth::user()->hasAnyRole(['Administrator'])){
            
+            $totalUsers = User::count();
+            $totalPrograms = Programs::count();
+            $totalCourses = Courses::count();
+            $totalAllocations = CourseAllocation::count();
+            $totalAllocationHistories = CourseAllocationHistories::count();
+            $totalInstructors = User::where('role', 'Instructor')->count();
+
             return view('dashboard')->with([
-                
-                'success' => "Dear ". Auth::user()->first_name ." Wellcome to ". Auth::user()->role. " Dashboard"
+                'success' => "Dear {$user->first_name}, welcome to your {$user->role} dashboard.",
+                'totalUsers' => $totalUsers,
+                'totalPrograms' => $totalPrograms,
+                'totalCourses' => $totalCourses,
+                'totalAllocations' => $totalAllocations,
+                'totalAllocationHistories' => $totalAllocationHistories,
+                'totalInstructors' => $totalInstructors,
             ]);
 
         }else{

@@ -46,39 +46,41 @@
         </ul>
         <div class="tab-content border border-primary rounded p-4" id="bordered-tabs-content">
             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one-tab">
-                <div class="col-lg-12 col-ms-12">
-                    <!-- Basic Input Fields Column -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title text-dark">Please Fill the below form to create new Program</h5>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="mb-3 col-md-6">
-                                        <label class="form-label">Program Name:</label>
-                                        <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') }}" required>
-                                        <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
-                                        <div id="program-name-feedback" class="mt-2 text-danger"></div>
-                                    </div>
-
-                                    <div class="mb-3 col-md-6">
-                                        <label for="imageUpload" class="form-label">Program Banner:</label>
-                                        <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
-                                        <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
-                                        <div id="banner-feedback" class="mt-2 text-danger"></div>
-                                        <div id="imagePreview" class="mt-3 border rounded p-3 bg-light text-center d-none" style="min-height: 220px;">
-                                            <small class="text-muted">Image preview will appear here</small>
+                @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                    <div class="col-lg-12 col-ms-12">
+                        <!-- Basic Input Fields Column -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title text-dark">Please Fill the below form to create new Program</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Program Name:</label>
+                                            <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') }}" required>
+                                            <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
+                                            <div id="program-name-feedback" class="mt-2 text-danger"></div>
                                         </div>
-                                    </div>
 
-                                </div>
-                                <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
-                            </form>
+                                        <div class="mb-3 col-md-6">
+                                            <label for="imageUpload" class="form-label">Program Banner:</label>
+                                            <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
+                                            <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
+                                            <div id="banner-feedback" class="mt-2 text-danger"></div>
+                                            <div id="imagePreview" class="mt-3 border rounded p-3 bg-light text-center d-none" style="min-height: 220px;">
+                                                <small class="text-muted">Image preview will appear here</small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
             <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three-tab">
                 <div class="col-sm-12 col-12 mt-2">
@@ -97,7 +99,9 @@
                                                 <th>Program Name</th>
                                                 <th  class="text-center"> Total Courses</th>
                                                 <th>Date Created</th>
-                                                <th>Action</th>
+                                                @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                    <th>Action</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -119,72 +123,74 @@
                                                     </td>
 
                                                     <td><span class="badge bg-info">{{ $program->created_at }}</span></td>
-                                                    <td>
-                                                        <a href="" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $program->slug }}"><span class="badge bg-primary">Edit </span></a>
-                                                        <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
-                                                            <span class="badge bg-danger"> Delete </span> 
-                                                        </a>
+                                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                        <td>
+                                                            <a href="" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $program->slug }}"><span class="badge bg-primary">Edit </span></a>
+                                                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
+                                                                <span class="badge bg-danger"> Delete </span> 
+                                                            </a>
 
-                                                    </td>
-                                                    <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="basicModalLabel">Edit {{ $program->program_name }} Details</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <form action="{{ route('program.update',$program->slug) }}" method="POST" enctype="multipart/form-data">
-                                                                    @csrf
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="mb-3 col-md-12">
-                                                                                <label class="form-label">Program Name:</label>
-                                                                                <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') ?? $program->program_name }}" required>
-                                                                                <input type="hidden" name="previous_name" value="{{ $program->program_name }}">
-                                                                                <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
-                                                                                <div id="program-name-feedback" class="mt-2 text-danger"></div>
+                                                        </td>
+                                                        <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="basicModalLabel">Edit {{ $program->program_name }} Details</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <form action="{{ route('program.update',$program->slug) }}" method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="mb-3 col-md-12">
+                                                                                    <label class="form-label">Program Name:</label>
+                                                                                    <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') ?? $program->program_name }}" required>
+                                                                                    <input type="hidden" name="previous_name" value="{{ $program->program_name }}">
+                                                                                    <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
+                                                                                    <div id="program-name-feedback" class="mt-2 text-danger"></div>
+                                                                                </div>
+
+                                                                                <div class="mb-3 col-md-12">
+                                                                                    <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
+                                                                                </div>
+
+                                                                                <div class="mb-3 col-md-12">
+                                                                                    <label class="form-label">Change Program Banner:</label>
+                                                                                    <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
+                                                                                    <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
+                                                                                    <div id="banner-feedback" class="mt-2 text-danger"></div>
+                                                                                </div>
+
                                                                             </div>
-
-                                                                            <div class="mb-3 col-md-12">
-                                                                                <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
-                                                                            </div>
-
-                                                                            <div class="mb-3 col-md-12">
-                                                                                <label class="form-label">Change Program Banner:</label>
-                                                                                <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
-                                                                                <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
-                                                                                <div id="banner-feedback" class="mt-2 text-danger"></div>
-                                                                            </div>
-
                                                                         </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal fade" id="deleteModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $program->slug }}" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header bg-warning">
+                                                                        <h5 class="modal-title" id="deleteModalLabel-{{ $program->slug }}">Confirm Deletion</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are you sure you want to delete <strong>{{ $program->program_name }}</strong>? This action cannot be undone.
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                        <a href="{{ route('program.delete', $program->slug) }}" class="btn btn-danger">Yes, Delete</a>
                                                                     </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="modal fade" id="deleteModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $program->slug }}" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header bg-warning">
-                                                                    <h5 class="modal-title" id="deleteModalLabel-{{ $program->slug }}">Confirm Deletion</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    Are you sure you want to delete <strong>{{ $program->program_name }}</strong>? This action cannot be undone.
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                    <a href="{{ route('program.delete', $program->slug) }}" class="btn btn-danger">Yes, Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
 
                                                 </tr>
                                                 @php $num++; @endphp
