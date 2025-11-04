@@ -34,7 +34,6 @@
                                     <div id="course-name-feedback" class="mt-2 text-danger"></div>
                                 </div>
                                
-                                
                                 <div class="mb-3 col-md-5">
                                     <label class="form-label">Select Program:</label>
                                     <select name="program_name" class="form-control select2" id="searchableSelect" required>

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController};
+use App\Http\Controllers\{ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -73,6 +73,23 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
     });
+
+    Route::prefix('course-notes')->group(function () {
+        Route::get('{courseSlug}', [CourseNotesController::class, 'index'])->name('course.note.index');
+        Route::get('create/{courseSlug}/{allocationSlug}', action: [CourseNotesController::class, 'create'])->name('note.create');
+        Route::post('store', [CourseNotesController::class, 'store'])->name('note.store');
+        // Route::get('edit/{note_slug}', [CourseNotesController::class, 'edit'])->name('course.note.edit');
+        // Route::post('update/{note_slug}', [CourseNotesController::class, 'update'])->name('course.note.update');
+        // Route::get('students/{slug}', [CourseNotesController::class, 'student'])->name('course.note.student');
+        // Route::get('view/{slug}/{note_slug}', [CourseNotesController::class, 'read'])->name('course.note.read');
+        // Route::get('reading/{slug}/{action}/{note_slug}/{id}', [CourseNotesController::class, 'reading'])->name('course.note.reading');
+        // Route::get('student/{user_id}/{slug}/{subscription_id}/{allocation_id}', [CourseNotesController::class, 'noting'])->name('course.student.note');
+        // Route::get('post/{user_id}/{slug}/{subscription_id}/{allocation_id}/{instructor_id}', [CourseLibraryController::class, 'postNote'])->name('course.post.note');
+        // Route::get('un-post/{library_id}', [CourseLibraryController::class, 'unpostNote'])->name('course.unpostNote.note');
+        // Route::get('{action}/{note_slug}', [CourseNotesController::class, 'action'])->name('course.note.action');
+        // Route::get('delete/{note_slug}', [CourseNotesController::class, 'destroy'])->name('note.delete');
+    });
+
 
     Route::prefix('course-allocations')->group(function () {
         Route::get('/', [CourseAllocationController::class, 'index'])->name('allocation.index');

@@ -127,11 +127,7 @@ class CoursesController extends  Controller implements HasMiddleware
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
-            if(!$course->program){
-                $program_name= "NIL"; 
-            }else{
-                $program_name = $course->program->program_name;
-            }
+            $program_name = $course->program->program_name ?? 'NIL';
             $users = User::where(['role' => 'Instructor', 'status' => 1])->orderBy('first_name', 'asc')->get();
             $allocations = $course->allocations()->with(['user', 'allocationHistory'])->orderBy('created_at','desc')->get();
             if ($allocations->isNotEmpty()) {

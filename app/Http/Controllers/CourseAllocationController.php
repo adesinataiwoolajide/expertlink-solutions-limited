@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, CourseAllocation, CourseAllocationHistories, User};
+use App\Models\{Programs, Courses, CourseAllocation, CourseAllocationHistories, User, CourseNotes};
 use App\Http\Requests\{StoreCourseAllocationRequest, UpdateCourseAllocationRequest};
 use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
@@ -87,16 +87,13 @@ class CourseAllocationController extends Controller implements HasMiddleware
             return redirect()->back()->with('error', 'No record was found.');
         }
         $course = $allocation->course()->with('program', 'allocations')->first();
-        if(!$course->program){
-            $program_name= "NIL"; 
-        }else{
-            $program_name = $course->program->program_name;
-        }
+        $program_name = $course->program->program_name ?? 'NIL';
         $users = User::where(['role' => 'Instructor', 'status' => 1])->orderBy('first_name', 'asc')->get();
         $history = CourseAllocationHistories::where('allocationSlug', $allocation->slug)->with(['previousUser', 'newUser', 'addedBy'])->orderBy('created_at', 'desc')->get();
+        $notes = CourseNotes::where(['courseSlug' => $course->slug])->orderBy('note_id', 'desc')->paginate(10);
         return view('home.allocations.show')->with([
             'allocation' => $allocation, 'course' => $course, 'slug' => $slug, 'allocationHistories' => $history, 'program_name' => $program_name,
-            'users' => $users, 'user' => $user
+            'users' => $users, 'user' => $user, 'notes' => $notes
         ]);
     }
 

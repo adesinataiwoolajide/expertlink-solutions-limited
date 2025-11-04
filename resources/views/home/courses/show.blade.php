@@ -80,6 +80,22 @@
                                     </div>
                                 </button>
                             </li>
+
+                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', "Instructor"]))
+                                <li class="nav-item" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStep5-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStep5" role="tab" aria-controls="vStep5"
+                                        aria-selected="false">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📝</span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Course Notes</span>
+                                                <small>View Course Notes</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
+                            @endif
                         </ul>
                         <div class="mt-5 col-md-12">
                             <img src="{{ asset('course-banner/' . $course->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Course Banner">
@@ -91,7 +107,7 @@
                             <div class="tab-pane fade show active" id="vStep1" role="tabpanel" aria-labelledby="vStep1-tab">
                                
                                 <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h2 class="text-primary">Course Details</h2>
+                                    <h4 class="text-primary">Course Details</h4>
                                     @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
                                         <a href="{{ route('course.edit', $course->slug) }}" class="btn btn-primary">
                                             <i class="bi bi-pencil-square me-1"></i> Edit Details

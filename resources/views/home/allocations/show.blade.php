@@ -38,8 +38,7 @@
                                     </button>
                                 </li>
                             @endif
-
-                          
+                            
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
@@ -53,6 +52,22 @@
                                     </div>
                                 </button>
                             </li>
+
+                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', "Instructor"]))
+                                <li class="nav-item" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStep5-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStep5" role="tab" aria-controls="vStep5"
+                                        aria-selected="false">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📝</span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Course Notes</span>
+                                                <small>View Course Notes</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
+                            @endif
                         </ul>
                         <div class="mt-5 col-md-12">
                             <img src="{{ asset('course-banner/' . $course->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Course Banner">
@@ -63,14 +78,14 @@
                         <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                             
                             <div class="tab-pane fade show active" id="vStep1" role="tabpanel" aria-labelledby="vStep1-tab">
-                               
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h2 class="text-primary">Course Allocation Details</h2>
-                                    <a href="{{ route('course.show', $course->slug) }}" class="btn btn-primary">
-                                        <i class="bi bi-pencil-square me-1"></i> View Course Details
-                                    </a>
-                                </div>
                                 @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h2 class="text-primary">Course Allocation Details</h2>
+                                        <a href="{{ route('course.show', $course->slug) }}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square me-1"></i> View Course Details
+                                        </a>
+                                    </div>
+                                
                                     <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
                                         <span class="icon-box ms rounded-5 bg-primary me-3">
                                             <i class="ri-information-line fs-3"></i>
@@ -143,6 +158,16 @@
                                     </div>
                                 @endif
                             </div>
+                            <div class="tab-pane fade" id="vStep5" role="tabpanel" aria-labelledby="vStep5-tab">
+                                @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h4 class="text-primary">Create Course Note</h4>
+                                        <a href="{{ route('note.create', [$course->slug, $allocation->slug]) }}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square me-1"></i> Create New Note
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
                             <div class="tab-pane fade" id="vStep3" role="tabpanel" aria-labelledby="vStep3-tab">
                                 
                                 @if(count($allocationHistories) > 0)
@@ -172,6 +197,16 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="col-12">
+                                        <div class="card border-danger text-center">
+                                            <div class="card-body">
+                                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                                <h5 class="card-title text-danger">No Allocations Histories Found</h5>
+                                                <p class="card-text text-muted">There are currently no course allocations available for this view.</p>
                                             </div>
                                         </div>
                                     </div>
