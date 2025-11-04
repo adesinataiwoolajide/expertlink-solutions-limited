@@ -139,7 +139,7 @@ class CoursesController extends  Controller implements HasMiddleware
                 $allocation = $allocations->first();
                 $history = CourseAllocationHistories::where('allocationSlug', $allocation->slug)->with(['previousUser', 'newUser', 'addedBy'])->orderBy('created_at', 'desc')->get();
             }else{
-               $history =  $history = collect();  
+               $history = collect();  
             }
             //$allocationHistory = $allocations->pluck('allocationHistory')->filter()->sortByDesc('created_at');
             return view('home.courses.show')->with([

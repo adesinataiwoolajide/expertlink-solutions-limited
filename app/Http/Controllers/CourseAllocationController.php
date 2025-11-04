@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, CourseAllocation};
+use App\Models\{Programs, Courses, CourseAllocation, CourseAllocationHistories, User};
 use App\Http\Requests\{StoreCourseAllocationRequest, UpdateCourseAllocationRequest};
 use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
@@ -24,14 +24,21 @@ class CourseAllocationController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
-            return view('home.allocations.index')->with([
-                'allocations' => CourseAllocation::orderBy('created_at', 'desc')->get()
+        $user = Auth::user();
+        $query = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->orderBy('created_at', 'desc');
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $allocations = $query->get();
+        } elseif ($user->hasRole('Instructor')) {
+            $allocations = $query->where('userSlug', $user->slug)->get();
+        } else {
+            return view('errors.403', [
+                'message' => 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal'
             ]);
-        }else{
-            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
-            return view('errors.403')->with(['message' => $message]);
         }
+        return view('home.allocations.index')->with([
+            'allocations' => $allocations
+        ]);
+        
     }
 
     /**
@@ -68,9 +75,29 @@ class CourseAllocationController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(CourseAllocation $courseAllocation)
+    public function show($slug)
     {
-        //
+        $user = Auth::user();
+        $query = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $slug);
+        if (!$user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query->where('userSlug', $user->slug);
+        }
+        $allocation = $query->first();
+        if (!$allocation) {
+            return redirect()->back()->with('error', 'No record was found.');
+        }
+        $course = $allocation->course()->with('program', 'allocations')->first();
+        if(!$course->program){
+            $program_name= "NIL"; 
+        }else{
+            $program_name = $course->program->program_name;
+        }
+        $users = User::where(['role' => 'Instructor', 'status' => 1])->orderBy('first_name', 'asc')->get();
+        $history = CourseAllocationHistories::where('allocationSlug', $allocation->slug)->with(['previousUser', 'newUser', 'addedBy'])->orderBy('created_at', 'desc')->get();
+        return view('home.allocations.show')->with([
+            'allocation' => $allocation, 'course' => $course, 'slug' => $slug, 'allocationHistories' => $history, 'program_name' => $program_name,
+            'users' => $users, 'user' => $user
+        ]);
     }
 
     /**

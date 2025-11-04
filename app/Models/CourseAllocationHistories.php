@@ -30,7 +30,7 @@ class CourseAllocationHistories extends Model
 
     public function addedBy()
     {
-        return $this->belongsTo(User::class, 'addedByUserSlug', 'slug');
+        return $this->belongsTo(User::class, 'addedByUserSlug', 'id');
     }
 
 }

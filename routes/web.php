@@ -77,7 +77,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
     Route::prefix('course-allocations')->group(function () {
         Route::get('/', [CourseAllocationController::class, 'index'])->name('allocation.index');
         Route::post('/create', [CourseAllocationController::class, 'store'])->name('allocation.store');
-        Route::get('/edit/{slug}', [CourseAllocationController::class, 'edit'])->name('allocation.edit');
+        Route::get('/view/{slug}', [CourseAllocationController::class, 'show'])->name('allocation.view');
         Route::post('/update/{slug}', [CourseAllocationController::class, 'update'])->name('allocation.update');
         Route::get('/delete/{slug}', [CourseAllocationController::class, 'destroy'])->name('allocation.delete');
     });
