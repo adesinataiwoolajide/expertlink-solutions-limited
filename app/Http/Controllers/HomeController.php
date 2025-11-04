@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         return [
             'auth',
-            new Middleware('role:Administrator|Admin'),
+            new Middleware('role:Administrator|Admin|Instructor|Student'),
         ];
     }
 
@@ -26,14 +26,14 @@ class HomeController extends Controller
             ]);
         }
         $user->syncRoles([$user->role]);
-        if(Auth::user()->hasAnyRole(['Administrator'])){
+        $totalPrograms = Programs::count();
+        $totalCourses = Courses::count();
+        $totalInstructors = User::where('role', 'Instructor')->count();
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
            
             $totalUsers = User::count();
-            $totalPrograms = Programs::count();
-            $totalCourses = Courses::count();
             $totalAllocations = CourseAllocation::count();
             $totalAllocationHistories = CourseAllocationHistories::count();
-            $totalInstructors = User::where('role', 'Instructor')->count();
 
             return view('dashboard')->with([
                 'success' => "Dear {$user->first_name}, welcome to your {$user->role} dashboard.",
@@ -43,6 +43,25 @@ class HomeController extends Controller
                 'totalAllocations' => $totalAllocations,
                 'totalAllocationHistories' => $totalAllocationHistories,
                 'totalInstructors' => $totalInstructors,
+            ]);
+        }elseif(Auth::user()->hasAnyRole(['Instructor'])){
+            
+            $totalAllocations = CourseAllocation::where('userSlug', $user->slug)->count();
+            $totalAllocationHistories = CourseAllocationHistories::where('previousUserSlug', $user->slug)
+            ->orwhere('newUserSlug', $user->slug)->count();
+            return view('dashboard')->with([
+                'success' => "Dear {$user->first_name}, welcome to your {$user->role} dashboard.",
+                'totalPrograms' => $totalPrograms,
+                'totalCourses' => $totalCourses,
+                'totalAllocations' => $totalAllocations,
+                'totalAllocationHistories' => $totalAllocationHistories,
+                'totalInstructors' => $totalInstructors,
+            ]);
+
+        }elseif(Auth::user()->hasAnyRole(['Student'])){
+
+            return view('dashboard')->with([
+                'success' => "Dear {$user->first_name}, welcome to your {$user->role} dashboard."
             ]);
 
         }else{

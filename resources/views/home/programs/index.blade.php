@@ -18,14 +18,17 @@
    
     <div class="row gx-3 mt-4">
         <ul class="nav nav-tabs" id="bordered-tabs" role="tablist">
-            <li class="nav-item ms-3" role="presentation">
-                <button class="nav-link active px-4 py-2" id="tab-one-tab" data-bs-toggle="tab"
-                    data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one"
-                    aria-selected="true">
-                    Create New Program
-                    <span class="badge bg-info ms-2 rounded-pill">0</span>
-                </button>
-            </li>
+            @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
+
+                <li class="nav-item ms-3" role="presentation">
+                    <button class="nav-link active px-4 py-2" id="tab-one-tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one"
+                        aria-selected="true">
+                        Create New Program
+                        <span class="badge bg-info ms-2 rounded-pill">0</span>
+                    </button>
+                </li>
+            @endif
             <li class="nav-item ms-3" role="presentation">
                 <button class="nav-link px-4 py-2" id="tab-three-tab" data-bs-toggle="tab"
                     data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three"
@@ -34,6 +37,8 @@
                     <span class="badge bg-success ms-2 rounded-pill">{{count($programs)}}</span>
                 </button>
             </li>
+            @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
+
             <li class="nav-item" role="presentation">
                 <button class="nav-link px-4 py-2" id="tab-two-tab" data-bs-toggle="tab"
                     data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two"
@@ -42,6 +47,7 @@
                     <span class="badge bg-danger ms-2 rounded-pill">{{count($trashedPrograms)}}</span>
                 </button>
             </li>
+            @endif
             
         </ul>
         <div class="tab-content border border-primary rounded p-4" id="bordered-tabs-content">

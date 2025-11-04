@@ -15,7 +15,7 @@ class CoursesController extends  Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth', new Middleware('role:Administrator|Admin|Instructor'),
+            'auth', new Middleware('role:Administrator|Admin|Instructor|Instructor'),
         ];
     }
     public function __construct(Courses $courses){
@@ -27,7 +27,7 @@ class CoursesController extends  Controller implements HasMiddleware
     public function index()
     {
         $courses = Courses::with(['user', 'program'])->orderBy('course_name', 'asc')->get();
-        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             return view('home.courses.index')->with([
                 'courses' => $courses
             ]);
@@ -124,7 +124,7 @@ class CoursesController extends  Controller implements HasMiddleware
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
             if(!$course->program){

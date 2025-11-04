@@ -16,7 +16,7 @@
     </div>
     @include('layouts.alert')
 
-    div class="col-sm-12 col-12 mt-2">
+    <div class="col-sm-12 col-12 mt-2">
         @if(count($courses) > 0)
         
             <div class="card mb-3">
@@ -68,7 +68,9 @@
                                         <td>{{ number_format($course->course_price) }}</td>
                                         <td>
                                             <a href="{{ route('course.show', $course->slug) }}" class="btn btn-sm btn-info text-white">View</a>
+                                            @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
                                             <a href="{{ route('course.edit', $course->slug) }}" class="btn btn-sm btn-primary text-white">Edit</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

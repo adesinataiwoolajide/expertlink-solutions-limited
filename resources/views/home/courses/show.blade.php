@@ -37,6 +37,7 @@
                                     </div>
                                 </button>
                             </li>
+                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 
                             <li class="nav-item mb-3" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep2-tab"
@@ -51,7 +52,7 @@
                                     </div>
                                 </button>
                             </li>
-                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                            
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
@@ -347,6 +348,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                @else
+                                    <div class="col-12">
+                                        <div class="card border-danger text-center">
+                                            <div class="card-body">
+                                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                                <h5 class="card-title text-danger">No Allocations Histories Found</h5>
+                                                <p class="card-text text-muted">There are currently no course allocations available for this view.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 @endif
                             </div>
                         </div>

@@ -15,7 +15,7 @@ class ProgramsController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth', new Middleware('role:Administrator|Admin'),
+            'auth', new Middleware('role:Administrator|Admin|Instructor'),
         ];
     }
     public function __construct(Programs $program){
