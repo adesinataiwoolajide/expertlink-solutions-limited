@@ -17,7 +17,7 @@
 					<span class="menu-text">Dashboard</span>
 				</a>
 			</li>
-
+			@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 			<li class="treeview {{ request()->routeIs('user.*') ? 'active current-page' : '' }}">
 				<a href="#!">
 					<i class="ri-user-line"></i>
@@ -32,6 +32,7 @@
 					</li>
 				</ul>
 			</li>
+			@endif
 
 			<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">
 				<a href="{{ route('program.index') }}">
@@ -39,25 +40,28 @@
 					<span class="menu-text"> Course Program</span>
 				</a>
 			</li>
-	
+			
 			<li class="treeview">
 				<a href="#!">
 					<i class="ri-file-list-3-line"></i>
 					<span class="menu-text">Courses</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="{{ route('course.create') }}">Add New Course</a></li>
+					@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+						<li><a href="{{ route('course.create') }}">Add New Course</a></li>
+					@endif
 					<li><a href="{{ route('course.index') }}">View All Courses</a></li>
 					
 				</ul>
 			</li>
-
-			<li class="{{ request()->routeIs('allocation.index') ? 'active current-page' : '' }}">
-				<a href="{{ route('allocation.index') }}">
-					<i class="ri-list-settings-line"></i>
-					<span class="menu-text">Course Allocations</span>
-				</a>
-			</li>
+			@if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+				<li class="{{ request()->routeIs('allocation.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('allocation.index') }}">
+						<i class="ri-list-settings-line"></i>
+						<span class="menu-text">Course Allocations</span>
+					</a>
+				</li>
+			@endif
 
 			<li class="treeview ">
 				<a href="#!">

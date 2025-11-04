@@ -68,7 +68,7 @@ class CourseAllocationController extends Controller implements HasMiddleware
         ]);
         createCourseAllocationHistory($slug, $userSlug, $userSlug);
         createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
-        return redirect()->back()->with('success', 'Course successfully allocated.');
+        return redirect()->route('allocation.view',$slug)->with('success', 'Course successfully allocated.');
 
     }
 
@@ -124,7 +124,7 @@ class CourseAllocationController extends Controller implements HasMiddleware
         CourseAllocation::where(['slug' => $slug])->update(['userSlug' => $userSlug,]);
         createLog("Updated Course Allocation with: $slug for $courseSlug to $userSlug Successfully");
         createCourseAllocationHistory($slug, $oldUserSlug, $userSlug);
-        return redirect()->back()->with('success', 'You have updated the Course Allocation successfully.');
+        return redirect()->route('allocation.view',$slug)->with('success', 'You have updated the Course Allocation successfully.');
     }
 
     /**

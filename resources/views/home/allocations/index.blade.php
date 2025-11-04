@@ -8,7 +8,6 @@
                         <i class="ri-home-4-line me-1"></i> <span class="visually-hidden">Home</span>
                     </a>
                 </li>
-                {{-- <li class="breadcrumb-item"><a href="{{ route('allocation.index') }}" title="View all {{ $segments[1]}}">View all {{ $segments[1]}}</a></li> --}}
                 <li class="breadcrumb-item active" aria-current="page">View All {{ $segments[1]}}</li>
             </ol>
         </nav>

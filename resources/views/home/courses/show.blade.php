@@ -18,7 +18,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Please fill the below form to Create a Course</h5>
+                <h5 class="card-title">{{$course->course_name}} Details</h5>
             </div>
             <div class="card-body">
                 <div class="row gx-3">
