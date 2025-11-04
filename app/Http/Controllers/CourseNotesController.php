@@ -62,18 +62,18 @@ class CourseNotesController extends Controller implements HasMiddleware
     public function store(StoreCourseNoteRequest $request)
     {
         $request->user()->fill($request->validated());
-
+        $slug = RandomString(8);
         $data = new CourseNotes([
-            'slug'            => RandomString(8), // or use a custom slug generator
+            'slug'            => $slug,
             'topic'           => $request->input('topic'),
             'content'         => $request->input('content') ?: 'NULL',
             'title'           => $request->input('title') ?: 'NULL',
-            'chapter'         => $request->input('title'),
+            'chapter'         => $request->input('chapter') ?: 'NULL',
 
-            'link_one'        => $request->input('link_one') ?? 'N/A',
-            'link_two'        => $request->input('link_two') ?? 'N/A',
-            'link_three'      => $request->input('link_three') ?? 'N/A',
-            'link_four'       => $request->input('link_four') ?? 'N/A',
+            'link_one'        => $request->input('link_one') ?? 'NULL',
+            'link_two'        => $request->input('link_two') ?? 'NULL',
+            'link_three'      => $request->input('link_three') ?? 'NULL',
+            'link_four'       => $request->input('link_four') ?? 'NULL',
 
             'status'          => 0,
             'instructorSlug'  => Auth::user()->slug ?? 'unknown',
@@ -81,24 +81,26 @@ class CourseNotesController extends Controller implements HasMiddleware
             'courseSlug'      => $request->input('courseSlug'),
             'programSlug'     => $request->input('programSlug'),
         ]);
-        dd($data);
-        if($request->hasFile('material')) {
-            $file = $request->material;
-            foreach ($file as $files) {
-                $filenameWithExt = $files->getClientOriginalName();
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $files->getClientOriginalExtension();
-                $fileNameToStore = $filename.'_'.date('Y-m-d').'.'.$extension;
-                $path=$files->move('elsAdmin/course-material/', $fileNameToStore);
-                $material = new CourseMaterials ([
-                    "course_id" => $request->input("course_id"),
-                    "course_file" => $fileNameToStore,
-                    "note_id" => $note_id,
-                ]);
-                $material->save();
+        if ($data->save()) {
+            if($request->hasFile('material')) {
+                $file = $request->material;
+                foreach ($file as $files) {
+                    
+                    $filenameWithExt = $files->getClientOriginalName();
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $files->getClientOriginalExtension();
+                    $fileNameToStore = $filename.'_'.date('Y-m-d').'.'.$extension;
+                    $file = createFileUpload('course-materials', $files, $fileNameToStore);
+                    // $path=$files->move('elsAdmin/course-material/', $fileNameToStore);
+                    $material = new CourseMaterials ([
+                        "courseSlug" => $request->input("courseSlug"),
+                        "course_file" => $fileNameToStore,
+                        "noteSlug" => $slug,
+                    ]);
+                    $material->save();
+                }
+                //return redirect()->route('course.note.index',[$course_id])->with(["success" => $message]);
             }
-
-            return redirect()->route('course.note.index',[$course_id])->with(["success" => $message]);
         }
     }
 

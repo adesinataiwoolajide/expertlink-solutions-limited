@@ -17,7 +17,9 @@
     @include('layouts.alert')
     <div class="col-md-12">
         <div class="card">
-           
+            <div class="card-header">
+                <h5 class="card-title">Please fill the below form to Create a Course Note for {{ $course->course_name ?? '' }}</h5>
+            </div>
             <div class="card-body">
                 <div class="row gx-3">
                     <form action="{{ route('note.store') }}" method="POST" enctype="multipart/form-data">@csrf
@@ -28,7 +30,7 @@
                         
                         <div class="row">
                            
-                            <div class="mb-3 col-md-4">
+                            <div class="mb-3 col-md-3">
                                 <label class="form-label">Course Name:</label>
                                 <input type="text" class="form-control" value="{{ $course->course_name ?? '' }}" readonly>
                             </div>
