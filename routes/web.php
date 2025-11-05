@@ -82,9 +82,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('show/{slug}', [CourseNotesController::class, 'show'])->name('course.note.show');
         Route::get('edit/{slug}', [CourseNotesController::class, 'edit'])->name('course.note.edit');
         Route::post('update/{slug}', [CourseNotesController::class, 'update'])->name('course.note.update');
+        Route::get('delete-material/{materialSlug}', [CourseNotesController::class, 'destroy'])->name('material.delete');
 
-        // Route::get('edit/{note_slug}', [CourseNotesController::class, 'edit'])->name('course.note.edit');
-        // Route::post('update/{note_slug}', [CourseNotesController::class, 'update'])->name('course.note.update');
+        
         // Route::get('students/{slug}', [CourseNotesController::class, 'student'])->name('course.note.student');
         // Route::get('view/{slug}/{note_slug}', [CourseNotesController::class, 'read'])->name('course.note.read');
         // Route::get('reading/{slug}/{action}/{note_slug}/{id}', [CourseNotesController::class, 'reading'])->name('course.note.reading');

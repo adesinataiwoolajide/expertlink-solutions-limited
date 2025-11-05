@@ -20,8 +20,11 @@
         <div class="card">
             <div class="col-sm-12">
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h5 class="card-title">{{ $notes->topic }}</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">{{ $notes->topic }}</h5>
+                        <a href="{{ route('course.note.edit', ['slug' => $notes->slug]) }}" class="btn btn-sm btn-outline-primary">
+                            Edit Course Note
+                        </a>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="tabs-with-badges" role="tablist">
@@ -48,14 +51,18 @@
                             </li>
                         </ul>
                         <div class="tab-content border border-primary rounded p-4" id="tabs-with-badges-content">
-                            <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
-                                
+                            <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one" style="position: relative; padding: 20px;">
+                                <div class="course-header" style="margin-bottom: 15px;">
+                                    <h4 class="text-primary"><strong></strong>Course Name:</strong> {{ $course->course_name }}</h4>
+                                    <h5 class="text-primary"><strong>Topic:</strong> {{ $notes->topic }}</h5>
+                                </div>
+                                <div class="course-note-description">
+                                    {!! $notes->content !!}
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
-                               
                                 @php
-                                    $iconMap = getIcons();
-                                    $extensionColorMap = getFileColer();
+                                    $iconMap = getIcons(); $extensionColorMap = getFileColer();
                                 @endphp
                                 @foreach ($materials as $k => $material)
                                     @php
@@ -72,20 +79,25 @@
                                                 </div>
                                                 <div>{{ $material->course_file }}</div>
                                             </div>
-                                            <i class="ri-arrow-down-s-line text-muted"></i>
+
+                                            {{-- <div class="d-flex align-items-center">
+                            
+                                                <i class="ri-arrow-down-s-line text-muted me-2"></i>
+                                                <a href="{{ route('material.delete', $material->slug) }}" 
+                                                onclick="return confirm('Are you sure you want to delete this file?')" 
+                                                class="text-danger">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </a>
+                                            </div> --}}
                                         </div>
                                         <div class="mt-3">
                                             @if (in_array($extension, ['jpg', 'jpeg', 'png', 'svg']))
                                                 <img src="{{ $fileUrl }}" alt="Image Preview" style="max-width: 70%; border-radius: 6px;">
-
                                             @elseif ($extension === 'pdf')
                                                 <iframe src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="800" style="border: none;"></iframe>
                                             @elseif ($extension === 'pptx')
-                                                {{-- <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
-                                                        width="100%" height="400" frameborder="0"></iframe> --}}
                                                 <iframe src="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Findigomedicalaesthetics.org%2FBoss%2520fola%2520Governance%2520quality%2520paper%2520power%2520point_2025-11-05.pptx&wdOrigin=BROWSELINK"
                                                         width="100%" height="800" frameborder="0"></iframe>
-
                                             @else
                                                 <div class="text-muted">Preview not available for .{{ $extension }} files.</div>
                                             @endif
@@ -106,20 +118,26 @@
                                             $color = $colors[$index % count($colors)]; $youtubeLink = $notes->$link ?? '';
                                         @endphp
 
-                                        @if(strtolower($youtubeLink) != 'https://www.youtube.com/watch?v=' && !empty($youtubeLink))
-                                            <div class="col-md-3 mb-3">
-                                                <div class="card border border-{{ $color }}">
-                                                    <div class="card-body">
-                                                        <h6 class="card-title text-{{ $color }} mb-3">Video Link {{ $index + 1 }}:</h6>
-                                                        <a href="{{ $youtubeLink }}" target="_blank" class="d-flex align-items-center text-decoration-none mb-3">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-                                                                class="bi bi-youtube me-2 text-{{ $color }}" viewBox="0 0 16 16">
-                                                                <path d="M8.051 1.999h-.102C3.837 1.999 1.999 3.837 1.999 8s1.838 6.001 6.001 6.001h.102c4.213 0 6.051-1.838 6.051-6.001s-1.838-6.001-6.051-6.001zM6.5 10.5V5.5l4 2.5-4 2.5z"/>
-                                                            </svg>
-                                                            <span class="text-{{ $color }}">Watch on YouTube</span>
-                                                        </a>
+                                        @if (str_contains($youtubeLink, 'youtube'))
+                                            @if(strtolower($youtubeLink) != 'https://www.youtube.com/watch?v=' && !empty($youtubeLink))
+                                                <div class="col-md-3 mb-3">
+                                                    <div class="card border border-{{ $color }}">
+                                                        <div class="card-body">
+                                                            <h6 class="card-title text-{{ $color }} mb-3">Video Link {{ $index + 1 }}:</h6>
+                                                            <a href="{{ $youtubeLink }}" target="_blank" class="d-flex align-items-center text-decoration-none mb-3">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                                                    class="bi bi-youtube me-2 text-{{ $color }}" viewBox="0 0 16 16">
+                                                                    <path d="M8.051 1.999h-.102C3.837 1.999 1.999 3.837 1.999 8s1.838 6.001 6.001 6.001h.102c4.213 0 6.051-1.838 6.051-6.001s-1.838-6.001-6.051-6.001zM6.5 10.5V5.5l4 2.5-4 2.5z"/>
+                                                                </svg>
+                                                                <span class="text-{{ $color }}">Watch {{ $youtubeLink }}</span>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            @endif
+                                        @else
+                                            <div class="col-md-12 mb-3">
+                                                <iframe width="100%" height="500" src="{{ $youtubeLink ?? '' }}" frameborder="1" scrolling="auto"></iframe>
                                             </div>
                                         @endif
                                     @endforeach
