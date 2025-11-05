@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateCourseNoteRequest extends FormRequest
 {
@@ -11,7 +12,11 @@ class UpdateCourseNoteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if(Auth::user()->hasAnyRole(['Administrator', 'Instructor'])){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -22,7 +27,23 @@ class UpdateCourseNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
+            'topic'             => ['nullable', 'string'],
+            'content'           => ['nullable', 'string'],
+            'title'             => ['nullable', 'string'],
+            'chapter'           => ['nullable', 'string'],
+            'material.*'        => ['file', 'mimes:pdf,jpg,jpeg,png,ppt,pptx', 'max:1024'],
+
+            'link_one'          => ['nullable', 'url'],
+            'link_two'          => ['nullable', 'url'],
+            'link_three'        => ['nullable', 'url'],
+            'link_four'         => ['nullable', 'url'],
+
+            'status'            => ['nullable', 'in:active,inactive,pending'],
+            'instructorSlug'    => ['nullable', 'string'],
+            'allocatonSlug'     => ['nullable', 'string'],
+            'courseSlug'        => ['nullable', 'string'],
+            'programSlug'       => ['nullable', 'string'],
         ];
     }
 }

@@ -145,9 +145,32 @@ class CourseNotesController extends Controller implements HasMiddleware
         $user = Auth::user();
         $notes = CourseNotes::where('slug', $slug)->first();
         if(!$notes){
-            return redirect()->back()->with('error', 'No course note was found.');
+            return redirect()->back()->with('error', 'No course note was found for '. $slug);
         }
-        dd($notes);
+        $courseSlug = $notes->courseSlug;
+        $allocationSlug = $notes->allocatonSlug;
+        $course = Courses::with(['program', 'allocations'])->where('slug', $courseSlug)->first();
+
+        $allocationQuery = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $allocationSlug);
+        if ($user->hasAnyRole(['Instructor'])) {
+            $allocationQuery->where('userSlug', $user->slug);
+        }
+        $allocation = $allocationQuery->first();
+        if (!$course || !$allocation) {
+            return redirect()->back()->with('error', 'Course or allocation record not found.');
+        }
+        if(Auth::user()->hasAnyRole(['Administrator', "Instructor"])){
+            $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
+            $program_name = $course->program->program_name ?? 'NIL';
+            return view('home.notes.edit')->with([
+                'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name, 'allocation' => $allocation,
+                'allocationSlug' => $allocationSlug, 'courseSlug' => $courseSlug, 'notes' => $notes
+            ]);
+
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
     }
 
     /**
@@ -161,7 +184,44 @@ class CourseNotesController extends Controller implements HasMiddleware
         if(!$notes){
             return redirect()->back()->with('error', 'No course note was found.');
         }
-        dd($notes);
+        
+        $stat = $request->input('postNote');
+        $previousTopic = $request->input('previousTopic');
+        $status = ($stat === 'now');
+        $update = $notes->update([
+            'topic' => $request->input('topic'),
+            'content' => $request->input('content') ?: 'NULL',
+            'title'  => $request->input('title') ?: 'NULL',
+            'chapter' => $request->input('chapter') ?: 'NULL',
+            'link_one' => $request->input('link_one') ?? 'NULL',
+            'link_two' => $request->input('link_two') ?? 'NULL',
+            'link_three' => $request->input('link_three') ?? 'NULL',
+            'link_four' => $request->input('link_four') ?? 'NULL',
+            'status' => $status,
+        ]);
+        if ($update) {
+            $files = $request->file('material');
+            if ($files) {
+                $files = is_array($files) ? $files : [$files]; 
+                foreach ($files as $file) {
+                    if ($file->isValid()) {
+                        $filenameWithExt = $file->getClientOriginalName();
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $extension = $file->getClientOriginalExtension();
+                        $fileNameToStore = $filename.'_'.date('Y-m-d').'.'.$extension;
+                        $file->storeAs('course-material', $fileNameToStore);
+                        CourseMaterials::create([
+                            'slug' => RandomString(8),
+                            "courseSlug" => $request->input("courseSlug"),
+                            "course_file" => $fileNameToStore,
+                            "noteSlug" => $slug,
+                        ]);
+                    }
+                }
+            }
+            createLog("Updated a Course Note with: $slug and Topic from  $previousTopic to ". $request->input('topic'));
+            return redirect()->route('course.note.show',$slug)->with('success', 'You have updated the course note successfully.');
+        }
     }
 
     /**

@@ -9,6 +9,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item"><a href="{{ route('course.note.index',$courseSlug) }}" title="View all {{ $segments[1]}}">View all {{ $segments[1]}}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('note.create',[$notes->courseSlug, $allocation->slug]) }}" title="Create {{ $segments[1]}}">Create New {{ $segments[1]}}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Create {{ $segments[1]}}</li>
             </ol>
         </nav>
@@ -18,12 +19,12 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Please fill the below form to Create a Course Note for {{ $course->course_name ?? '' }}</h5>
+                <h5 class="card-title">Please fill the below form to Update a Course Note for {{ $course->course_name ?? '' }}</h5>
             </div>
             <div class="card-body">
                 <div class="row gx-3">
-                    <form action="{{ route('note.store') }}" method="POST" enctype="multipart/form-data">@csrf
-
+                    <form action="{{ route('course.note.update',$notes->slug) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <input type="hidden" name="programSlug" value="{{ $course->programSlug }}">
                         <input type="hidden" name="courseSlug" value="{{ $courseSlug }}">
                         <input type="hidden" name="allocationSlug" value="{{ $allocationSlug }}">
@@ -36,20 +37,20 @@
 
                             <div class="mb-3 col-md-4">
                                 <label class="form-label">Topic:</label>
-                                <input type="text" class="form-control" name="topic" placeholder="Enter the Topic" value="{{ old('topic') }}" required>
+                                <input type="text" class="form-control" name="topic" placeholder="Enter the Topic" value="{{ old('topic')  ?? $notes->topic }}" required>
                                 <x-input-error :messages="$errors->get('topic')" class="mt-2 text-danger" />
                             </div>
 
                              @foreach (['link_one', 'link_two', 'link_three', 'link_four'] as $index => $link)
                                 <div class="mb-3 col-md-4">
                                     <label class="form-label">YouTube Link {{ $index + 1 }}:</label>
-                                    <input type="text" class="form-control" name="{{ $link }}" value="{{ old($link) ?? "https://www.youtube.com/watch?v" }}">
+                                    <input type="text" class="form-control" name="{{ $link }}" value="{{ old($link) ?? $notes->$link }}">
                                     <x-input-error :messages="$errors->get($link)" class="mt-2 text-danger" />
                                 </div>
                             @endforeach
                             <div class="mb-3 col-md-12">
                                 <label class="form-label">Course Note Content:</label>
-                                <textarea class="form-control summernote" name="content" id="content" required>{!! old('content') ?? "<p> Please enter the course contents here</p>" !!}}</textarea>
+                                <textarea class="form-control summernote" name="content" id="content" required>{!! old('content') ?? $notes->content !!}</textarea>
                                 <x-input-error :messages="$errors->get('content')" class="mt-2 text-danger" />
                                 
                             </div>
@@ -77,7 +78,7 @@
                             </div>
                            
                             <div class="col-12 text-end mt-4">
-                                <button type="submit" class="btn btn-primary">Save The Note</button>
+                                <button type="submit" class="btn btn-primary">Update The Course Note</button>
                             </div>
                         </div>
                     </form>
@@ -102,6 +103,7 @@
     const preview = document.getElementById('filePreview');
     let selectedFiles = [];
     const MAX_SIZE_MB = 2;
+
     input.addEventListener('change', (e) => {
         const newFiles = Array.from(e.target.files).filter(file => {
             if (file.size > MAX_SIZE_MB * 1024 * 1024) {
@@ -130,30 +132,30 @@
     function renderPreview() {
         preview.innerHTML = '';
         selectedFiles.forEach((file, index) => {
-        const fileSize = (file.size / 1024).toFixed(2); // KB
-        const fileCard = document.createElement('div');
-        fileCard.className = 'col-md-4 mb-4';
+            const fileSize = (file.size / 1024).toFixed(2); // KB
+            const fileCard = document.createElement('div');
+            fileCard.className = 'col-md-4 mb-4';
 
-        fileCard.innerHTML = `
-            <div class="bg-white border border-gray-200 p-3 rounded shadow-sm h-100 d-flex flex-column justify-content-between">
-                <div class="d-flex align-items-center mb-2">
-                    <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded me-2" style="width: 24px; height: 24px;">
-                        <i class="fas fa-file-alt"></i>
+            fileCard.innerHTML = `
+                <div class="bg-white border border-gray-200 p-3 rounded shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded me-2" style="width: 24px; height: 24px;">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-medium small" style="word-break: break-word;">${file.name}</p>
+                            <p class="mb-0 text-muted small">${fileSize} KB</p>
+                        </div>
                     </div>
-                    <div class="flex-grow-1">
-                        <p class="mb-0 fw-medium small" style="word-break: break-word;">${file.name}</p>
-                        <p class="mb-0 text-muted small">${fileSize} KB</p>
+                    <div class="mt-auto text-end">
+                        <button type="button" onclick="removeFile(${index})" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
                     </div>
                 </div>
-                <div class="mt-auto text-end">
-                    <button type="button" onclick="removeFile(${index})" class="btn btn-sm btn-outline-danger">
-                        <i class="fas fa-trash-alt"></i> Remove
-                    </button>
-                </div>
-            </div>
-        `;
+            `;
 
-        preview.appendChild(fileCard);
+            preview.appendChild(fileCard);
         });
 
         // Sync input files
