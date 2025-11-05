@@ -1,5 +1,41 @@
 <?php
 
+    function getIcons(){
+        return $iconMap = [
+            'pdf' => 'ri-file-pdf-line',
+            'doc' => 'ri-file-word-line',
+            'docx' => 'ri-file-word-line',
+            'xls' => 'ri-file-excel-line',
+            'xlsx' => 'ri-file-excel-line',
+            'ppt' => 'ri-file-ppt-line',
+            'pptx' => 'ri-file-ppt-line',
+            'jpg' => 'ri-image-line',
+            'jpeg' => 'ri-image-line',
+            'png' => 'ri-image-line',
+            'zip' => 'ri-file-zip-line',
+            'rar' => 'ri-file-zip-line',
+            'txt' => 'ri-file-text-line',
+            'mp4' => 'ri-video-line',
+            'mp3' => 'ri-music-line',
+            'default' => 'ri-file-line'
+        ];
+    }
+    function getFileColer(){
+        return $extensionColorMap = [
+            'pdf' => 'danger',
+            'doc' => 'primary',
+            'docx' => 'primary',
+            'xls' => 'success',
+            'xlsx' => 'success',
+            'ppt' => 'warning',
+            'pptx' => 'warning',
+            'jpg' => 'info',
+            'jpeg' => 'info',
+            'png' => 'info',
+            'txt' => 'secondary',
+            'default' => 'secondary',
+        ];
+    }
     function RandomString($length)
     {
         return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',

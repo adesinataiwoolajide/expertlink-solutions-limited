@@ -118,7 +118,7 @@ class CourseNotesController extends Controller implements HasMiddleware
     public function show($slug)
     {
         $user = Auth::user();
-        $notes = CourseNotes::where('slug', $slug)->first();
+        $notes = CourseNotes::where('slug', $slug)->with(['materials', 'course'])->first();
         if(!$notes){
             return redirect()->back()->with('error', 'No course note was found.');
         }
@@ -131,9 +131,10 @@ class CourseNotesController extends Controller implements HasMiddleware
             return redirect()->back()->with('error', 'No course allocation was found for this note.');
         }
         $course = $allocation->course()->with('program', 'allocations')->first();
+        $materials = $notes->materials()->orderBy('created_at', 'desc')->get();
         return view('home.notes.show')->with([
             'course' => $course, 'allocation' => $allocation,'notes' => $notes,
-        
+            'materials' => $materials
         ]);
     }
 

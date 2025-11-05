@@ -43,7 +43,7 @@
                              @foreach (['link_one', 'link_two', 'link_three', 'link_four'] as $index => $link)
                                 <div class="mb-3 col-md-4">
                                     <label class="form-label">YouTube Link {{ $index + 1 }}:</label>
-                                    <input type="text" class="form-control" name="{{ $link }}" value="{{ old($link) ?? "https://www.youtube.com/watch?v" }}">
+                                    <input type="text" class="form-control" name="{{ $link }}" value="{{ old($link) ?? "https://www.youtube.com/watch?v=" }}">
                                     <x-input-error :messages="$errors->get($link)" class="mt-2 text-danger" />
                                 </div>
                             @endforeach

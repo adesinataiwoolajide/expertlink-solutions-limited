@@ -14,4 +14,19 @@ class CourseNotes extends Model
        'slug', 'topic', 'content', 'title', 'chapter', 'link_one', 'link_two', 'link_three', 'link_four', 
        'status', 'instructorSlug', 'allocatonSlug', 'courseSlug', 'programSlug',
     ];
+
+        public function course()
+    {
+        return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
+    }
+
+    public function allocation()
+    {
+        return $this->belongsTo(CourseAllocation::class, 'allocatonSlug', 'slug');
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(CourseMaterials::class, 'noteSlug', 'slug');
+    }
 }

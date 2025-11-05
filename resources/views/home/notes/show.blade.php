@@ -16,4 +16,122 @@
         
     </div>
     @include('layouts.alert')
+     <div class="col-md-12 mt-3">
+        <div class="card">
+            <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ $notes->topic }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="tabs-with-badges" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active px-4 py-2 d-flex align-items-center" id="badge-tab-one"
+                                    data-bs-toggle="tab" data-bs-target="#badge-content-one" type="button" role="tab" aria-controls="badge-content-one" aria-selected="true">
+                                    <i class="ri-book-open-line me-2"></i> Preview Course Note
+                                    <span class="badge bg-danger ms-2 rounded-pill">!!!</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-two"
+                                    data-bs-toggle="tab" data-bs-target="#badge-content-two" type="button" role="tab" aria-controls="badge-content-two" aria-selected="false">
+                                    <i class="ri-book-line me-2"></i> Course Materials
+                                    <span class="badge bg-success ms-2 rounded-pill">{{ count($materials) }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-three"
+                                data-bs-toggle="tab" data-bs-target="#badge-content-three" type="button" role="tab" aria-controls="badge-content-three" aria-selected="false">
+                                <i class="ri-settings-3-line me-2"></i> Course Videos
+                                <span class="badge bg-warning ms-2 rounded-pill">4</span>
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content border border-primary rounded p-4" id="tabs-with-badges-content">
+                            <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
+                                
+                            </div>
+                            <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
+                               
+                                @php
+                                    $iconMap = getIcons();
+                                    $extensionColorMap = getFileColer();
+                                @endphp
+                                @foreach ($materials as $k => $material)
+                                    @php
+                                        $extension = pathinfo(strtolower($material->course_file), PATHINFO_EXTENSION);
+                                        $iconClass = $iconMap[$extension] ?? $iconMap['default'];
+                                        $color = $extensionColorMap[$extension] ?? $extensionColorMap['default'];
+                                        $fileUrl = asset('storage/course-material/' . $material->course_file);
+                                    @endphp
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
+                                                    <i class="{{ $iconClass }}"></i>
+                                                </div>
+                                                <div>{{ $material->course_file }}</div>
+                                            </div>
+                                            <i class="ri-arrow-down-s-line text-muted"></i>
+                                        </div>
+                                        <div class="mt-3">
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'svg']))
+                                                <img src="{{ $fileUrl }}" alt="Image Preview" style="max-width: 70%; border-radius: 6px;">
+
+                                            @elseif ($extension === 'pdf')
+                                                <iframe src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="800" style="border: none;"></iframe>
+                                            @elseif ($extension === 'pptx')
+                                                {{-- <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
+                                                        width="100%" height="400" frameborder="0"></iframe> --}}
+                                                <iframe src="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Findigomedicalaesthetics.org%2FBoss%2520fola%2520Governance%2520quality%2520paper%2520power%2520point_2025-11-05.pptx&wdOrigin=BROWSELINK"
+                                                        width="100%" height="800" frameborder="0"></iframe>
+
+                                            @else
+                                                <div class="text-muted">Preview not available for .{{ $extension }} files.</div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                @endforeach
+                                
+                            </div>
+                            <div class="tab-pane fade" id="badge-content-three" role="tabpanel" aria-labelledby="badge-tab-three">
+                                <div class="row gx-3">
+                                    @php
+                                        $colors = ['primary', 'info', 'success', 'danger'];
+                                    @endphp
+
+                                    @foreach (['link_one', 'link_two', 'link_three', 'link_four'] as $index => $link)
+                                        @php
+                                            $color = $colors[$index % count($colors)]; $youtubeLink = $notes->$link ?? '';
+                                        @endphp
+
+                                        @if(strtolower($youtubeLink) != 'https://www.youtube.com/watch?v=' && !empty($youtubeLink))
+                                            <div class="col-md-3 mb-3">
+                                                <div class="card border border-{{ $color }}">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-{{ $color }} mb-3">Video Link {{ $index + 1 }}:</h6>
+                                                        <a href="{{ $youtubeLink }}" target="_blank" class="d-flex align-items-center text-decoration-none mb-3">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                                                class="bi bi-youtube me-2 text-{{ $color }}" viewBox="0 0 16 16">
+                                                                <path d="M8.051 1.999h-.102C3.837 1.999 1.999 3.837 1.999 8s1.838 6.001 6.001 6.001h.102c4.213 0 6.051-1.838 6.051-6.001s-1.838-6.001-6.051-6.001zM6.5 10.5V5.5l4 2.5-4 2.5z"/>
+                                                            </svg>
+                                                            <span class="text-{{ $color }}">Watch on YouTube</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
 </x-app-layout>

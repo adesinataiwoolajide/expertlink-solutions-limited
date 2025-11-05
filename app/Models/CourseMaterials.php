@@ -13,4 +13,14 @@ class CourseMaterials extends Model
     protected $fillable = [
        'slug', 'course_file', 'courseSlug', 'noteSlug'
     ];
+
+    public function note()
+    {
+        return $this->belongsTo(CourseNotes::class, 'noteSlug', 'slug');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
+    }
 }
