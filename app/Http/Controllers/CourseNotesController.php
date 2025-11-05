@@ -62,70 +62,106 @@ class CourseNotesController extends Controller implements HasMiddleware
     public function store(StoreCourseNoteRequest $request)
     {
         $request->user()->fill($request->validated());
-        $slug = RandomString(8);
+        $slug = RandomString(8); 
+        $notes = CourseNotes::where([
+            'topic' => $request->input('topic'), 'instructorSlug' => Auth::user()->slug ?? 'unknown',
+            'allocatonSlug' => $request->input('allocationSlug'), 'courseSlug' => $request->input('courseSlug'),
+            'programSlug' => $request->input('programSlug')
+        ])->first();
+        if($notes){
+            return redirect()->route('course.note.show',$notes->slug)->with('error', 'You have submitted this course note before.');
+        }
+        $stat = $request->input('postNote');
+        $status = ($stat === 'now');
         $data = new CourseNotes([
-            'slug'            => $slug,
-            'topic'           => $request->input('topic'),
-            'content'         => $request->input('content') ?: 'NULL',
-            'title'           => $request->input('title') ?: 'NULL',
-            'chapter'         => $request->input('chapter') ?: 'NULL',
-
-            'link_one'        => $request->input('link_one') ?? 'NULL',
-            'link_two'        => $request->input('link_two') ?? 'NULL',
-            'link_three'      => $request->input('link_three') ?? 'NULL',
-            'link_four'       => $request->input('link_four') ?? 'NULL',
-
-            'status'          => 0,
-            'instructorSlug'  => Auth::user()->slug ?? 'unknown',
-            'allocatonSlug'   => $request->input('allocationSlug'),
-            'courseSlug'      => $request->input('courseSlug'),
-            'programSlug'     => $request->input('programSlug'),
+            'slug' => $slug, 'topic' => $request->input('topic'),
+            'content' => $request->input('content') ?: 'NULL',
+            'title'  => $request->input('title') ?: 'NULL',
+            'chapter' => $request->input('chapter') ?: 'NULL',
+            'link_one' => $request->input('link_one') ?? 'NULL',
+            'link_two' => $request->input('link_two') ?? 'NULL',
+            'link_three' => $request->input('link_three') ?? 'NULL',
+            'link_four' => $request->input('link_four') ?? 'NULL',
+            'status' => $status, 'instructorSlug'=> Auth::user()->slug ?? 'Unknown',
+            'allocatonSlug' => $request->input('allocationSlug'),
+            'courseSlug' => $request->input('courseSlug'),
+            'programSlug'   => $request->input('programSlug'),
         ]);
         if ($data->save()) {
-            if($request->hasFile('material')) {
-                $file = $request->material;
-                foreach ($file as $files) {
-                    
-                    $filenameWithExt = $files->getClientOriginalName();
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension = $files->getClientOriginalExtension();
-                    $fileNameToStore = $filename.'_'.date('Y-m-d').'.'.$extension;
-                    $file = createFileUpload('course-materials', $files, $fileNameToStore);
-                    // $path=$files->move('elsAdmin/course-material/', $fileNameToStore);
-                    $material = new CourseMaterials ([
-                        "courseSlug" => $request->input("courseSlug"),
-                        "course_file" => $fileNameToStore,
-                        "noteSlug" => $slug,
-                    ]);
-                    $material->save();
+            $files = $request->file('material');
+            if ($files) {
+                $files = is_array($files) ? $files : [$files]; 
+                foreach ($files as $file) {
+                    if ($file->isValid()) {
+                        $filenameWithExt = $file->getClientOriginalName();
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $extension = $file->getClientOriginalExtension();
+                        $fileNameToStore = $filename.'_'.date('Y-m-d').'.'.$extension;
+                        $file->storeAs('course-material', $fileNameToStore);
+                        CourseMaterials::create([
+                            'slug' => RandomString(8),
+                            "courseSlug" => $request->input("courseSlug"),
+                            "course_file" => $fileNameToStore,
+                            "noteSlug" => $slug,
+                        ]);
+                    }
                 }
-                //return redirect()->route('course.note.index',[$course_id])->with(["success" => $message]);
             }
+            createLog("Created a Course Note with: $slug and Topic ". $request->input('topic'));
+            return redirect()->route('course.note.show',$slug)->with('success', 'You have submitted the course note successfully.');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CourseNotes $courseNotes)
+    public function show($slug)
     {
-        //
+        $user = Auth::user();
+        $notes = CourseNotes::where('slug', $slug)->first();
+        if(!$notes){
+            return redirect()->back()->with('error', 'No course note was found.');
+        }
+        $query = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $notes->allocatonSlug);
+        if (!$user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query->where('userSlug', $user->slug);
+        }
+        $allocation = $query->first();
+        if (!$allocation) {
+            return redirect()->back()->with('error', 'No course allocation was found for this note.');
+        }
+        $course = $allocation->course()->with('program', 'allocations')->first();
+        return view('home.notes.show')->with([
+            'course' => $course, 'allocation' => $allocation,'notes' => $notes,
+        
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CourseNotes $courseNotes)
+    public function edit($slug)
     {
-        //
+        $user = Auth::user();
+        $notes = CourseNotes::where('slug', $slug)->first();
+        if(!$notes){
+            return redirect()->back()->with('error', 'No course note was found.');
+        }
+        dd($notes);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseNoteRequest $request, CourseNotes $courseNotes)
+    public function update(UpdateCourseNoteRequest $request, $slug)
     {
-        //
+        $user = Auth::user();
+        $request->user()->fill($request->validated());
+        $notes = CourseNotes::where('slug', $slug)->first();
+        if(!$notes){
+            return redirect()->back()->with('error', 'No course note was found.');
+        }
+        dd($notes);
     }
 
     /**

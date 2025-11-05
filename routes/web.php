@@ -75,9 +75,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
     });
 
     Route::prefix('course-notes')->group(function () {
+        
         Route::get('{courseSlug}', [CourseNotesController::class, 'index'])->name('course.note.index');
         Route::get('create/{courseSlug}/{allocationSlug}', action: [CourseNotesController::class, 'create'])->name('note.create');
         Route::post('store', [CourseNotesController::class, 'store'])->name('note.store');
+        Route::get('show/{slug}', [CourseNotesController::class, 'show'])->name('course.note.show');
+        Route::get('edit/{slug}', [CourseNotesController::class, 'edit'])->name('course.note.edit');
+        Route::post('update/{slug}', [CourseNotesController::class, 'update'])->name('course.note.update');
+
         // Route::get('edit/{note_slug}', [CourseNotesController::class, 'edit'])->name('course.note.edit');
         // Route::post('update/{note_slug}', [CourseNotesController::class, 'update'])->name('course.note.update');
         // Route::get('students/{slug}', [CourseNotesController::class, 'student'])->name('course.note.student');

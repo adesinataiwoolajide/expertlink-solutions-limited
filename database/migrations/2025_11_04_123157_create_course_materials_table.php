@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('slug');
             $table->longText('course_file');
-            $table->unsignedBigInteger('courseSlug')->references('slug')->on('courses')->onDelete('cascade');
-            $table->unsignedBigInteger('noteSlug')->references('slug')->on('course_notes')->onDelete('cascade');
+            $table->text('courseSlug')->references('slug')->on('courses')->onDelete('cascade');
+            $table->text('noteSlug')->references('slug')->on('course_notes')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
