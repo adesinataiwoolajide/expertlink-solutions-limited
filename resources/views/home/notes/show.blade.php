@@ -62,50 +62,88 @@
                             </div>
                             <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
                                 @php
-                                    $iconMap = getIcons(); $extensionColorMap = getFileColer();
-                                @endphp
-                                @foreach ($materials as $k => $material)
-                                    @php
+                                    $iconMap = getIcons();
+                                    $extensionColorMap = getFileColer();
+                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'svg'];
+                                    $pdfExtensions = ['pdf'];
+                                    $materials = collect($materials)->sortBy(function ($material) use ($imageExtensions, $pdfExtensions) {
                                         $extension = pathinfo(strtolower($material->course_file), PATHINFO_EXTENSION);
-                                        $iconClass = $iconMap[$extension] ?? $iconMap['default'];
-                                        $color = $extensionColorMap[$extension] ?? $extensionColorMap['default'];
-                                        $fileUrl = asset('storage/course-material/' . $material->course_file);
-                                    @endphp
-                                    <div class="list-group-item">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
-                                                    <i class="{{ $iconClass }}"></i>
+                                        if (in_array($extension, $imageExtensions)) {
+                                            return 0;
+                                        } elseif (in_array($extension, $pdfExtensions)) {
+                                            return 1;
+                                        } else {
+                                            return 2;
+                                        }
+                                    });
+                                @endphp
+
+                                <div class="row">
+                                    @foreach ($materials as $material)
+                                        @php
+                                            $extension = pathinfo(strtolower($material->course_file), PATHINFO_EXTENSION);
+                                            $iconClass = $iconMap[$extension] ?? $iconMap['default'];
+                                            $color = $extensionColorMap[$extension] ?? $extensionColorMap['default'];
+                                            $fileUrl = asset('storage/course-material/' . $material->course_file);
+                                        @endphp
+
+                                        @if (in_array($extension, $imageExtensions))
+                                            
+                                            <div class="col-md-12 mb-6">
+                                                <div class="list-group-item">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
+                                                            <i class="{{ $iconClass }}"></i>
+                                                        </div>
+                                                        <div>{{ $material->course_file }}</div>
+                                                    </div>
+                                                   <div style="display: flex; justify-content: center;">
+                                                        <img src="{{ $fileUrl }}" alt="Image Preview"
+                                                            style="width: 100%; height: 50%; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                                                    </div>
+
                                                 </div>
-                                                <div>{{ $material->course_file }}</div>
                                             </div>
 
-                                            {{-- <div class="d-flex align-items-center">
-                            
-                                                <i class="ri-arrow-down-s-line text-muted me-2"></i>
-                                                <a href="{{ route('material.delete', $material->slug) }}" 
-                                                onclick="return confirm('Are you sure you want to delete this file?')" 
-                                                class="text-danger">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </a>
-                                            </div> --}}
-                                        </div>
-                                        <div class="mt-3">
-                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'svg']))
-                                                <img src="{{ $fileUrl }}" alt="Image Preview" style="max-width: 70%; border-radius: 6px;">
-                                            @elseif ($extension === 'pdf')
-                                                <iframe src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="800" style="border: none;"></iframe>
-                                            @elseif ($extension === 'pptx')
-                                                <iframe src="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Findigomedicalaesthetics.org%2FBoss%2520fola%2520Governance%2520quality%2520paper%2520power%2520point_2025-11-05.pptx&wdOrigin=BROWSELINK"
-                                                        width="100%" height="800" frameborder="0"></iframe>
-                                            @else
-                                                <div class="text-muted">Preview not available for .{{ $extension }} files.</div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                        @else
+                                            
+                                            <div class="col-12 mb-4">
+                                                <div class="list-group-item">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
+                                                                <i class="{{ $iconClass }}"></i>
+                                                            </div>
+                                                            <div>{{ $material->course_file }}</div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="ri-arrow-down-s-line text-muted me-2"></i>
+                                                            <a href="{{ route('material.delete', $material->slug) }}"
+                                                            onclick="return confirm('Are you sure you want to delete this file?')"
+                                                            class="text-danger">
+                                                                <i class="ri-delete-bin-line"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
 
-                                @endforeach
-                                
+                                                    <div class="mt-3">
+                                                        @if ($extension === 'pdf')
+                                                            <iframe src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="800" style="border: none;"></iframe>
+                                                        @elseif ($extension === 'pptx')
+                                                            @php
+                                                                $encodedUrl = urlencode($fileUrl);
+                                                                $pptxViewerUrl = "https://view.officeapps.live.com/op/view.aspx?src={$encodedUrl}&wdOrigin=BROWSELINK";
+                                                            @endphp
+                                                            <iframe src="{{ $pptxViewerUrl }}" width="100%" height="800" frameborder="0"></iframe>
+                                                        @else
+                                                            <div class="text-muted">Preview not available for .{{ $extension }} files.</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="badge-content-three" role="tabpanel" aria-labelledby="badge-tab-three">
                                 <div class="row gx-3">

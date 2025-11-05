@@ -31,7 +31,7 @@ class StoreCourseNoteRequest extends FormRequest
             'content'           => ['nullable', 'string'],
             'title'             => ['nullable', 'string'],
             'chapter'           => ['nullable', 'string'],
-            'material.*'        => ['file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            'material.*'        => ['file', 'mimes:pdf,jpg,jpeg,png,png,svg', 'max:1024'],
 
             'link_one'          => ['nullable', 'url'],
             'link_two'          => ['nullable', 'url'],

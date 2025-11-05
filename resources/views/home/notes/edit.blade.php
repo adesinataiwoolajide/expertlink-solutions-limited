@@ -60,7 +60,7 @@
                                     <div id="dropZone" class="border border-primary border-dashed rounded p-4 text-center mb-4"
                                         ondragover="event.preventDefault()" ondrop="handleDrop(event)">
                                         <p class="mb-0 text-muted">Drag & drop files here or click to upload</p>
-                                        <input type="file" id="materialInput" name="material[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden />
+                                        <input type="file" id="materialInput" name="material[]" accept=".pdf,.jpg,.jpeg,.png,.svg" multiple hidden />
                                         <button class="btn btn-primary mt-2" onclick="document.getElementById('materialInput').click()">Browse Files</button>
                                     </div>
                                     <div class="row" id="filePreview"></div>
