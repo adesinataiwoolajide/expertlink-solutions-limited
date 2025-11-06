@@ -30,6 +30,11 @@ class Courses extends Model
       return $this->hasMany(CourseAllocation::class, 'courseSlug', 'slug');
    }
 
+   public function allocation()
+   {
+      return $this->hasOne(CourseAllocation::class, 'courseSlug', 'slug');
+   }
+
    public function materials()
    {
       return $this->hasMany(CourseMaterials::class, 'courseSlug', 'slug');
@@ -39,9 +44,6 @@ class Courses extends Model
    {
       return $this->hasMany(CourseNotes::class, 'courseSlug', 'slug');
    }
-
-
-   
    public function user()
    {
       return $this->belongsTo(User::class, 'user_id', 'id');

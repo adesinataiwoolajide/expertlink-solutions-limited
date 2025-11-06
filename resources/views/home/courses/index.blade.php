@@ -30,6 +30,7 @@
                                <tr>
                                     <th>#</th>
                                     <th>📘 Course Name</th>
+                                    <th>👤 Created By</th>
                                     <th>👤 Instructor Name</th>
                                     <th>🎓 Program Name</th>
                                     <th class="text-center">💰 Course Price (₦)</th>
@@ -42,20 +43,25 @@
                                 @php $num =1; @endphp
                                 @foreach($courses as $course)
                                     @php 
-                                         if(!$course->program){
-                                            $program_name= "NIL"; 
-                                        }else{
-                                            $program_name = $course->program->program_name;
-                                        }
+                                        $program_name = $course->program ? $course->program->program_name : "NIL";
                                     @endphp
                                     <tr>
                                         <td>{{ $num++ }}</td>
                                         <td>{{ $course->course_name }}</td>
                                         <td>
-                                            @if($course->user && isset($course->user->name))
-                                                <span class="badge bg-success text-white">{{ $course->user->name }}</span>
+                                            @if($course->user && isset($course->user->email))
+                                                <span class="badge bg-success text-white">{{ $course->user->email }}</span>
                                             @else
-                                                <span class="badge bg-danger text-white">Unassigned</span>
+                                                <span class="badge bg-info text-white">NULL</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($course->allocation)
+                                                <span class="badge bg-dark text-white">Allocated To:
+
+                                                </span>
+                                            @else
+                                                <span class="badge bg-danger text-white">Pending Allocation</span>
                                             @endif
                                         </td>
                                         <td>
@@ -66,14 +72,32 @@
                                             @endif
                                         </td>
 
-                                        <td class="text-center">{{ number_format($course->course_price) }}</td>
-                                        <td class="center">
+                                        <td class="text-center"><span class="badge bg-secondary text-white">{{ number_format($course->course_price,2) }}</span></td>
+                                        <td class="text-center">
                                             @php $noteCount = $course->notes()->count(); @endphp
-                                            <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
-                                                <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $noteCount }} Notes
-                                                </span>
-                                            </a>
+                                            @if($noteCount > 0)
+                                                <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
+                                                    <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $noteCount }} Notes
+                                                    </span>
+                                                </a>
+                                            @else
+                                                @if($course->allocation)
+                                                
+                                                    <a href="{{ route('note.create', [$course->slug, $allocation->slug]) }}">
+                                                        <span class="badge bg-warning">
+                                                            Create a Note
+                                                        </span>
+                                                    </a>
+
+                                                @else
+
+                                                    <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                        No Notes Found
+                                                    </span>
+
+                                                @endif
+                                            @endif
                                         </td>
 
                                         <td>

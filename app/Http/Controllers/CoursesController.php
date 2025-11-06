@@ -26,7 +26,7 @@ class CoursesController extends  Controller implements HasMiddleware
      */
     public function index()
     {
-        $courses = Courses::with(['user', 'notes', 'program'])->orderBy('course_name', 'asc')->get();
+        $courses = Courses::with(['user', 'notes', 'program', 'allocation'])->orderBy('course_name', 'asc')->get();
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             return view('home.courses.index')->with([
                 'courses' => $courses
