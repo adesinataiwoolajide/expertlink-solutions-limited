@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('course_materials', function (Blueprint $table) {
             $table->id();
             $table->text('slug');
+            $table->text('addedByUserSlug');
             $table->longText('course_file');
             $table->text('courseSlug')->references('slug')->on('courses')->onDelete('cascade');
             $table->text('noteSlug')->references('slug')->on('course_notes')->onDelete('cascade');

@@ -13,6 +13,7 @@ class CourseAllocationHistories extends Model
     protected $fillable = [
        'slug', 'allocationSlug', 'previousUserSlug', 'newUserSlug', 'addedByUserSlug'
     ];
+    protected $dates = ['deleted_at'];
     public function allocations()
     {
         return $this->belongsTo(CourseAllocation::class, 'allocationSlug', 'slug');

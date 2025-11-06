@@ -14,6 +14,8 @@ class CourseAllocation extends Model
        'slug', 'userSlug', 'courseSlug', 'programSlug'
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'userSlug', 'slug');

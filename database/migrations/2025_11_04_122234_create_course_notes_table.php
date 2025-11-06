@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('link_three')->nullable();
             $table->text('link_four')->nullable();
             $table->boolean('status')->nullable()->default(true);
+            $table->text('addedByUserSlug');
             $table->text('instructorSlug')->references('slug')->on('users')->onDelete('cascade');
             $table->text('allocatonSlug')->references('slug')->on('course_allocations')->onDelete('cascade');
             $table->text('courseSlug')->references('slug')->on('courses')->onDelete('cascade');

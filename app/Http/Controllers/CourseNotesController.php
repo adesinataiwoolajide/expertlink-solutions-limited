@@ -22,9 +22,19 @@ class CourseNotesController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($courseSlug)
     {
-        //
+        $course = Courses::where('slug', $courseSlug)->with('program', 'allocations', 'materials', 'notes')->first();
+        if(!$course){
+            return redirect()->back()->with("error", "Course details does not exists");
+        }
+        $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(20);
+        $allocation = $course->allocations();
+        
+        return view('home.notes.index')->with([
+            'course' => $course, 'allocation' => $allocation
+        ]);
+        
     }
 
     /**
@@ -85,7 +95,7 @@ class CourseNotesController extends Controller implements HasMiddleware
             'status' => $status, 'instructorSlug'=> Auth::user()->slug ?? 'Unknown',
             'allocatonSlug' => $request->input('allocationSlug'),
             'courseSlug' => $request->input('courseSlug'),
-            'programSlug'   => $request->input('programSlug'),
+            'programSlug'   => $request->input('programSlug'), 'addedByUserSlug' => Auth::user()->slug
         ]);
         if ($data->save()) {
             $files = $request->file('material');
@@ -102,7 +112,7 @@ class CourseNotesController extends Controller implements HasMiddleware
                             'slug' => RandomString(8),
                             "courseSlug" => $request->input("courseSlug"),
                             "course_file" => $fileNameToStore,
-                            "noteSlug" => $slug,
+                            "noteSlug" => $slug, 'addedByUserSlug' => Auth::user()->slug
                         ]);
                     }
                 }
@@ -215,7 +225,7 @@ class CourseNotesController extends Controller implements HasMiddleware
                             'slug' => RandomString(8),
                             "courseSlug" => $request->input("courseSlug"),
                             "course_file" => $fileNameToStore,
-                            "noteSlug" => $slug,
+                            "noteSlug" => $slug, 'addedByUserSlug' => Auth::user()->slug
                         ]);
                     }
                 }
@@ -230,29 +240,70 @@ class CourseNotesController extends Controller implements HasMiddleware
      */
     public function destroy($slug)
     {
-        $notes = CourseNotes::where('slug', $slug)->first();
-        if(!$notes){
-            return redirect()->back()->with('error', 'No course note was found.');
+        if(Auth::user()->hasAnyRole(['Administrator'])){
+            $notes = CourseNotes::where('slug', $slug)->first();
+            if(!$notes){
+                return redirect()->back()->with('error', 'No course note was found.');
+            }
+            $materials = $notes->materials()->orderBy('created_at', 'desc')->get();
+            $courseSlug = $notes->courseSlug;
+            if($notes->delete()){
+                foreach ($materials as $material) {
+                    $file = 'storage/course-material/' . $material->course_file;
+                    $mate = $notes->materials()->where('slug', $material->slug)->first();
+                    if (file_exists($file)) {
+                        if(($mate->delete()) && (unlink($file))){
+                            unlink($file);
+                            createLog("Deleted Course Material with ID: $mate->slug");
+                        }
+                    }
+                }
+                createLog("Deleted Course Note with topic: $notes->topic and ID: $notes->slug");
+                return redirect()->route('course.note.index',$courseSlug)->with('success', 'Course note deleted successfully.');
+
+            }else{
+                return redirect()->back()->with('error', 'Course note could not be deleted at the moment, please try again later.');
+            }
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
         }
-        dd($notes);
-        
+    }
+
+    public function restore($slug)
+    {
+        $notes = CourseNotes::withTrashed()->where('slug', $slug)->first();
+        if ($notes) {
+            createLog( "Restores Course Note with Topic $notes->topic with Slug: $slug details from the Bin");
+            $notes->restore();
+            return redirect()->back()->with('success', 'COurse Note restored from the Bin successfully!');
+        }
+        return redirect()->back()->with('error', 'Program not found.');
     }
 
     public function destroyNote($slug)
     {
-        $materials = CourseMaterials::where('slug', $slug)->first();
-        if(!$materials){
-            return redirect()->back()->with('error', 'This course material was not found.');
-        }
-        $file = 'storage/course-material/'.$materials->course_file;
-        if (file_exists($file)) {
-            if(($materials->delete()) && (unlink($file))){
-                return redirect()->back()->with('success', 'Course material deleted successfully.');
+        if(Auth::user()->hasAnyRole(['Administrator'])){
+            $materials = CourseMaterials::where('slug', $slug)->first();
+            if(!$materials){
+                return redirect()->back()->with('error', 'This course material was not found.');
+            }
+            $file = 'storage/course-material/'.$materials->course_file;
+            if (file_exists($file)) {
+                if(($materials->delete()) && (unlink($file))){
+                    createLog("Deleted Course Material with ID: $slug");
+                    return redirect()->back()->with('success', 'Course material deleted successfully.');
+                }else{
+                    return redirect()->back()->with('error', 'Course material could not be deleted at the moment, please try again later.');
+                }
             }else{
-                return redirect()->back()->with('error', 'Course materialcould not be deleted at the moment, please try again later.');
+                return redirect()->back()->with('error', 'Course material does not exist.');
             }
         }else{
-            return redirect()->back()->with('error', 'Course material does not exist.');
+        
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        
         }
     }
 }

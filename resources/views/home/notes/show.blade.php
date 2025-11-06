@@ -22,9 +22,38 @@
                 <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">{{ $notes->topic }}</h5>
-                        <a href="{{ route('course.note.edit', ['slug' => $notes->slug]) }}" class="btn btn-sm btn-outline-primary">
-                            Edit Course Note
-                        </a>
+                        <div class="d-flex gap-2">
+                            @if(Auth::user()->hasAnyRole(['Instructor', 'Administrator']))
+                                <a href="{{ route('course.note.edit', ['slug' => $notes->slug]) }}" class="btn btn-sm btn-outline-primary">
+                                    Edit Course Note
+                                </a>
+                            @endif
+
+                            @if(Auth::user()->hasAnyRole(['Administrator']))
+                                <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteNoteModal-{{ $notes->slug }}" accesskey=""class="btn btn-sm btn-outline-danger">
+                                    Delete Course Note
+                                </a>
+                                <div class="modal fade" id="deleteNoteModal-{{ $notes->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $notes->slug }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger">
+                                                <h5 class="modal-title" id="deleteModalLabel-{{ $notes->slug }}">Confirm Deletion</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete : <strong>{{ $notes->topic }}</strong> from the course notes? 
+                                               <p class="text-danger"> <strong></strong> Please note that this action will also delete all associated course materials and cannot be undone. </strong></p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="{{ route('course.note.delete', ['slug' => $notes->slug]) }}" class="btn btn-danger">Yes, Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="tabs-with-badges" role="tablist">
@@ -92,14 +121,16 @@
                                             <div class="col-12 col-sm-12 col-lg-6 mb-3">
                                                 <div class="position-relative">
                                                     <img src="{{ $fileUrl }}" class="d-block mx-lg-auto img-fluid rounded-5 shadow-lg" style="height: 550px;">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
-                                                            <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
-                                                                onmouseover="this.classList.add('ri-delete-bin-fill')" 
-                                                                onmouseout="this.classList.remove('ri-delete-bin-fill')">
-                                                            </i>
-                                                        </a>
-                                                    </div>
+                                                    @if(Auth::user()->hasAnyRole(['Administrator']))
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
+                                                                <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
+                                                                    onmouseover="this.classList.add('ri-delete-bin-fill')" 
+                                                                    onmouseout="this.classList.remove('ri-delete-bin-fill')">
+                                                                </i>
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                            
@@ -114,19 +145,21 @@
                                                             </div>
                                                             <div>{{ $material->course_file }}</div>
                                                         </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
-                                                                 <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
-                                                                    onmouseover="this.classList.add('ri-delete-bin-fill')" 
-                                                                    onmouseout="this.classList.remove('ri-delete-bin-fill')">
-                                                                </i>
-                                                            </a>
-                                                        </div>
+                                                        @if(Auth::user()->hasAnyRole(['Administrator']))
+                                                            <div class="d-flex align-items-center">
+                                                                <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
+                                                                    <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
+                                                                        onmouseover="this.classList.add('ri-delete-bin-fill')" 
+                                                                        onmouseout="this.classList.remove('ri-delete-bin-fill')">
+                                                                    </i>
+                                                                </a>
+                                                            </div>
+                                                        @endif
                                                     </div>
 
                                                     <div class="mt-3">
                                                         @if ($extension === 'pdf')
-                                                            <iframe src="{{ $fileUrl }}#zoom=150&toolbar=0&navpanes=1&scrollbar=1" 
+                                                            <iframe src="{{ $fileUrl }}#zoom=150&toolbar=1&navpanes=1&scrollbar=1" 
                                                                 type="application/pdf" width="100%" height="1000" style="border: none; min-height: 100vh;">
                                                             </iframe>
                                                         @else
@@ -200,6 +233,5 @@
             </div>
         </div>
     </div>
-    
 
 </x-app-layout>

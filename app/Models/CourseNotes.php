@@ -14,6 +14,7 @@ class CourseNotes extends Model
        'slug', 'topic', 'content', 'title', 'chapter', 'link_one', 'link_two', 'link_three', 'link_four', 
        'status', 'instructorSlug', 'allocatonSlug', 'courseSlug', 'programSlug',
     ];
+    protected $dates = ['deleted_at'];
 
         public function course()
     {

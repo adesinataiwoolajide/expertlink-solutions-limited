@@ -14,6 +14,8 @@ class CourseMaterials extends Model
        'slug', 'course_file', 'courseSlug', 'noteSlug'
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function note()
     {
         return $this->belongsTo(CourseNotes::class, 'noteSlug', 'slug');

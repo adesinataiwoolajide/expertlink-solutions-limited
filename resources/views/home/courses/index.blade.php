@@ -30,9 +30,10 @@
                                <tr>
                                     <th>#</th>
                                     <th>📘 Course Name</th>
-                                    <th>👤 Instructor</th>
-                                    <th>🎓 Program</th>
-                                    <th>💰 Price (₦)</th>
+                                    <th>👤 Instructor Name</th>
+                                    <th>🎓 Program Name</th>
+                                    <th class="text-center">💰 Course Price (₦)</th>
+                                    <th class="text-center">📘 Course Notes</th>
                                     <th>⚙️ Action</th>
                                 </tr>
 
@@ -65,7 +66,16 @@
                                             @endif
                                         </td>
 
-                                        <td>{{ number_format($course->course_price) }}</td>
+                                        <td class="text-center">{{ number_format($course->course_price) }}</td>
+                                        <td class="center">
+                                            @php $noteCount = $course->notes()->count(); @endphp
+                                            <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
+                                                <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $noteCount }} Notes
+                                                </span>
+                                            </a>
+                                        </td>
+
                                         <td>
                                             <a href="{{ route('course.show', $course->slug) }}" class="btn btn-sm btn-info text-white">View</a>
                                             @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
