@@ -120,10 +120,11 @@ class CoursesController extends  Controller implements HasMiddleware
      */
     public function show($slug)
     {
-        $course = Courses::where('slug', $slug)->with('program', 'allocations')->first();
+        $course = Courses::where('slug', $slug)->with('program', 'allocations', 'materials', 'notes')->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
+        
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
@@ -131,16 +132,16 @@ class CoursesController extends  Controller implements HasMiddleware
             $users = User::where(['role' => 'Instructor', 'status' => 1])->orderBy('first_name', 'asc')->get();
             $allocations = $course->allocations()->with(['user', 'allocationHistory'])->orderBy('created_at','desc')->get();
             if ($allocations->isNotEmpty()) {
-
                 $allocation = $allocations->first();
                 $history = CourseAllocationHistories::where('allocationSlug', $allocation->slug)->with(['previousUser', 'newUser', 'addedBy'])->orderBy('created_at', 'desc')->get();
             }else{
                $history = collect();  
             }
-            //$allocationHistory = $allocations->pluck('allocationHistory')->filter()->sortByDesc('created_at');
+            $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
+            
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
-                'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history
+                'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

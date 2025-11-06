@@ -377,6 +377,44 @@
 
                                 @endif
                             </div>
+                            <div class="tab-pane fade" id="vStep5" role="tabpanel" aria-labelledby="vStep5-tab">
+
+                                @if(count($notes) > 0)
+                                    <div class="row g-4">
+                                        @foreach ($notes as $voll)
+                                            <div class="col-md-6">
+                                                <div class="card shadow-sm h-100">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h6 class="mb-0">{{ $voll->topic }}</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <ul class="list-group list-group-flush mb-3">
+                                                            <li class="list-group-item"><strong>Instructor Name: </strong> {{ $voll->instructor->first_name . ' '. $voll->instructor->last_name ?: "NULL"}}</li>
+                                                            <li class="list-group-item"><strong>Course Materials:</strong> {{ $voll->materials->count() ?? '0' }}</li>
+                                                            <li class="list-group-item"><strong>Created On:</strong> {{ $voll->created_at->format('d M Y') }}</li>
+                                                        </ul>
+                                                        <a href="{{ route('course.note.show', $voll->slug) }}" class="btn btn-outline-primary w-100">
+                                                            View Note Details
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+
+                                    <div class="col-12">
+                                        <div class="card border-danger text-center">
+                                            <div class="card-body">
+                                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                                <h5 class="card-title text-danger">No course note was Found</h5>
+                                                <p class="card-text text-muted">There are currently no course anotes available for this view.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

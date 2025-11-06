@@ -29,4 +29,10 @@ class CourseNotes extends Model
     {
         return $this->hasMany(CourseMaterials::class, 'noteSlug', 'slug');
     }
+
+    public function instructor()
+    {
+        return $this->belongsTo(User::class, 'instructorSlug', 'slug');
+    }
+
 }

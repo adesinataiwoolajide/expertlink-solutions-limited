@@ -94,7 +94,9 @@
                                                     <img src="{{ $fileUrl }}"
                                                     class="d-block mx-lg-auto img-fluid rounded-5 shadow-lg" alt="Best Admin Templates"
                                                     style="height: 550px;">
-            
+                                                    <div class="position-absolute top-0 end-0 mt-2 me-2">
+                                                        <span class="badge bg-danger rounded-pill px-3 py-2"><i class="ri-delete-bin-line"></i></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             {{-- <div class="col-md-12 mb-6">

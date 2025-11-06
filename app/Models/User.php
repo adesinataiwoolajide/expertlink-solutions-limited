@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\CourseNotesController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,6 +50,11 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->hasMany(Courses::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(CourseNotes::class);
     }
 
     public function courseAllocations()
