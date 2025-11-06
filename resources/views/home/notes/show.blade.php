@@ -91,29 +91,18 @@
                                             
                                             <div class="col-12 col-sm-12 col-lg-6 mb-3">
                                                 <div class="position-relative">
-                                                    <img src="{{ $fileUrl }}"
-                                                    class="d-block mx-lg-auto img-fluid rounded-5 shadow-lg" alt="Best Admin Templates"
-                                                    style="height: 550px;">
-                                                    <div class="position-absolute top-0 end-0 mt-2 me-2">
-                                                        <span class="badge bg-danger rounded-pill px-3 py-2"><i class="ri-delete-bin-line"></i></span>
+                                                    <img src="{{ $fileUrl }}" class="d-block mx-lg-auto img-fluid rounded-5 shadow-lg" style="height: 550px;">
+                                                    <div class="d-flex align-items-center">
+                                                        <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
+                                                            <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
+                                                                onmouseover="this.classList.add('ri-delete-bin-fill')" 
+                                                                onmouseout="this.classList.remove('ri-delete-bin-fill')">
+                                                            </i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-12 mb-6">
-                                                <div class="list-group-item">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
-                                                            <i class="{{ $iconClass }}"></i>
-                                                        </div>
-                                                        <div>{{ $material->course_file }}</div>
-                                                    </div>
-                                                    <div style="display: flex; justify-content: center;">
-                                                        <img src="{{ $fileUrl }}" alt="Image Preview" style="width: 100%; height: 50%; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                                                    </div>
-
-                                                </div>
-                                            </div> --}}
-
+                                           
                                         @else
                                             
                                             <div class="col-12 mb-4">
@@ -126,24 +115,20 @@
                                                             <div>{{ $material->course_file }}</div>
                                                         </div>
                                                         <div class="d-flex align-items-center">
-                                                            <i class="ri-arrow-down-s-line text-muted me-2"></i>
-                                                            <a href="{{ route('material.delete', $material->slug) }}"
-                                                            onclick="return confirm('Are you sure you want to delete this file?')"
-                                                            class="text-danger">
-                                                                <i class="ri-delete-bin-line"></i>
+                                                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $material->slug }}" class="text-danger">
+                                                                 <i class="ri-delete-bin-line text-danger me-2 fs-4" style="cursor: pointer;" 
+                                                                    onmouseover="this.classList.add('ri-delete-bin-fill')" 
+                                                                    onmouseout="this.classList.remove('ri-delete-bin-fill')">
+                                                                </i>
                                                             </a>
                                                         </div>
                                                     </div>
 
                                                     <div class="mt-3">
                                                         @if ($extension === 'pdf')
-                                                            <iframe src="{{ $fileUrl }}#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="800" style="border: none;"></iframe>
-                                                        @elseif ($extension === 'pptx')
-                                                            @php
-                                                                $encodedUrl = urlencode($fileUrl);
-                                                                $pptxViewerUrl = "https://view.officeapps.live.com/op/view.aspx?src={$encodedUrl}&wdOrigin=BROWSELINK";
-                                                            @endphp
-                                                            <iframe src="{{ $pptxViewerUrl }}" width="100%" height="800" frameborder="0"></iframe>
+                                                            <iframe src="{{ $fileUrl }}#zoom=150&toolbar=0&navpanes=1&scrollbar=1" 
+                                                                type="application/pdf" width="100%" height="1000" style="border: none; min-height: 100vh;">
+                                                            </iframe>
                                                         @else
                                                             <div class="text-muted">Preview not available for .{{ $extension }} files.</div>
                                                         @endif
@@ -151,6 +136,23 @@
                                                 </div>
                                             </div>
                                         @endif
+                                        <div class="modal fade" id="deleteModal-{{ $material->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $material->slug }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger">
+                                                        <h5 class="modal-title" id="deleteModalLabel-{{ $material->slug }}">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete <strong>{{ $material->course_file }}</strong> from course material? This action cannot be undone.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <a href="{{ route('material.delete', $material->slug) }}" class="btn btn-danger">Yes, Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -181,6 +183,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            
                                             @endif
                                         @else
                                             <div class="col-md-12 mb-3">

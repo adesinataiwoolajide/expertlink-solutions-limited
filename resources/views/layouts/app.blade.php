@@ -28,8 +28,22 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
-    <body>
-   
+    <body {{ Auth::user()->email == 'tolajide74@gmail.com' ? '' : 'oncontextmenu="return false"' }}>
+      <div id="rightClickError" class="alert alert-danger text-center" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
+        ⚠️ Right-click is disabled on this site.
+      </div>
+
+      <script>
+        document.addEventListener('contextmenu', function (e) {
+          e.preventDefault();
+          const errorBox = document.getElementById('rightClickError');
+          errorBox.style.display = 'block';
+          setTimeout(() => {
+            errorBox.style.display = 'none';
+          }, 3000); // hides after 3 seconds
+        });
+      </script>
+
     <div class="page-wrapper">
 
       <!-- Main container starts -->

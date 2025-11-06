@@ -228,8 +228,31 @@ class CourseNotesController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CourseNotes $courseNotes)
+    public function destroy($slug)
     {
-        //
+        $notes = CourseNotes::where('slug', $slug)->first();
+        if(!$notes){
+            return redirect()->back()->with('error', 'No course note was found.');
+        }
+        dd($notes);
+        
+    }
+
+    public function destroyNote($slug)
+    {
+        $materials = CourseMaterials::where('slug', $slug)->first();
+        if(!$materials){
+            return redirect()->back()->with('error', 'This course material was not found.');
+        }
+        $file = 'storage/course-material/'.$materials->course_file;
+        if (file_exists($file)) {
+            if(($materials->delete()) && (unlink($file))){
+                return redirect()->back()->with('success', 'Course material deleted successfully.');
+            }else{
+                return redirect()->back()->with('error', 'Course materialcould not be deleted at the moment, please try again later.');
+            }
+        }else{
+            return redirect()->back()->with('error', 'Course material does not exist.');
+        }
     }
 }

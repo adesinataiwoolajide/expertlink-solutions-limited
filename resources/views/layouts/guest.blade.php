@@ -22,7 +22,22 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="login-bg font-sans text-gray-900 antialiased">
+<body class="login-bg font-sans text-gray-900 antialiased" oncontextmenu="return false">
+    
+      <div id="rightClickError" class="alert alert-danger text-center" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
+        ⚠️ Right-click is disabled on this site.
+      </div>
+
+      <script>
+        document.addEventListener('contextmenu', function (e) {
+          e.preventDefault();
+          const errorBox = document.getElementById('rightClickError');
+          errorBox.style.display = 'block';
+          setTimeout(() => {
+            errorBox.style.display = 'none';
+          }, 3000); // hides after 3 seconds
+        });
+      </script>
     
     <main>
         {{ $slot }}
