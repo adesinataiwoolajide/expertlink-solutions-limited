@@ -89,7 +89,15 @@
 
                                         @if (in_array($extension, $imageExtensions))
                                             
-                                            <div class="col-md-12 mb-6">
+                                            <div class="col-12 col-sm-12 col-lg-6 mb-3">
+                                                <div class="position-relative">
+                                                    <img src="{{ $fileUrl }}"
+                                                    class="d-block mx-lg-auto img-fluid rounded-5 shadow-lg" alt="Best Admin Templates"
+                                                    style="height: 550px;">
+            
+                                                </div>
+                                            </div>
+                                            {{-- <div class="col-md-12 mb-6">
                                                 <div class="list-group-item">
                                                     <div class="d-flex align-items-center mb-2">
                                                         <div class="icon-box sm bg-{{ $color }}-subtle text-{{ $color }} rounded-circle me-3">
@@ -97,13 +105,12 @@
                                                         </div>
                                                         <div>{{ $material->course_file }}</div>
                                                     </div>
-                                                   <div style="display: flex; justify-content: center;">
-                                                        <img src="{{ $fileUrl }}" alt="Image Preview"
-                                                            style="width: 100%; height: 50%; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                                                    <div style="display: flex; justify-content: center;">
+                                                        <img src="{{ $fileUrl }}" alt="Image Preview" style="width: 100%; height: 50%; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                         @else
                                             
