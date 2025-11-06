@@ -84,7 +84,7 @@
                                             @else
                                                 @if($course->allocation)
                                                 
-                                                    <a href="{{ route('note.create', [$course->slug, $allocation->slug]) }}">
+                                                    <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
                                                         <span class="badge bg-warning">
                                                             Create a Note
                                                         </span>
