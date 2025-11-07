@@ -20,8 +20,11 @@
                             <div class="infotechno-inner-one">
                                 <img class="img-fluid" src="{{ asset('elsFront/images/hero/home-infotechno-main-slider-slide-01-image-01.webp')}}" alt="">
                             </div>
-                            <div class="infotechno-inner-two  wow move-up">
+                            {{-- <div class="infotechno-inner-two  wow move-up">
                                 <img class="img-fluid" src="{{ asset('elsFront/images/hero/home-infotechno-main-slider-slide-01-image-02.webp')}}" alt="">
+                            </div> --}}
+                            <div class="software-innovation-hero-image animation_images three mt-30">
+                                <img src="{{ asset('elsFront/images/hero/soft-01.webp')}}" class="img-fluid" alt="">
                             </div>
                         </div>
                     </div>
@@ -475,7 +478,121 @@
             </div>
         </div>
         
-       
+        <div class="team-member-wrapper bg-gray section-space--ptb_100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="section-title section-space--mb_60">
+                            <h3 class="heading">Our <span class="text-color-primary">experience </span> experts</h3>
+                            <p class="text mt-30">Mitech specializes in technological and IT-related services such as product engineering, warranty management, building cloud, infrastructure, network, etc. </p>
+
+                            <div class="sider-title-button-box mt-30">
+                                <a href="#" class="ht-btn ht-btn-md">Join us now</a>
+                                <a href="#" class="btn-text font-weight--bold small-mt__20">View all team <i class="ml-1 button-icon fas fa-arrow-right"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-8 ht-team-member-style-one">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 wow move-up">
+                                <div class="grid-item">
+                                    <div class="ht-team-member">
+                                        <div class="team-image">
+                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-01-370x250.webp')}}" alt="">
+                                            <div class="social-networks">
+                                                <div class="inner">
+                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="team-info ">
+                                            <h5 class="name">Dollie Horton </h5>
+                                            <div class="position">Marketing</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 wow move-up">
+                                <div class="grid-item">
+                                    <div class="ht-team-member">
+                                        <div class="team-image">
+                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-07-370x250.webp')}}" alt="">
+                                            <div class="social-networks">
+                                                <div class="inner">
+                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="team-info ">
+                                            <h5 class="name">Stephen Mearsley </h5>
+                                            <div class="position">President & CEO</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 wow move-up">
+                                <div class="grid-item">
+                                    <div class="ht-team-member">
+                                        <div class="team-image">
+                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-04-370x250.webp')}}" alt="">
+                                            <div class="social-networks">
+                                                <div class="inner">
+                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="team-info ">
+                                            <h5 class="name">Maggie Strickland </h5>
+                                            <div class="position">Financial Services</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 wow move-up">
+                                <div class="grid-item">
+                                    <div class="ht-team-member">
+                                        <div class="team-image">
+                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-02-370x250.webp')}}" alt="">
+                                            <div class="social-networks">
+                                                <div class="inner">
+                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
+                                                    </a>
+                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="team-info ">
+                                            <h5 class="name">Monica Blews</h5>
+                                            <div class="position">Project manager</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="fun-fact-wrapper">
             <div class="container">
                 <div class="fun-fact-grid-4">

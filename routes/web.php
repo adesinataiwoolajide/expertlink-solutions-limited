@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController};
+use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -17,9 +17,7 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WebsiteController::class, 'index'])->name('website');
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
