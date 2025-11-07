@@ -13,8 +13,12 @@ Route::get('/clear-cache', function () {
         'success' => "All Application cache flushed successfully",
     ]);
 });
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('auth.login');
+});
+
+Route::get('/', function () {
+    return view('welcome');
 });
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);

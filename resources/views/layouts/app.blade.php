@@ -1,4 +1,6 @@
+<?php ini_set('max_execution_time', 12000); ?>
 <!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -16,8 +18,6 @@
         <link rel="stylesheet" href="{{ asset('elsAdmin/css/main.min.css')}}" />
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/overlay-scroll/OverlayScrollbars.min.css')}}" />
         <link rel="stylesheet" href="{{ asset('elsAdmin/vendor/daterange/daterange.css')}}" />
-
-      
 
         <link href="{{ asset('elsAdmin/vendor/select2/select2.min.css')}}" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
