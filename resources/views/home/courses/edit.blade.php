@@ -20,6 +20,9 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Please fill the below form to Create Update a Course details</h5>
+                <a href="{{ route('course.show', $course->slug) }}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-1"></i> View Course Details
+                </a>
             </div>
             <div class="card-body">
                 <div class="row gx-3">

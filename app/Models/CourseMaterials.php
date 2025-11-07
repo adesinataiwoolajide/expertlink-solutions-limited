@@ -11,7 +11,7 @@ class CourseMaterials extends Model
     protected $table = 'course_materials';
     protected $primaryKey = 'id';
     protected $fillable = [
-       'slug', 'course_file', 'courseSlug', 'noteSlug'
+       'slug', 'course_file', 'courseSlug', 'noteSlug','addedByUserSlug'
     ];
 
     protected $dates = ['deleted_at'];

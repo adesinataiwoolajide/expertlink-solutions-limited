@@ -48,12 +48,6 @@
                                 </div>
                             @endforeach
                             <div class="mb-3 col-md-12">
-                                <label class="form-label">Course Note Content:</label>
-                                <textarea class="form-control summernote" name="content" id="content" required>{!! old('content') ?? "<p> Please enter the course contents here</p>" !!}}</textarea>
-                                <x-input-error :messages="$errors->get('content')" class="mt-2 text-danger" />
-                                
-                            </div>
-                            <div class="mb-3 col-md-12">
                                 <label class="form-label font-bold">Reference Materials:</label>
                                 <div class="container mt-4">
                                     <div id="dropZone" class="border border-primary border-dashed rounded p-4 text-center mb-4"
@@ -67,6 +61,13 @@
                                 </div>
                             </div>
 
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">Course Note Content:</label>
+                                <textarea class="form-control summernote2" name="content" id="content" required>{!! old('content') ?? "<p> Please enter the course contents here</p>" !!}</textarea>
+                                <x-input-error :messages="$errors->get('content')" class="mt-2 text-danger" />
+                                
+                            </div>
+                            
                             <div class="mb-3 col-md-12">
                                 <label for="postNote">Choose when to post the note:</label>
                                 <select id="postNote" name="postNote" id="postNote" class="form-control" required>

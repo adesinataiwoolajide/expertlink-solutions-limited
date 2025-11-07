@@ -205,6 +205,78 @@ body {
     -webkit-tap-highlight-color: rgba(16, 19, 22, 0)
 }
 
+.bg-indigo {
+  background-color: indigo;
+  color: white;
+}
+
+.bg-pink {
+  background-color: pink;
+  color: white;
+}
+
+.bg-purple {
+  background-color: purple;
+  color: white;
+}
+
+/* Additional custom background color classes */
+.bg-teal {
+  background-color: teal;
+  color: white;
+}
+
+.bg-orange {
+  background-color: orange;
+  color: black;
+}
+
+.bg-lime {
+  background-color: lime;
+  color: black;
+}
+
+.bg-cyan {
+  background-color: cyan;
+  color: black;
+}
+
+.bg-magenta {
+  background-color: magenta;
+  color: white;
+}
+
+.bg-brown {
+  background-color: brown;
+  color: white;
+}
+
+.bg-gray {
+  background-color: gray;
+  color: white;
+}
+
+.bg-olive {
+  background-color: olive;
+  color: white;
+}
+
+.bg-maroon {
+  background-color: maroon;
+  color: white;
+}
+
+.bg-gold {
+  background-color: gold;
+  color: black;
+}
+
+.bg-cyan {
+  background-color: cyan;
+  color: black;
+}
+
+
 hr {
     margin: 1rem 0;
     color: inherit;

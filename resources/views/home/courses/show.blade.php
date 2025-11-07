@@ -19,6 +19,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{$course->course_name}} Details</h5>
+                
             </div>
             <div class="card-body">
                 <div class="row gx-3">
@@ -400,6 +401,13 @@
                                                 </div>
                                             </div>
                                         @endforeach
+                                        @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+                                            <div class="col-md-12">
+                                                <a href="{{ route('course.note.index', $course->slug) }}" class="btn btn-info text-white">
+                                                    <i class="bi bi-pencil-square me-1"></i> View All Course Notes
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 @else
 
@@ -409,6 +417,13 @@
                                                 <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
                                                 <h5 class="card-title text-danger">No course note was Found</h5>
                                                 <p class="card-text text-muted">There are currently no course anotes available for this view.</p>
+                                                @if($course->allocation)
+                                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
+                                                        <a href="{{ route('course.note.index', [$course->slug, $course->allocation->slug]) }}" class="btn btn-primary">
+                                                            <i class="bi bi-pencil-square me-1"></i> Create New Course Note
+                                                        </a>
+                                                    @endif
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

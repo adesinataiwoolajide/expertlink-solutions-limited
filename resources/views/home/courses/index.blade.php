@@ -57,18 +57,18 @@
                                         </td>
                                         <td>
                                             @if($course->allocation)
-                                                <span class="badge bg-dark text-white">Allocated To:
-
+                                                <span class="badge bg-indigo text-white">Allocated To: <br>
+                                                    {{ $course->allocation->user->first_name . ' '. $course->allocation->user->last_name }}
                                                 </span>
                                             @else
-                                                <span class="badge bg-danger text-white">Pending Allocation</span>
+                                                <span class="badge bg-danger text-white">Pending <br> Allocation</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if($course->program)
                                                 <span class="badge bg-dark text-white">{{ $course->program->program_name }}</span>
                                             @else
-                                                <span class="badge bg-warning text-white">{{ $course->programSlug }}</span>
+                                                <span class="badge bg-orange text-white">{{ $course->programSlug }}</span>
                                             @endif
                                         </td>
 
@@ -77,22 +77,30 @@
                                             @php $noteCount = $course->notes()->count(); @endphp
                                             @if($noteCount > 0)
                                                 <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
-                                                    <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $noteCount }} Notes
+                                                    <span class="badge {{ $noteCount > 0 ? 'bg-magenta' : 'bg-danger' }}">
+                                                        View {{ $noteCount }} Course Notes
                                                     </span>
                                                 </a>
-                                            @else
-                                                @if($course->allocation)
-                                                
+                                                @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor'])) <br>
                                                     <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
-                                                        <span class="badge bg-warning">
+                                                        <span class="badge bg-purple">
                                                             Create a Note
                                                         </span>
                                                     </a>
+                                                @endif
+                                            @else
+                                                @if($course->allocation)
+                                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
+                                                        <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
+                                                            <span class="badge bg-success">
+                                                                Create a Note
+                                                            </span>
+                                                        </a>
+                                                    @endif
 
                                                 @else
 
-                                                    <span class="badge {{ $noteCount > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                    <span class="badge bg-warning">
                                                         No Notes Found
                                                     </span>
 
