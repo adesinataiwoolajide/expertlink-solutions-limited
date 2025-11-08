@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController};
+use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -16,6 +16,8 @@ Route::get('/clear-cache', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
+
+
 
 Route::get('/', [WebsiteController::class, 'index'])->name('website');
 
@@ -109,6 +111,22 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/view/{slug}', [CourseAllocationController::class, 'show'])->name('allocation.view');
         Route::post('/update/{slug}', [CourseAllocationController::class, 'update'])->name('allocation.update');
         Route::get('/delete/{slug}', [CourseAllocationController::class, 'destroy'])->name('allocation.delete');
+    });
+
+    Route::group(["prefix" => "FAQ"], function () {
+        Route::get("/", [FaqController::class, 'index'])->name("faq.index");
+        Route::post("/store", [FaqController::class, 'store'])->name("faq.store");
+        Route::post("/update/{slug}", [FaqController::class, 'update'])->name("faq.update");
+        Route::get("/delete/{slug}", [FaqController::class, 'destroy'])->name("faq.delete");
+    });
+
+    Route::group(["prefix" => "Blog"], function () {
+        Route::get("/", [BlogController::class, 'index'])->name("blog.index");
+        Route::get("/create", [BlogController::class, 'create'])->name("blog.create");
+        Route::get("/show/{slug}", [BlogController::class, 'show'])->name("blog.show");
+        Route::post("/store", [BlogController::class, 'store'])->name("blog.store");
+        Route::post("/update/{slug}", [BlogController::class, 'update'])->name("blog.update");
+        Route::get("/delete/{slug}", [BlogController::class, 'destroy'])->name("blog.delete");
     });
     Route::get('/signout', [HomeController::class, 'logout'])->name('signout');
 
