@@ -32,16 +32,30 @@ class WebsiteController extends Controller
         return view('website.contact');
     }
 
-    public function team()
+    public function teams()
     {
         
         return view('website.teams');
     }
 
     public function faq()
-    {
-        
+    {  
         return view('website.faqs');
+    }
+
+    public function blog()
+    {
+        return view('website.blog');
+    }
+
+    public function partners()
+    {
+        return view('website.partners');
+    }
+
+    public function reviews()
+    {
+        return view('website.reviews');
     }
 
     /**
@@ -63,7 +77,7 @@ class WebsiteController extends Controller
         }
         $courses = $program->courses()->orderBy('created_at', 'asc')->get();
         return view('website.programView')->with([
-            'programs' => $program, 'courses' => $courses, 'slug' => $slug
+            'program' => $program, 'courses' => $courses, 'slug' => $slug
         ]);
     }
 

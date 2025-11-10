@@ -162,9 +162,9 @@
                                                 <ul class="submenu">
                                                     <li><a href="{{ route('website.faq') }}"><span>FAQ</span></a></li>
                                                     <li><a href="{{ route('website.teams') }}"><span>Our Team</span></a></li>
-                                                    <li><a href="industries.html"><span>Blog</span></a></li>
-                                                    <li><a href="industries.html"><span>Our Partners</span></a></li>
-                                                    <li><a href="industries.html"><span>Client Reviews</span></a></li>
+                                                    <li><a href="{{ route('website.blog') }}"><span>Blog</span></a></li>
+                                                    <li><a href="{{ route('website.partner') }}"><span>Our Partners</span></a></li>
+                                                    <li><a href="{{ route('website.review') }}"><span>Client Reviews</span></a></li>
                                                 </ul>
                                             </li>
                                             <li class="has-children has-children--multilevel-submenu">
