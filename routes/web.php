@@ -23,6 +23,7 @@ Route::get('/', [WebsiteController::class, 'index'])->name('website');
 Route::get('/aboutus', [WebsiteController::class, 'about'])->name('website.aboutus');
 Route::get('/contactus', [WebsiteController::class, 'contact'])->name('website.contactus');
 Route::get('/faq', [WebsiteController::class, 'faq'])->name('website.faq');
+Route::get('/our-teams', [WebsiteController::class, 'teams'])->name('website.teams');
 Route::prefix('our-programs')->group(function () {
 
     Route::get('/', [WebsiteController::class, 'program'])->name('website.programs');

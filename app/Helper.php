@@ -47,6 +47,12 @@
         return \DB::table($table_name)->orderBy('created_at', 'desc')->$opt();
     }
 
+    function getRecordData($model, $relationship, $name, $order, $opt)
+    {
+        return $model::with($relationship)->orderBy($name, $order)->$opt();
+
+    }
+
     function getDateDiff($dateOne, $dateTwo){
         $time1 = new DateTime($dateOne);
         $time2 = new DateTime($dateTwo);

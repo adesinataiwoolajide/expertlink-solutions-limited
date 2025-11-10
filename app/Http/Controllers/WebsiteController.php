@@ -12,7 +12,7 @@ class WebsiteController extends Controller
     public function index()
     {
         $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
-        return view('welcome')->with(['programs' => $program]);
+        return view('welcome');
     }
 
     /**
@@ -20,8 +20,7 @@ class WebsiteController extends Controller
      */
     public function about()
     {
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
-        return view('website.about')->with(['programs' => $program]);
+        return view('website.about');
     }
 
     /**
@@ -29,14 +28,20 @@ class WebsiteController extends Controller
      */
     public function contact()
     {
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
-        return view('website.contact')->with(['programs' => $program]);
+        
+        return view('website.contact');
+    }
+
+    public function team()
+    {
+        
+        return view('website.teams');
     }
 
     public function faq()
     {
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
-        return view('website.faqs')->with(['programs' => $program]);
+        
+        return view('website.faqs');
     }
 
     /**
@@ -65,9 +70,8 @@ class WebsiteController extends Controller
     public function courses()
     {
         $courses = Courses::with(['program'])->orderBy('course_name', 'asc')->get();
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
         return view('website.courses')->with(
-            ['courses' => $courses, 'programs' => $program]
+            ['courses' => $courses]
         );
     }
 
@@ -77,9 +81,9 @@ class WebsiteController extends Controller
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+       
         return view('website.courseView')->with([
-            'course' => $course, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug, 'programs' => $program
+            'course' => $course, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
         ]);
     }
     
