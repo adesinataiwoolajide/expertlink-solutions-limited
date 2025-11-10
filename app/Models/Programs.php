@@ -13,7 +13,7 @@ class Programs extends Model
     protected $primaryKey = 'program_id';
 
     protected $fillable = [
-       'slug', 'program_name', 'banner', 
+       'slug', 'program_name', 'banner', 'description'
     ];
     protected $dates = ['deleted_at'];
 

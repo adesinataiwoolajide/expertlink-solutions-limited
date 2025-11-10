@@ -27,6 +27,7 @@ class UpdateProgramRequest extends FormRequest
     {
         return [
             'program_name' => ['required', 'string', 'max:255',],
+            'description' => ['required'],
             'banner' => ['sometimes', 'image', 'mimes:png,jpg,jpeg,svg'],
         ];
     }

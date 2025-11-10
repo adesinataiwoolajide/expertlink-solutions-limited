@@ -54,11 +54,13 @@ class ProgramsController extends Controller implements HasMiddleware
     {
         $request->user()->fill($request->validated());
         $program_name = $request->input("program_name");
+        $description = $request->input("description");
         $file = createFileUpload('program-banner', $request->file('banner'), $program_name);
         $data =  new Programs([
             'slug' => RandomString(9),
             "program_name" => $program_name,
-            "banner" => $file['png']
+            "banner" => $file['png'],
+            'description' => $description,
         ]);
         
         if ($data->save()) {
@@ -100,6 +102,7 @@ class ProgramsController extends Controller implements HasMiddleware
         $request->user()->fill($request->validated());
         $previous_name = $request->input("previous_name");
         $program_name = $request->input("program_name");
+        $description = $request->input("description");
         if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
             $uploadFile = $request->file('banner');
             $folderName = 'program-banner';
@@ -118,6 +121,7 @@ class ProgramsController extends Controller implements HasMiddleware
             }
         }
         $program->program_name = $program_name;
+        $program->description = $description;
         $program->save();
         createLog( "Updated Progam with Slug: $slug details and Changed the program name from $previous_name to $program_name");
         $message = "You Have updated ". $request->input("program_name") . " Successfully";

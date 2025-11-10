@@ -27,6 +27,7 @@ class StoreProgramRequest extends FormRequest
     {
         return [
             'program_name' => ['required', 'string', 'max:255', 'unique:programs,program_name'],
+            'description' => ['required'],
             'banner' => ['required', 'image', 'mimes:png,jpg,jpeg,svg'],
         ];
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('slug')->default(RandomString(7));
             $table->string('program_name');
             $table->string('banner');
+            $table->string('description')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('deleted_at')->nullable();

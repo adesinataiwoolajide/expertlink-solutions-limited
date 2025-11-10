@@ -79,6 +79,11 @@
                                                 <small class="text-muted">Image preview will appear here</small>
                                             </div>
                                         </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Program Description:</label>
+                                            <textarea class="form-control summernote2" name="description" required>{!!  old('description') ?? 'Enter program description here...' !!}</textarea>
+                                            <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
+                                        </div>
 
                                     </div>
                                     <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Create a Program</button>
@@ -139,7 +144,7 @@
                                                         </td>
                                                         <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
                                                             aria-hidden="true">
-                                                            <div class="modal-dialog">
+                                                            <div class="modal-dialog modal-dialog-scrollable">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="basicModalLabel">Edit {{ $program->program_name }} Details</h5>
@@ -166,6 +171,12 @@
                                                                                     <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
                                                                                     <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
                                                                                     <div id="banner-feedback" class="mt-2 text-danger"></div>
+                                                                                </div>
+
+                                                                                <div class="mb-3 col-md-12">
+                                                                                    <label class="form-label">Program Description:</label>
+                                                                                    <textarea class="form-control summernote" name="description" required>{!!  old('description') ?? $program->description  !!}</textarea>
+                                                                                    <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
                                                                                 </div>
 
                                                                             </div>
