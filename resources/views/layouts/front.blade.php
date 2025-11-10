@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'Laravel') }}</title>
-        <link rel="icon" href="{{ asset('elsFront/images/favicon.webp')}}')}}">
+        <link rel="shortcut icon" href="{{ asset('elsAdmin/images/els-inc.png')}}" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Technology IT Solutions HTML Template">
         <link rel="stylesheet" href="{{ asset('elsFront/css/vendor/vendor.min.css')}}">
@@ -15,113 +15,113 @@
     <body>
         <div class="header-area header-sticky only-mobile-sticky">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="header position-relative">
-                        <!-- brand logo -->
-                        <div class="header__logo top-logo">
-                            <a href="index.html">
-                                <img src="{{ asset('elsFront/images/logo/logo-dark.webp')}}" width="160" height="48" aria-label="Mitech Logo" class="img-fluid" alt="">
-                            </a>
-                        </div>
-
-                        <div class="header-right flexible-image-slider-wrap">
-
-                            <div class="header-right-inner" id="hidden-icon-wrapper">
-                                <!-- Header Search Form -->
-                                <div class="header-search-form d-md-none d-block">
-                                    <form action="#" class="search-form-top">
-                                        <input class="search-field" type="text" placeholder="Search…">
-                                        <button class="search-submit" id="search-button" aria-label="Search">
-                                            <i class="search-btn-icon fa fa-search"></i>
-                                        </button>
-                                    </form>
-                                </div>
-
-                                <!-- Header Top Info -->
-                                <div class="swiper-container header-top-info-slider-werap top-info-slider__container">
-                                    <div class="swiper-wrapper header-top-info-inner default-color">
-                                        <div class="swiper-slide">
-                                            <div class="info-item">
-                                                <div class="info-icon">
-                                                    <span class="fa fa-phone"></span>
-                                                </div>
-                                                <div class="info-content">
-                                                    <h6 class="info-title">0122 8899900</h6>
-                                                    <div class="info-sub-title">Info@example.com</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="info-item">
-                                                <div class="info-icon">
-                                                    <span class="fa fa-map-marker-alt"></span>
-                                                </div>
-                                                <div class="info-content">
-                                                    <h6 class="info-title">219 Amara Fort Apt. 394</h6>
-                                                    <div class="info-sub-title">New York, NY 941</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="info-item">
-                                                <div class="info-icon">
-                                                    <span class="fa fa-clock"></span>
-                                                </div>
-                                                <div class="info-content">
-                                                    <h6 class="info-title">8:00AM - 6:00PM</h6>
-                                                    <div class="info-sub-title">Monday to Saturday</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="info-item">
-                                                <div class="info-icon">
-                                                    <span class="fas fa-comment-alt"></span>
-                                                </div>
-                                                <div class="info-content">
-                                                    <h6 class="info-title">Online 24/7</h6>
-                                                    <div class="info-sub-title">+122 123 4567</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Header Social Networks -->
-                                <div class="header-social-networks style-icons">
-                                    <div class="inner">
-                                        <a class=" social-link hint--black hint--bottom-left" aria-label="Twitter" href="https://twitter.com/" data-hover="Twitter" target="_blank">
-                                            <i class="social-icon fab fa-twitter"></i>
-                                        </a>
-                                        <a class=" social-link hint--black hint--bottom-left" aria-label="Facebook" href="https://facebook.com/" data-hover="Facebook" target="_blank">
-                                            <i class="social-icon fab fa-facebook-f"></i>
-                                        </a>
-                                        <a class=" social-link hint--black hint--bottom-left" aria-label="Instagram" href="https://instagram.com/" data-hover="Instagram" target="_blank">
-                                            <i class="social-icon fab fa-instagram"></i>
-                                        </a>
-                                        <a class=" social-link hint--black hint--bottom-left" aria-label="Linkedin" href="https://linkedin.com/" data-hover="Linkedin" target="_blank">
-                                            <i class="social-icon fab fa-linkedin"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- mobile menu -->
-                            <div class="mobile-navigation-icon d-block d-xl-none" id="mobile-menu-trigger">
-                                <i></i>
-                            </div>
-                            <!-- hidden icons menu -->
-                            <div class="hidden-icons-menu d-block d-md-none" id="hidden-icon-trigger">
-                                <a href="#">
-                                    <i class="far fa-ellipsis-h-alt"></i>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="header position-relative">
+                            <!-- brand logo -->
+                            <div class="header__logo top-logo">
+                                <a href="./">
+                                    <img src="{{ asset('elsFront/images/logo/logo-dark.webp')}}" width="160" height="48" aria-label="Mitech Logo" class="img-fluid" alt="">
                                 </a>
+                            </div>
+
+                            <div class="header-right flexible-image-slider-wrap">
+
+                                <div class="header-right-inner" id="hidden-icon-wrapper">
+                                    <!-- Header Search Form -->
+                                    <div class="header-search-form d-md-none d-block">
+                                        <form action="#" class="search-form-top">
+                                            <input class="search-field" type="text" placeholder="Search…">
+                                            <button class="search-submit" id="search-button" aria-label="Search">
+                                                <i class="search-btn-icon fa fa-search"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Header Top Info -->
+                                    <div class="swiper-container header-top-info-slider-werap top-info-slider__container">
+                                        <div class="swiper-wrapper header-top-info-inner default-color">
+                                            <div class="swiper-slide">
+                                                <div class="info-item">
+                                                    <div class="info-icon">
+                                                        <span class="fa fa-phone"></span>
+                                                    </div>
+                                                    <div class="info-content">
+                                                        <h6 class="info-title">0122 8899900</h6>
+                                                        <div class="info-sub-title">Info@example.com</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="info-item">
+                                                    <div class="info-icon">
+                                                        <span class="fa fa-map-marker-alt"></span>
+                                                    </div>
+                                                    <div class="info-content">
+                                                        <h6 class="info-title">219 Amara Fort Apt. 394</h6>
+                                                        <div class="info-sub-title">New York, NY 941</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="info-item">
+                                                    <div class="info-icon">
+                                                        <span class="fa fa-clock"></span>
+                                                    </div>
+                                                    <div class="info-content">
+                                                        <h6 class="info-title">8:00AM - 6:00PM</h6>
+                                                        <div class="info-sub-title">Monday to Saturday</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="info-item">
+                                                    <div class="info-icon">
+                                                        <span class="fas fa-comment-alt"></span>
+                                                    </div>
+                                                    <div class="info-content">
+                                                        <h6 class="info-title">Online 24/7</h6>
+                                                        <div class="info-sub-title">+122 123 4567</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Header Social Networks -->
+                                    <div class="header-social-networks style-icons">
+                                        <div class="inner">
+                                            <a class=" social-link hint--black hint--bottom-left" aria-label="Twitter" href="https://twitter.com/" data-hover="Twitter" target="_blank">
+                                                <i class="social-icon fab fa-twitter"></i>
+                                            </a>
+                                            <a class=" social-link hint--black hint--bottom-left" aria-label="Facebook" href="https://facebook.com/" data-hover="Facebook" target="_blank">
+                                                <i class="social-icon fab fa-facebook-f"></i>
+                                            </a>
+                                            <a class=" social-link hint--black hint--bottom-left" aria-label="Instagram" href="https://instagram.com/" data-hover="Instagram" target="_blank">
+                                                <i class="social-icon fab fa-instagram"></i>
+                                            </a>
+                                            <a class=" social-link hint--black hint--bottom-left" aria-label="Linkedin" href="https://linkedin.com/" data-hover="Linkedin" target="_blank">
+                                                <i class="social-icon fab fa-linkedin"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- mobile menu -->
+                                <div class="mobile-navigation-icon d-block d-xl-none" id="mobile-menu-trigger">
+                                    <i></i>
+                                </div>
+                                <!-- hidden icons menu -->
+                                <div class="hidden-icons-menu d-block d-md-none" id="hidden-icon-trigger">
+                                    <a href="#">
+                                        <i class="far fa-ellipsis-h-alt"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <div class="header-bottom-wrap bg-theme-default d-md-block d-none header-sticky">
             <div class="container">
@@ -138,15 +138,14 @@
                                                 <a href="./"><span>Home</span></a>
                                             </li>
                                             <li class="has-children has-children--multilevel-submenu">
-                                                <a href="#"><span>Training Courses</span></a>
+                                                <a href="{{ route('website.programs') }}"><span>Training Courses</span></a>
                                                 <ul class="submenu">
                                                     @foreach($programs as $key => $value)
                                                         <li class="has-children">
-                                                            <a href="about-us-01.html"><span>{{$value->program_name}}</span></a>
+                                                            <a href="{{ route('website.programs.show',$value->slug)}}"><span>{{$value->program_name}}</span></a>
                                                             @foreach($value->courses as $cos)
-
                                                                 <ul class="submenu">
-                                                                    <li><a href="about-us-02.html"><span>{{ $cos->course_name }}</span></a></li>
+                                                                    <li><a href="{{ route('website.programs.courseShow',[$cos->slug,$value->slug])}}"><span>{{ $cos->course_name }}</span></a></li>
                                                                 </ul>
                                                             @endforeach
                                                         </li>
@@ -155,13 +154,13 @@
                                                 </ul>
                                             </li>
                                             <li class="">
-                                                <a href="./"><span>About Us</span></a>
+                                                <a href="{{ route('website.aboutus') }}"><span>About Us</span></a>
                                             </li>
                                            
                                             <li class="has-children has-children--multilevel-submenu">
                                                 <a href="#"><span>Resources</span></a>
                                                 <ul class="submenu">
-                                                    <li><a href="it-services.html"><span>FAQ</span></a></li>
+                                                    <li><a href="{{ route('website.faq') }}"><span>FAQ</span></a></li>
                                                     <li><a href="managed-it-service.html"><span>Our Team</span></a></li>
                                                     <li><a href="industries.html"><span>Blog</span></a></li>
                                                     <li><a href="industries.html"><span>Our Partners</span></a></li>
@@ -183,7 +182,7 @@
                                                 </ul>
                                             </li>
                                             <li class="">
-                                                <a href="./"><span>Contact Us</span></a>
+                                                <a href="{{ route('website.contactus') }}"><span>Contact Us</span></a>
                                             </li>
                                         </ul>
                                     </nav>

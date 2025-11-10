@@ -20,6 +20,18 @@ Route::get('/login', function () {
 
 
 Route::get('/', [WebsiteController::class, 'index'])->name('website');
+Route::get('/aboutus', [WebsiteController::class, 'about'])->name('website.aboutus');
+Route::get('/contactus', [WebsiteController::class, 'contact'])->name('website.contactus');
+Route::get('/faq', [WebsiteController::class, 'faq'])->name('website.faq');
+Route::prefix('our-programs')->group(function () {
+
+    Route::get('/', [WebsiteController::class, 'program'])->name('website.programs');
+    Route::get('/{slug}', [WebsiteController::class, 'programShow'])->name('website.programs.show');
+    Route::get('/{courseSlug}/{programSlug}', [WebsiteController::class, 'courseShow'])->name('website.programs.courseShow');
+
+});
+
+
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
@@ -58,11 +70,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/create', [ProgramsController::class, 'create'])->name('program.create');
         Route::post('/store', [ProgramsController::class, 'store'])->name('program.store');
         Route::get('/edit/{slug}', [ProgramsController::class, 'edit'])->name('program.edit');
+        Route::get('/show/{slug}', [ProgramsController::class, 'show'])->name('program.show');
         Route::post('/update/{slug}', [ProgramsController::class, 'update'])->name('program.update');
         Route::get('/delete/{slug}', [ProgramsController::class, 'destroy'])->name('program.delete');
         Route::get('/restore/{slug}', [ProgramsController::class, 'restore'])->name('program.restore');
         Route::post('/validate-program-name', [ProgramsController::class, 'checkProgramName'])->name('check.program.name');
-        Route::get('/courses/{slug}', [ProgramsController::class, 'show'])->name('program.courses');
+        Route::get('/courses/{slug}', [ProgramsController::class, 'edit'])->name('program.courses');
     });
 
 

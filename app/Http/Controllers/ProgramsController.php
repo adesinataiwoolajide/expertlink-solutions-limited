@@ -75,9 +75,16 @@ class ProgramsController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(Programs $programs)
+    public function show($slug)
     {
-        //
+        $program = Programs::where('slug', $slug)->with(['courses', 'allocations'])->first();
+        if(!$program){
+            return redirect()->back()->with("error", "Program details does not exists");
+        }
+        $courses = $program->courses()->orderBy('created_at', 'asc')->get();
+         return view('home.programs.show')->with([
+            'program' => $program, 'courses' => $courses, 'slug' => $slug
+        ]);
     }
 
     /**
@@ -125,7 +132,7 @@ class ProgramsController extends Controller implements HasMiddleware
         $program->save();
         createLog( "Updated Progam with Slug: $slug details and Changed the program name from $previous_name to $program_name");
         $message = "You Have updated ". $request->input("program_name") . " Successfully";
-        return redirect()->route("program.index")->with(["success" => $message]);
+        return redirect()->route("program.show",$slug)->with(["success" => $message]);
     }
 
     /**

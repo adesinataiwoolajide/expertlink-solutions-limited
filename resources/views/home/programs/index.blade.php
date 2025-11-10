@@ -126,20 +126,20 @@
                                                         @php $courseCount = count($program->courses); @endphp
                                                         @if ($courseCount > 0)
                                                             <a href="{{ route('program.courses', $program->slug) }}" >
-                                                                <span class="badge bg-primary">View {{ $courseCount }} {{ Str::plural('Course', $courseCount) }}</span>
+                                                                <span class="badge bg-dark">View {{ $courseCount }} {{ Str::plural('Course', $courseCount) }}</span>
                                                             </a>
                                                         @else
                                                             <span class="badge bg-danger">No Courses</span>
                                                         @endif
                                                     </td>
 
-                                                    <td><span class="badge bg-info">{{ $program->created_at }}</span></td>
+                                                    <td><span class="badge bg-secondary">{{ $program->created_at }}</span></td>
                                                     @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
                                                         <td>
-                                                            <a href="" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $program->slug }}"><span class="badge bg-primary">Edit </span></a>
-                                                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
+                                                            <a href="{{ route('program.show',$program->slug) }}" class="text-white"><span class="badge bg-info">View Details </span></a>
+                                                            {{-- <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
                                                                 <span class="badge bg-danger"> Delete </span> 
-                                                            </a>
+                                                            </a> --}}
 
                                                         </td>
                                                         <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
@@ -190,23 +190,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="modal fade" id="deleteModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $program->slug }}" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header bg-danger">
-                                                                        <h5 class="modal-title" id="deleteModalLabel-{{ $program->slug }}">Confirm Deletion</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete <strong>{{ $program->program_name }}</strong>? This action cannot be undone.
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                        <a href="{{ route('program.delete', $program->slug) }}" class="btn btn-danger">Yes, Delete</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        
                                                     @endif
 
                                                 </tr>

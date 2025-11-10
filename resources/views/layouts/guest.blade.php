@@ -16,7 +16,7 @@
     <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
     <meta property="og:type" content="Website">
     <meta property="og:site_name" content="Glorious Empire Technologies">
-    <link rel="shortcut icon" href="{{ asset('elsAdmin/auth-access/favicon.svg')}}">
+    <link rel="shortcut icon" href="{{ asset('elsAdmin/images/els-inc.png')}}" />
     <link rel="stylesheet" href="{{ asset('elsAdmin/auth-access/bootstrap-icons.css')}}">
     <link rel="stylesheet" href="{{ asset('elsAdmin/auth-access/main.css')}}">
 

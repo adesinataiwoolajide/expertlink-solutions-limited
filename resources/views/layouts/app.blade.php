@@ -11,7 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <link rel="shortcut icon" href="{{ asset('elsAdmin/images/els.png')}}" />
+        <link rel="shortcut icon" href="{{ asset('elsAdmin/images/els-inc.png')}}" />
         <link href="{{ asset('elsAdmin/css/remi.css')}}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('elsAdmin/fonts/remix/remixicon.css')}}" />
@@ -28,7 +28,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
-    <body {{ Auth::user()->email == 'AAtolajide74@gmail.com' ? '' : 'oncontextmenu="return false"' }}>
+    <body {{ Auth::user()->email == 'tolajide74@gmail.com' ? '' : 'oncontextmenu="return false"' }}>
       <div id="rightClickError" class="alert alert-danger text-center" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
         ⚠️ Right-click is disabled on this site.
       </div>

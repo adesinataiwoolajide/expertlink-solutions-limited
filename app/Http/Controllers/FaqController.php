@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use Illuminate\Http\Request;
-
-class FaqController extends Controller
+use App\Http\Requests\{StoreFaqRequest, UpdateFaqRequest};
+use Illuminate\Support\Facades\{Auth};
+use App\Repositories\GeneralRepository;
+use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+class FaqController  extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth', new Middleware('role:Administrator|Admin|Instructor'),
+        ];
+    }
+    public function __construct(Faq $faq){
+        $this->model = new GeneralRepository($faq);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +38,7 @@ class FaqController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreFaqRequest $request)
     {
         //
     }
@@ -50,7 +62,7 @@ class FaqController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Faq $faq)
+    public function update(UpdateFaqRequest $request, $slug)
     {
         //
     }

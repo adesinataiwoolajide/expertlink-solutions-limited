@@ -63,6 +63,24 @@
 				</li>
 			@endif
 
+			@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+
+				<li class="{{ request()->routeIs('faq.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('faq.index') }}">
+						<i class="ri-list-settings-line"></i>
+						<span class="menu-text">FAQ</span>
+					</a>
+				</li>
+
+				<li class="{{ request()->routeIs('blog.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('blog.index') }}">
+						<i class="ri-table-line"></i>
+						<span class="menu-text">BLOG</span>
+					</a>
+				</li>
+
+			@endif
+
 			<li class="treeview ">
 				<a href="#!">
 					<i class="ri-table-line"></i>

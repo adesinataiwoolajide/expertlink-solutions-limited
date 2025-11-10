@@ -73,7 +73,7 @@
                                     data-bs-toggle="pill" data-bs-target="#vStep4" role="tab" aria-controls="vStep4"
                                     aria-selected="false">
                                     <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📋</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📚</span>
                                         <div class="ms-2">
                                             <span class="step-title fw-semibold d-block">Course Allocation History</span>
                                             <small>Course Allocation Histories</small>
@@ -97,6 +97,20 @@
                                     </button>
                                 </li>
                             @endif
+
+                            <li class="nav-item mb-3" role="presentation">
+                                <button type="button" class="nav-link w-100 text-start" id="vStepA1-tab"
+                                    data-bs-toggle="pill" data-bs-target="#vStepA1" role="tab" aria-controls="vStepA1"
+                                    aria-selected="true">
+                                    <div class="d-flex align-items-center">
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📘</span>
+                                        <div class="ms-2">
+                                            <span class="step-title fw-semibold d-block">Program Info</span>
+                                            <small>View Program details</small>
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
                         </ul>
                         <div class="mt-5 col-md-12">
                             <img src="{{ asset('course-banner/' . $course->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Course Banner">
@@ -105,6 +119,24 @@
                     <div class="col-lg-9 col-md-12">
                         <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                             <!-- Step 1 Content -->
+                            <div class="tab-pane fade" id="vStepA1" role="tabpanel" aria-labelledby="vStepA1-tab">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h6 class="text-primary">{{ $program_name ?? '' }} Details</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Program Name:</label>
+                                        <p class="form-control-plaintext">{{ $program_name }}</p>
+                                    </div>
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Program Description:</label>
+                                        <p class="form-control-plaintext">{!! $course->program->description ?? 'NULL' !!}</p>
+                                    </div>  
+                                    <div class="mb-3 col-md-12">
+                                        <img src="{{ asset('program-banner/' . $course->program->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Program Banner">
+                                    </div>  
+                                </div>
+                            </div>
                             <div class="tab-pane fade show active" id="vStep1" role="tabpanel" aria-labelledby="vStep1-tab">
                                
                                 <div class="d-flex justify-content-between align-items-center mb-4">

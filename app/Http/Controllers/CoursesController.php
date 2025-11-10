@@ -138,7 +138,6 @@ class CoursesController extends  Controller implements HasMiddleware
                $history = collect();  
             }
             $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
-            
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
                 'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes

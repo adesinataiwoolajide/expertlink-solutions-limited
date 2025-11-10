@@ -67,6 +67,19 @@
                                         </div>
                                     </button>
                                 </li>
+                                <li class="nav-item mb-3" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStepA1-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStepA1" role="tab" aria-controls="vStepA1"
+                                        aria-selected="true">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📘</span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Course Info</span>
+                                                <small>Course details</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
                             @endif
                         </ul>
                         <div class="mt-5 col-md-12">
@@ -211,6 +224,71 @@
                                         </div>
                                     </div>
                                 @endif
+                            </div>
+                            <div class="tab-pane fade" id="vStepA1" role="tabpanel" aria-labelledby="vStepA1-tab">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="text-primary">Course Details</h4>
+                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                        <a href="{{ route('course.show', $course->slug) }}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square me-1"></i> View Course Details
+                                        </a>
+                                    @endif
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label fw-bold">Course Name:</label>
+                                        <p class="form-control-plaintext">{{ $course->course_name }}</p>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label fw-bold">Program:</label>
+                                        <p class="form-control-plaintext">{{ $program_name }}</p>
+                                    </div>
+
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label fw-bold">Course Price (₦):</label>
+                                        <p class="form-control-plaintext">{{ number_format($course->course_price) }}</p>
+                                    </div>
+
+                                    <div class="mb-4 col-md-12">
+                                        <label class="form-label fw-bold text-primary">Training Type:</label>
+                                        <p class="form-control-plaintext">
+                                            @foreach(explode(',', $course->training_type) as $type)
+                                                <span class="badge bg-info text-white me-1">{{ ucfirst(trim($type)) }}</span>
+                                            @endforeach
+                                        </p>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Basic Requirements:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->basic_requirements !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Outline:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_outline !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Learning Module:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->learning_module !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Schedule:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_schedule !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Course Overview:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->course_overview !!}</div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label fw-bold">Benefits:</label>
+                                        <div class="border p-2 rounded bg-light">{!! $course->benefits !!}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
