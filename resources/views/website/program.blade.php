@@ -42,7 +42,7 @@
                                                         <h6 class="heading">Expert Link Solutions</h6>
                                                         <div class="post-categories">{{$val->program_name}}</div>
                                                         <div class="text">
-                                                            At Mitech, we have a holistic and integrated approach towards core modernization to experience technological evolution.
+                                                            {{-- At Mitech, we have a holistic and integrated approach towards core modernization to experience technological evolution. --}}
                                                         </div>
                                                         <div class="box-projects-arrow">
                                                             <span class="button-text">View program</span>

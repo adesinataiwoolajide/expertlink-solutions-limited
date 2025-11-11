@@ -75,7 +75,7 @@ class WebsiteController extends Controller
         if(!$program){
             return redirect()->back()->with("error", "Program details does not exists");
         }
-        $courses = $program->courses()->orderBy('created_at', 'asc')->get();
+        $courses = $program->courses()->orderBy('created_at', 'asc')->paginate();
         return view('website.programView')->with([
             'program' => $program, 'courses' => $courses, 'slug' => $slug
         ]);

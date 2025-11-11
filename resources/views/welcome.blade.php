@@ -478,7 +478,7 @@
             </div>
         </div>
         
-        <div class="team-member-wrapper bg-gray section-space--ptb_100">
+        <div class="team-member-wrapper section-space--pt_100 section-space--pb_40">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
@@ -499,7 +499,7 @@
                                 <div class="grid-item">
                                     <div class="ht-team-member">
                                         <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-01-370x250.webp')}}" alt="">
+                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
                                             <div class="social-networks">
                                                 <div class="inner">
                                                     <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -512,8 +512,8 @@
                                             </div>
                                         </div>
                                         <div class="team-info ">
-                                            <h5 class="name">Dollie Horton </h5>
-                                            <div class="position">Marketing</div>
+                                            <h5 class="name">Taiwo Adesina </h5>
+                                            <div class="position">Software Engineer</div>
                                         </div>
                                     </div>
                                 </div>
@@ -522,7 +522,7 @@
                                 <div class="grid-item">
                                     <div class="ht-team-member">
                                         <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-07-370x250.webp')}}" alt="">
+                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
                                             <div class="social-networks">
                                                 <div class="inner">
                                                     <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -535,8 +535,8 @@
                                             </div>
                                         </div>
                                         <div class="team-info ">
-                                            <h5 class="name">Stephen Mearsley </h5>
-                                            <div class="position">President & CEO</div>
+                                            <h5 class="name">Taiwo Adesina </h5>
+                                            <div class="position">Software Engineer</div>
                                         </div>
                                     </div>
                                 </div>
@@ -545,7 +545,7 @@
                                 <div class="grid-item">
                                     <div class="ht-team-member">
                                         <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-04-370x250.webp')}}" alt="">
+                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
                                             <div class="social-networks">
                                                 <div class="inner">
                                                     <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -558,8 +558,8 @@
                                             </div>
                                         </div>
                                         <div class="team-info ">
-                                            <h5 class="name">Maggie Strickland </h5>
-                                            <div class="position">Financial Services</div>
+                                            <h5 class="name">Taiwo Adesina </h5>
+                                            <div class="position">Software Engineer</div>
                                         </div>
                                     </div>
                                 </div>
@@ -568,7 +568,7 @@
                                 <div class="grid-item">
                                     <div class="ht-team-member">
                                         <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsFront/images/team/team-member-02-370x250.webp')}}" alt="">
+                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
                                             <div class="social-networks">
                                                 <div class="inner">
                                                     <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -581,13 +581,12 @@
                                             </div>
                                         </div>
                                         <div class="team-info ">
-                                            <h5 class="name">Monica Blews</h5>
-                                            <div class="position">Project manager</div>
+                                            <h5 class="name">Taiwo Adesina </h5>
+                                            <div class="position">Software Engineer</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

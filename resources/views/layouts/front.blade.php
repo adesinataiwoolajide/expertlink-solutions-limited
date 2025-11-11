@@ -88,7 +88,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Header Social Networks -->
                                     <div class="header-social-networks style-icons">
                                         <div class="inner">
                                             <a class=" social-link hint--black hint--bottom-left" aria-label="Twitter" href="https://twitter.com/" data-hover="Twitter" target="_blank">
@@ -123,87 +122,87 @@
                 </div>
             </div>
 
-        <div class="header-bottom-wrap bg-theme-default d-md-block d-none header-sticky">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="header-bottom-inner position-relative">
-                            <div class="header-bottom-left-wrap">
-                                <!-- navigation menu -->
-                                <div class="header__navigation d-none d-xl-block">
-                                    <nav class="navigation-menu navigation-menu--text_white">
+            <div class="header-bottom-wrap bg-theme-default d-md-block d-none header-sticky">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="header-bottom-inner position-relative">
+                                <div class="header-bottom-left-wrap">
+                                    <!-- navigation menu -->
+                                    <div class="header__navigation d-none d-xl-block">
+                                        <nav class="navigation-menu navigation-menu--text_white">
 
-                                        <ul>
-                                            <li class="">
-                                                <a href="./"><span>Home</span></a>
-                                            </li>
-                                            <li class="has-children has-children--multilevel-submenu">
-                                                <a href="{{ route('website.programs') }}"><span>Training Courses</span></a>
-                                                <ul class="submenu">
-                                                    @foreach(getRecordData('App\Models\Programs', ['courses'], 'program_name', 'asc', 'get') as $key => $value)
-                                                        <li class="has-children">
-                                                            <a href="{{ route('website.programs.show',$value->slug)}}"><span>{{$value->program_name}}</span></a>
-                                                            @foreach($value->courses as $cos)
-                                                                <ul class="submenu">
-                                                                    <li><a href="{{ route('website.programs.courseShow',[$cos->slug,$value->slug])}}"><span>{{ $cos->course_name }}</span></a></li>
-                                                                </ul>
-                                                            @endforeach
-                                                        </li>
-                                                    @endforeach
-                                                    
-                                                </ul>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('website.aboutus') }}"><span>About Us</span></a>
-                                            </li>
-                                           
-                                            <li class="has-children has-children--multilevel-submenu">
-                                                <a href="#"><span>Resources</span></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{ route('website.faq') }}"><span>FAQ</span></a></li>
-                                                    <li><a href="{{ route('website.teams') }}"><span>Our Team</span></a></li>
-                                                    <li><a href="{{ route('website.blog') }}"><span>Blog</span></a></li>
-                                                    <li><a href="{{ route('website.partner') }}"><span>Our Partners</span></a></li>
-                                                    <li><a href="{{ route('website.review') }}"><span>Client Reviews</span></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="has-children has-children--multilevel-submenu">
-                                                <a href="#"><span>Our Services</span></a>
-                                                <ul class="submenu">
-                                                    <li><a href="it-services"><span>IT Consultancy</span></a></li>
-                                                    <li><a href="managed-it-service"><span>Trainings</span></a></li>
-                                                    <li><a href="cybersecurity"><span>Cybersecurity Solutions</span></a></li>
-                                                    <li><a href="cloud-services"><span>Cloud Services</span></a></li>
-                                                    <li><a href="software-development"><span>Software Development</span></a></li>
-                                                    <li><a href="network-solutions"><span>Network Solutions</span></a></li>
-                                                    <li><a href="data-analytics"><span>Data Analytics</span></a></li>
-                                                    <li><a href="technical-support"><span>Technical Support</span></a></li>
-                                                    <li><a href="technical-support"><span>System Intetegration</span></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="">
-                                                <a href="{{ route('website.contactus') }}"><span>Contact Us</span></a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                            <ul>
+                                                <li class="">
+                                                    <a href="./"><span>Home</span></a>
+                                                </li>
+                                                <li class="has-children has-children--multilevel-submenu">
+                                                    <a href="{{ route('website.programs') }}"><span>Training Courses</span></a>
+                                                    <ul class="submenu">
+                                                        @foreach(getRecordData('App\Models\Programs', ['courses'], 'program_name', 'asc', 'get') as $key => $value)
+                                                            <li class="has-children">
+                                                                <a href="{{ route('website.programs.show',$value->slug)}}"><span>{{$value->program_name}}</span></a>
+                                                                @foreach($value->courses as $cos)
+                                                                    <ul class="submenu">
+                                                                        <li><a href="{{ route('website.programs.courseShow',[$cos->slug,$value->slug])}}"><span>{{ $cos->course_name }}</span></a></li>
+                                                                    </ul>
+                                                                @endforeach
+                                                            </li>
+                                                        @endforeach
+                                                        
+                                                    </ul>
+                                                </li>
+                                                <li class="">
+                                                    <a href="{{ route('website.aboutus') }}"><span>About Us</span></a>
+                                                </li>
+                                            
+                                                <li class="has-children has-children--multilevel-submenu">
+                                                    <a href="#"><span>Resources</span></a>
+                                                    <ul class="submenu">
+                                                        <li><a href="{{ route('website.faq') }}"><span>FAQ</span></a></li>
+                                                        <li><a href="{{ route('website.teams') }}"><span>Our Team</span></a></li>
+                                                        <li><a href="{{ route('website.blog') }}"><span>Blog</span></a></li>
+                                                        <li><a href="{{ route('website.partner') }}"><span>Our Partners</span></a></li>
+                                                        <li><a href="{{ route('website.review') }}"><span>Client Reviews</span></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="has-children has-children--multilevel-submenu">
+                                                    <a href="#"><span>Our Services</span></a>
+                                                    <ul class="submenu">
+                                                        <li><a href="it-services"><span>IT Consultancy</span></a></li>
+                                                        <li><a href="managed-it-service"><span>Trainings</span></a></li>
+                                                        <li><a href="cybersecurity"><span>Cybersecurity Solutions</span></a></li>
+                                                        <li><a href="cloud-services"><span>Cloud Services</span></a></li>
+                                                        <li><a href="software-development"><span>Software Development</span></a></li>
+                                                        <li><a href="network-solutions"><span>Network Solutions</span></a></li>
+                                                        <li><a href="data-analytics"><span>Data Analytics</span></a></li>
+                                                        <li><a href="technical-support"><span>Technical Support</span></a></li>
+                                                        <li><a href="technical-support"><span>System Intetegration</span></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="">
+                                                    <a href="{{ route('website.contactus') }}"><span>Contact Us</span></a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="header-search-form ">
-                                <form action="#" class="search-form-top style-03 ">
-                                    <input class="search-field" type="text" placeholder="Search…">
-                                    <button class="search-submit">
-                                        <i class="search-btn-icon fa fa-search"></i>
-                                    </button>
-                                </form>
+                                <div class="header-search-form ">
+                                    <form action="#" class="search-form-top style-03 ">
+                                        <input class="search-field" type="text" placeholder="Search…">
+                                        <button class="search-submit">
+                                            <i class="search-btn-icon fa fa-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
 
         <div id="main-wrapper">
             @yield('content')

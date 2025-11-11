@@ -30,23 +30,14 @@
 
                                 
                                 <div class="sidebar-widget widget-blog-recent-post wow move-up">
-
-                                    <h4 class="sidebar-widget-title">Recent Posts</h4>
-
+                                    <h4 class="sidebar-widget-title">New Courses</h4>
                                     <ul>
-                                        <li>
-                                            <a href="#">Ideas for High Returns on Investment</a>
-                                        </li>
-                                       
+                                        @foreach($courses as $key => $vale)
+                                            <li>
+                                                <a href="{{ route('website.programs.courseShow',[$vale->slug,$program->slug])}}">{{ $vale->course_name }}</a>
+                                            </li>
+                                        @endforeach
                                     </ul>
-
-                                </div>
-                                <!-- === Sidebar Widget End === -->
-
-                                <!-- === Sidebar Widget Start === -->
-                                <div class="sidebar-widget widget-images wow move-up">
-
-                                    <img class="img-fluid" src="{{ asset('elsFront/images/blog/blog-sidebar-ads.webp')}}" alt="">
 
                                 </div>
                                
@@ -55,9 +46,7 @@
                         <div class="col-lg-8 order-lg-1 order-1">
                             <div class="main-blog-wrap">
                                 <div class="single-blog-item">
-                                    <!-- Post Feature Start -->
                                     <div class="post-feature blog-thumbnail  wow move-up">
-                                        
                                         <img class="img-fluid" src="{{ asset('program-banner/'. $program->banner )}}" alt="">
                                     </div>
                                     <div class="post-info lg-blog-post-info  wow move-up">
