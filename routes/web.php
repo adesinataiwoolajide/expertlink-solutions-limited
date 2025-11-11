@@ -27,6 +27,8 @@ Route::get('/blogs', [WebsiteController::class, 'blog'])->name('website.blog');
 Route::get('/partners', [WebsiteController::class, 'partners'])->name('website.partner');
 Route::get('/reviews', [WebsiteController::class, 'reviews'])->name('website.review');
 Route::get('/our-teams', [WebsiteController::class, 'teams'])->name('website.teams');
+Route::get('/our-services', [WebsiteController::class, 'seevices'])->name('website.services');
+
 Route::prefix('programs')->group(function () {
     Route::get('/', [WebsiteController::class, 'program'])->name('website.programs');
     Route::get('/{slug}', [WebsiteController::class, 'programShow'])->name('website.programs.show');

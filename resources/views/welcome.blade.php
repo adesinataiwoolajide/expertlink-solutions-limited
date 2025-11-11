@@ -162,20 +162,18 @@
 
                         <div class="col-lg-5 ms-auto">
                             <div class="faq-wrapper">
-                                <div id="accordion">
+                               <div id="accordion">
                                     <div class="card">
                                         <div class="card-header" id="headingOne">
                                             <h5 class="mb-0">
-                                                <button class="btn-link" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                    How can we help your business? <span> <i class="fas fa-chevron-down"></i>
-                                    <i class="fas fa-chevron-up"></i> </span>
+                                                <button class="btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    How can ExpertLink Solutions support your business?<span> <i class="fas fa-chevron-down"></i><i class="fas fa-chevron-up"></i> </span>
                                                 </button>
                                             </h5>
                                         </div>
-
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
                                             <div class="card-body">
-                                                <p>Through the collaboration with customers in discussing needs and demand, we're able to attain mutual understanding, gain customer trust to offer appropriate advice, and bring about suggestions on suitable technology to transform your business. </p>
+                                                <p>We offer tailored IT training and consulting services to empower your team with the skills and strategies needed to thrive in today’s digital landscape.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -183,29 +181,27 @@
                                         <div class="card-header" id="headingTwo">
                                             <h5 class="mb-0">
                                                 <button class="btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                    What are the advantages of Mitech?<span> <i class="fas fa-chevron-down"></i>
-                                    <i class="fas fa-chevron-up"></i> </span>
+                                                    What networking and installation services do you offer?<span> <i class="fas fa-chevron-down"></i><i class="fas fa-chevron-up"></i> </span>
                                                 </button>
                                             </h5>
                                         </div>
                                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
                                             <div class="card-body">
-                                                <p>Mitech takes into consideration every little detail to make sure the system run smoothly and responsively. Mitech employs a new technique called Minified Technology for securing customers' database & building up highly confidential firewalls. </p>
+                                                <p>ExpertLink Solutions provides end-to-end networking solutions, including structured cabling, device configuration, and system installation for homes and businesses.</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card">
                                         <div class="card-header" id="headingThree">
                                             <h5 class="mb-0">
-                                                <button class="btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                    How working process is simplified? <span> <i class="fas fa-chevron-down"></i>
-                                    <i class="fas fa-chevron-up"></i> </span>
+                                                <button class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    Do you sell ICT gadgets and provide procurement services?<span> <i class="fas fa-chevron-down"></i><i class="fas fa-chevron-up"></i> </span>
                                                 </button>
                                             </h5>
                                         </div>
                                         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
                                             <div class="card-body">
-                                                <p>We reduce redundant complex calculations and lengthy erroneous code texts with simpler ones to ensure Mitech would run seamlessly and the design is reserved in its best form when viewed from a wide range of mobile devices & browsers. </p>
+                                                <p>Yes, we supply a wide range of ICT gadgets and offer professional procurement services to ensure you get the best value and quality for your tech investments.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -216,6 +212,36 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+        <div class="fun-fact-wrapper bg-theme-default section-space--pb_30 section-space--pt_60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 wow move-up">
+                        <div class="fun-fact--two text-center">
+                            <div class="fun-fact__count counter">120</div>
+                            <h6 class="fun-fact__text">Happy clients</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 wow move-up">
+                        <div class="fun-fact--two text-center">
+                            <div class="fun-fact__count counter">32</div>
+                            <h6 class="fun-fact__text">Finished projects</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 wow move-up">
+                        <div class="fun-fact--two text-center">
+                            <div class="fun-fact__count counter">73</div>
+                            <h6 class="fun-fact__text">Skilled Experts</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 wow move-up">
+                        <div class="fun-fact--two text-center">
+                            <div class="fun-fact__count counter">318</div>
+                            <h6 class="fun-fact__text">Media Posts</h6>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -232,110 +258,79 @@
                         <!-- section-title-wrap Start -->
                     </div>
                 </div>
-                 <div class="row">
-                        <div class="col-12">
-                            <div class="feature-images__two small-mt__10">
-                                <div class="modern-grid-image-box row row--30">
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60  small-mt__40">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-01-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Backup and recovery </h6>
-                                                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="feature-images__two small-mt__10">
+                            <div class="modern-grid-image-box row row--30">
+                                <!-- Cloud Managed Services -->
+                                <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
+                                    <a href="cloud-managed-services" class="ht-box-images style-02">
+                                        <div class="image-box-wrap">
+                                            <div class="box-image">
+                                                <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-02-80x83.webp')}}" alt="">
                                             </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-02-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Cloud Managed Services</h6>
-                                                </div>
+                                            <div class="content">
+                                                <h6 class="heading">Cloud Managed Services</h6>
+                                                <div class="text">Optimize performance and scalability with our fully managed cloud infrastructure.</div>
                                             </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-03-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">IT Security & Compliance</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-04-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Software Development</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-05-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Managed IT Services</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
-                                    <div class="single-item wow move-up col-lg-4 col-md-6 section-space--mt_60">
-                                        <!-- ht-box-icon Start -->
-                                        <a href="#" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-06-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">IT consultancy</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- ht-box-icon End -->
-                                    </div>
-
+                                        </div>
+                                    </a>
                                 </div>
+
+                                <!-- IT Security & Compliance -->
+                                <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
+                                    <a href="it-security-compliance" class="ht-box-images style-02">
+                                        <div class="image-box-wrap">
+                                            <div class="box-image">
+                                                <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-03-80x83.webp')}}" alt="">
+                                            </div>
+                                            <div class="content">
+                                                <h6 class="heading">IT Security & Compliance</h6>
+                                                <div class="text">Protect your systems and meet regulatory standards with our security frameworks.</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Software Development -->
+                                <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
+                                    <a href="software-development" class="ht-box-images style-02">
+                                        <div class="image-box-wrap">
+                                            <div class="box-image">
+                                                <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-04-80x83.webp')}}" alt="">
+                                            </div>
+                                            <div class="content">
+                                                <h6 class="heading">Software Development</h6>
+                                                <div class="text">Custom-built applications tailored to your business goals and user experience.</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- IT Consultancy -->
+                                <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
+                                    <a href="it-consultancy" class="ht-box-images style-02">
+                                        <div class="image-box-wrap">
+                                            <div class="box-image">
+                                                <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-06-80x83.webp')}}" alt="">
+                                            </div>
+                                            <div class="content">
+                                                <h6 class="heading">IT Consultancy</h6>
+                                                <div class="text">Strategic advice to align your technology investments with business growth.</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
                             </div>
-
-                            <div class="section-under-heading text-center section-space--mt_60">Challenges are just opportunities in disguise. <a href="#">Take the challenge!</a></div>
-
                         </div>
+
+                        <div class="section-under-heading text-center section-space--mt_60">
+                            Ready to elevate your IT strategy? <a href="{{ route('website.services')}}">Learn more about our services</a>
+                        </div>
+
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="gradation-process-area section-space--ptb_100">
@@ -541,93 +536,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 wow move-up">
-                                <div class="grid-item">
-                                    <div class="ht-team-member">
-                                        <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
-                                            <div class="social-networks">
-                                                <div class="inner">
-                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
-                                                    </a>
-                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
-                                                    </a>
-                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="team-info ">
-                                            <h5 class="name">Taiwo Adesina </h5>
-                                            <div class="position">Software Engineer</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 wow move-up">
-                                <div class="grid-item">
-                                    <div class="ht-team-member">
-                                        <div class="team-image">
-                                            <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
-                                            <div class="social-networks">
-                                                <div class="inner">
-                                                    <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
-                                                    </a>
-                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Twitter"><i class="fab fa-twitter"></i>
-                                                    </a>
-                                                    <a target="_blank" href="#" class=" hint--bounce hint--top hint--theme-two" aria-label="Instagram"><i class="fab fa-instagram"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="team-info ">
-                                            <h5 class="name">Taiwo Adesina </h5>
-                                            <div class="position">Software Engineer</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="fun-fact-wrapper">
-            <div class="container">
-                <div class="fun-fact-grid-4">
-                    <div class="grid-item  wow move-up">
-                        <div class="fun-fact--one text-center">
-                            <h5 class="fun-fact__title">Successfully work <br> with </h5>
-                            <div class="fun-fact__count counter">1056</div>
-                            <span class="fun-fact__text">HAPPY CLIENTS</span>
-                        </div>
-                    </div>
-                    <div class="grid-item  wow move-up">
-                        <div class="fun-fact--one text-center">
-                            <h5 class="fun-fact__title">Successfully <br> completed</h5>
-                            <div class="fun-fact__count counter">491</div>
-                            <span class="fun-fact__text">Finished projects</span>
-                        </div>
-                    </div>
-                    <div class="grid-item  wow move-up">
-                        <div class="fun-fact--one text-center">
-                            <h5 class="fun-fact__title">Recruit more <br> than</h5>
-                            <div class="fun-fact__count counter">245</div>
-                            <span class="fun-fact__text">SKilled Experts</span>
-                        </div>
-                    </div>
-                    <div class="grid-item  wow move-up">
-                        <div class="fun-fact--one text-center">
-                            <h5 class="fun-fact__title">Blog <br> update </h5>
-                            <div class="fun-fact__count counter">1090</div>
-                            <span class="fun-fact__text">Media Posts</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--=========== fun fact Wrapper End ==========-->
-        <!--=========== Infotechno Video Wrapper Start ==========-->
+      
         <div class="infotechno-video-wrapper infotechno-video-ptb infotechno-video-bg">
             <div class="container">
                 <div class="row">
@@ -666,8 +581,7 @@
                 </div>
             </div>
         </div>
-        <!--=========== Infotechno Video Wrapper End ==========-->
-        <!--===========  Projects wrapper Start =============-->
+       
         <div class="projects-wrapper projectinfotechno-bg section-space--ptb_100">
             <div class="container">
 
@@ -784,9 +698,7 @@
                 </div>
             </div>
         </div>
-        <!--===========  Projects wrapper End =============-->
-
-        <!--====================  testimonial section ====================-->
+       
         <div class="testimonial-slider-area section-space--ptb_120 bg-gray-3">
             <div class="container-fluid container-fluid--cp-80">
                 <div class="row">

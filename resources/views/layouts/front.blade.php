@@ -166,19 +166,8 @@
                                                         <li><a href="{{ route('website.review') }}"><span>Client Reviews</span></a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="has-children has-children--multilevel-submenu">
-                                                    <a href="#"><span>Our Services</span></a>
-                                                    <ul class="submenu">
-                                                        <li><a href="it-services"><span>IT Consultancy</span></a></li>
-                                                        <li><a href="managed-it-service"><span>Trainings</span></a></li>
-                                                        <li><a href="cybersecurity"><span>Cybersecurity Solutions</span></a></li>
-                                                        <li><a href="cloud-services"><span>Cloud Services</span></a></li>
-                                                        <li><a href="software-development"><span>Software Development</span></a></li>
-                                                        <li><a href="network-solutions"><span>Network Solutions</span></a></li>
-                                                        <li><a href="data-analytics"><span>Data Analytics</span></a></li>
-                                                        <li><a href="technical-support"><span>Technical Support</span></a></li>
-                                                        <li><a href="technical-support"><span>System Intetegration</span></a></li>
-                                                    </ul>
+                                                <li class="">
+                                                    <a href="{{ route('website.services') }}"><span>Our Services</span></a>
                                                 </li>
                                                 <li class="">
                                                     <a href="{{ route('website.contactus') }}"><span>Contact Us</span></a>
@@ -265,7 +254,7 @@
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-md-6 text-center text-md-start">
-                                <span class="copyright-text">&copy; 2023 Mitech. <a href="https://hasthemes.com/">All Rights Reserved.</a></span>
+                                <span class="copyright-text">&copy; {{date("Y")}} Expert Link Solutions Limited. All Rights Reserved.</span>
                             </div>
                             <div class="col-md-6 text-center text-md-end">
                                 <ul class="list ht-social-networks solid-rounded-icon">
