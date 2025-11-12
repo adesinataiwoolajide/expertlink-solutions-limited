@@ -42,6 +42,7 @@ Route::prefix('programs')->group(function () {
 
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);
+Auth::routes(['verify' => true]);
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
