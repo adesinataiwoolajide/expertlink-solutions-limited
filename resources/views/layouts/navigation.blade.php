@@ -40,21 +40,21 @@
 					<span class="menu-text"> Course Program</span>
 				</a>
 			</li>
-			
-			<li class="treeview">
-				<a href="#!">
-					<i class="ri-file-list-3-line"></i>
-					<span class="menu-text">Courses</span>
-				</a>
-				<ul class="treeview-menu">
-					@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
-						<li><a href="{{ route('course.create') }}">Add New Course</a></li>
-					@endif
-					<li><a href="{{ route('course.index') }}">View All Courses</a></li>
-					
-				</ul>
-			</li>
 			@if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+			
+				<li class="treeview">
+					<a href="#!">
+						<i class="ri-file-list-3-line"></i>
+						<span class="menu-text">Courses</span>
+					</a>
+					<ul class="treeview-menu">
+						@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+							<li><a href="{{ route('course.create') }}">Add New Course</a></li>
+						@endif
+						<li><a href="{{ route('course.index') }}">View All Courses</a></li>
+						
+					</ul>
+				</li>
 				<li class="{{ request()->routeIs('allocation.index') ? 'active current-page' : '' }}">
 					<a href="{{ route('allocation.index') }}">
 						<i class="ri-list-settings-line"></i>
@@ -80,17 +80,6 @@
 				</li>
 
 			@endif
-
-			<li class="treeview ">
-				<a href="#!">
-					<i class="ri-table-line"></i>
-					<span class="menu-text">Tables</span>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="basic-tables.html">Bootstrap Tables</a></li>
-					<li><a href="data-tables.html">Data Tables</a></li>
-				</ul>
-			</li>
 
 			<li class="{{ request()->routeIs('signout') ? 'active current-page' : '' }}">
 				<a href="{{ route('signout') }}">

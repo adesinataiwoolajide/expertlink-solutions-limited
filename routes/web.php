@@ -17,6 +17,8 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
+Route::post('/Check-Email', [WebsiteController::class, 'checkEmail'])->name('Check.email');
+Route::post('/Check-Phone', [WebsiteController::class, 'checkPhone'])->name('Check.phone');
 
 
 Route::get('/', [WebsiteController::class, 'index'])->name('website');

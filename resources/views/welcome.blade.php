@@ -472,11 +472,11 @@
                         <div class="col-lg-4">
                             <div class="section-title section-space--mb_60">
                                 <h3 class="heading">Our <span class="text-color-primary">experience </span> experts</h3>
-                                <p class="text mt-30">Mitech specializes in technological and IT-related services such as product engineering, warranty management, building cloud, infrastructure, network, etc. </p>
+                                <p class="text mt-30">Expert Link Solutions Limited specializes in technological and IT-related services such as product engineering, warranty management, building cloud, infrastructure, network, etc. </p>
 
                                 <div class="sider-title-button-box mt-30">
-                                    <a href="#" class="ht-btn ht-btn-md">Join us now</a>
-                                    <a href="#" class="btn-text font-weight--bold small-mt__20">View all team <i class="ml-1 button-icon fas fa-arrow-right"></i></a>
+                                    <a href="{{ route('website.contactus') }}" class="ht-btn ht-btn-md">Contact Us</a>
+                                    <a href="{{ route('website.teams') }}" class="btn-text font-weight--bold small-mt__20">View all team <i class="ml-1 button-icon fas fa-arrow-right"></i></a>
                                 </div>
 
                             </div>

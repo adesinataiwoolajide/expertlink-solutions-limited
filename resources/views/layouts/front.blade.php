@@ -174,19 +174,20 @@
                                                 <li class="">
                                                     <a href="{{ route('website.contactus') }}"><span>Contact Us</span></a>
                                                 </li>
+                                                 <li class="has-children has-children--multilevel-submenu">
+                                                    <a href="#"><span>Account</span></a>
+                                                    <ul class="submenu">
+                                                        <li><a href="/login"><span>Login</span></a></li>
+                                                        <li><a href="/register"><span>Register</span></a></li>
+                                                        <li><a href="{{ route('website.blog') }}"><span>Logout</span></a></li>
+                                                    </ul>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
                                 </div>
 
-                                <div class="header-search-form ">
-                                    <form action="#" class="search-form-top style-03 ">
-                                        <input class="search-field" type="text" placeholder="Search…">
-                                        <button class="search-submit">
-                                            <i class="search-btn-icon fa fa-search"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

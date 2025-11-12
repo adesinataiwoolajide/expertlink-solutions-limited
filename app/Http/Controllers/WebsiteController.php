@@ -6,6 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
 class WebsiteController extends Controller
 {
+    public function checkEmail(Request $request)
+    {
+        $exists = User::where('email', $request->email)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
+    public function checkPhone(Request $request)
+    {
+        $exists = User::where('phone_number', $request->phone_number)->exists();
+        return response()->json(['exists' => $exists]);
+    }
     /**
      * Display a listing of the resource.
      */
