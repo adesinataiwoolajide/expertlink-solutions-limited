@@ -8,19 +8,17 @@ use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
 use App\Http\Requests\{StoreProgramRequest, UpdateProgramRequest};
 use Illuminate\Support\Facades\{App, File};
-use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
-class ProgramsController extends Controller implements HasMiddleware
+// use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+class ProgramsController extends Controller
 {
     protected $model;
-    public static function middleware(): array
+    public function __construct(Programs $program)
     {
-        return [
-            'auth', new Middleware('role:Administrator|Admin|Instructor'),
-        ];
-    }
-    public function __construct(Programs $program){
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin');
         $this->model = new GeneralRepository($program);
     }
+   
     /**
      * Display a listing of the resource.
      */

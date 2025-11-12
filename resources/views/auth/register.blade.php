@@ -1,6 +1,6 @@
 <x-guest-layout>
 
-    <form action="{{ route('register') }}" class="my-5" method="POST">
+    <form action="{{ route('createAccount') }}" class="my-5" method="POST">
 		@csrf
 		<div class="auth-box border border-dark" style="width: ;">
 			
@@ -45,7 +45,7 @@
 				@endif
 			</div>
 			<div class="d-grid py-3 mt-3">
-				<button type="submit" class="btn btn-lg btn-primary text-white" id="submit-btn" disabled>
+				<button type="submit" class="btn btn-lg btn-primary text-white" id="submit-btns">
 				CREATE ACCOUNT
 				</button>
 			</div>

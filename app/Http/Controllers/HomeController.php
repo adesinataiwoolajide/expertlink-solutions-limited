@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class HomeController extends Controller
 {
-    public static function middleware(): array
+    public function __construct()
     {
-        return [
-            'auth',
-            new Middleware('role:Administrator|Admin|Instructor|Student'),
-        ];
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor|Student');
     }
 
     public function index(){

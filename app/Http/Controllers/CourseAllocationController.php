@@ -7,18 +7,18 @@ use App\Http\Requests\{StoreCourseAllocationRequest, UpdateCourseAllocationReque
 use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
-class CourseAllocationController extends Controller implements HasMiddleware
+
+class CourseAllocationController extends Controller
 {
-    public static function middleware(): array
+    protected $model;
+
+    public function __construct(CourseAllocation $courseAllocation)
     {
-        return [
-            'auth', new Middleware('role:Administrator|Admin|Instructor'),
-        ];
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor');
+        $this->model = new GeneralRepository($courseAllocation);
     }
-    public function __construct(CourseAllocation $courses){
-        $this->model = new GeneralRepository($courses);
-    }
+
     /**
      * Display a listing of the resource.
      */

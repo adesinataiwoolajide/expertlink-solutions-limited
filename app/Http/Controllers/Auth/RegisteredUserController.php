@@ -29,6 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        dd($request);
         $request->validate([
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -38,14 +39,14 @@ class RegisteredUserController extends Controller
         $name_parts = explode(" ", $request->full_name);
         $first_name = $name_parts[0];
         $last_name = isset($name_parts[1]) ? $name_parts[1] : '';
-
+        
         $user = User::create([
             "email" => $request->email,
             "first_name" => $first_name,
             "last_name" => $last_name,
             "password" => bcrypt( $request->input("password")),
             "phone_number" => $request->input("phone_number"),
-            "role" => 'Student', 'email_verified_at' => '',
+            "role" => 'Student', 'email_verified_at' => null,
             "status" => True, 'change_password' => false, 'slug' => RandomString(8)
         ]);
         event(new Registered($user));

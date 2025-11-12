@@ -8,19 +8,19 @@ use App\Repositories\GeneralRepository;
 
 use App\Http\Requests\{StoreCourseRequest, UpdateCourseRequest};
 use Illuminate\Support\Facades\{App, File};
-use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+// use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
 use Illuminate\Support\Facades\{Auth};
-class CoursesController extends  Controller implements HasMiddleware
+class CoursesController extends Controller
 {
-    public static function middleware(): array
+    protected $model;
+    public function __construct(Courses $courses)
     {
-        return [
-            'auth', new Middleware('role:Administrator|Admin|Instructor|Instructor'),
-        ];
-    }
-    public function __construct(Courses $courses){
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor|Student');
+
         $this->model = new GeneralRepository($courses);
     }
+
     /**
      * Display a listing of the resource.
      */

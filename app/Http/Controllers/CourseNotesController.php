@@ -8,17 +8,18 @@ use App\Http\Requests\{StoreCourseNoteRequest, UpdateCourseNoteRequest};
 use Illuminate\Support\Facades\{Auth};
 use App\Repositories\GeneralRepository;
 use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
-class CourseNotesController extends Controller implements HasMiddleware
+class CourseNotesController extends Controller
 {
-    public static function middleware(): array
+    protected $model;
+
+    public function __construct(CourseNotes $courses)
     {
-        return [
-            'auth', new Middleware('role:Administrator|Admin|Instructor'),
-        ];
-    }
-    public function __construct(CourseNotes $courses){
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor');
+
         $this->model = new GeneralRepository($courses);
     }
+
     /**
      * Display a listing of the resource.
      */

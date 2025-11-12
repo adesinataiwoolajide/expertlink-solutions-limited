@@ -4,8 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
+use Illuminate\Support\Facades\{Redirect, Auth, Gate, Mail, Hash};
+use Illuminate\Validation\Rules;
+use App\Mail\{UserRegistrationNotification};
+
 class WebsiteController extends Controller
 {
+    public function store(Request $request)
+    {
+        //dd($request);
+        $request->validate([
+            'full_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'phone_number' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10', 'unique:users,phone_number'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        $name_parts = explode(" ", $request->full_name);
+        $first_name = $name_parts[0];
+        $last_name = isset($name_parts[1]) ? $name_parts[1] : '';
+        $role = 'Student';
+        $email = $request->input("email");
+        $slug = RandomString(11);
+        $users = User::create([
+            "email" => $request->email,  "first_name" => $first_name,
+            "last_name" => $last_name, "password" => bcrypt( $request->input("password")),
+            "phone_number" => $request->input("phone_number"),
+            "role" => $role, 'email_verified_at' => ' ',
+            "status" => True, 'change_password' => false, 'slug' => $slug
+        ]);
+        //event(new Registered($user));
+        $users->assignRole($role);
+        $users->syncRoles([$role]);
+        
+        $details = [
+            'user' => User::where('slug',$slug)->first(),
+        ];
+        Mail::to($email)->send(new UserRegistrationNotification($details));
+        Auth::login($users);
+        createLog($email . 'Created AN Account As a '. $role);
+        return redirect(route('dashboard'));
+    }
     public function checkEmail(Request $request)
     {
         $exists = User::where('email', $request->email)->exists();

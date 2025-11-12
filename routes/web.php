@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController};
+use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController, VerificationController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -16,6 +16,9 @@ Route::get('/clear-cache', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
+
+Route::post('/create-account', [WebsiteController::class, 'store'])->name('createAccount');
+
 
 Route::post('/Check-Email', [WebsiteController::class, 'checkEmail'])->name('Check.email');
 Route::post('/Check-Phone', [WebsiteController::class, 'checkPhone'])->name('Check.phone');
@@ -42,7 +45,8 @@ Route::prefix('programs')->group(function () {
 
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);
-Auth::routes(['verify' => true]);
+// Auth::routes(['verify' => true]);
+Auth::routes();
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
@@ -162,3 +166,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

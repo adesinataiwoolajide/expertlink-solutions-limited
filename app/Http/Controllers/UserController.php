@@ -9,17 +9,14 @@ use Illuminate\Support\Facades\{Redirect, Auth, Gate, Mail, Hash};
 use App\Mail\{UserRegistrationNotification};
 use App\Repositories\GeneralRepository;
 use Str; use DB;
-use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
-class UserController extends Controller implements HasMiddleware
+// use Illuminate\Routing\Controllers\{HasMiddleware,Middleware};
+class UserController extends Controller
 {
     protected $model;
-    public static function middleware(): array
+    public function __construct(User $user)
     {
-        return [
-            'auth', new Middleware('role:Administrator|Admin|Student'),
-        ];
-    }
-    public function __construct(User $user){
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin');
         $this->model = new GeneralRepository($user);
     }
     /**
