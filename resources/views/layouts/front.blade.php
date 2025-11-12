@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="header-area header-sticky only-mobile-sticky">
-        <div class="container">
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="header position-relative">
@@ -28,6 +28,8 @@
                             <div class="header-right flexible-image-slider-wrap">
 
                                 <div class="header-right-inner" id="hidden-icon-wrapper">
+
+                                    
                                     <!-- Header Search Form -->
                                     <div class="header-search-form d-md-none d-block">
                                         <form action="#" class="search-form-top">
