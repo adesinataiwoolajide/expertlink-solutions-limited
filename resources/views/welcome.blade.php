@@ -20,9 +20,7 @@
                             <div class="infotechno-inner-one">
                                 <img class="img-fluid" src="{{ asset('elsFront/images/hero/home-infotechno-main-slider-slide-01-image-01.webp')}}" alt="">
                             </div>
-                            {{-- <div class="infotechno-inner-two  wow move-up">
-                                <img class="img-fluid" src="{{ asset('elsFront/images/hero/home-infotechno-main-slider-slide-01-image-02.webp')}}" alt="">
-                            </div> --}}
+                            
                             <div class="software-innovation-hero-image animation_images three mt-30">
                                 <img src="{{ asset('elsFront/images/hero/soft-01.webp')}}" class="img-fluid" alt="">
                             </div>
@@ -894,8 +892,7 @@
                 </div>
             </div>
         </div>
-        <!--====================  Blog Section End  ====================-->
-        <!--====================  Conact us Section Start ====================-->
+        
         <div class="contact-us-section-wrappaer infotechno-contact-us-bg section-space--ptb_120">
             <div class="container">
                 <div class="row align-items-center">
