@@ -47,7 +47,7 @@ class CoursesController extends Controller
         if(!$program){
             return redirect()->back()->with("error", "Program details does not exists");
         }
-        $courses = $program->courses()->orderBy('course_name', 'desc')->get();
+        $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->get();
         return view('home.courses.programCourse')->with([
             'program' => $program, 'courses' => $courses
         ]);

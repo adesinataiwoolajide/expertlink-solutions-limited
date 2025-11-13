@@ -17,6 +17,9 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{ $program->program_name }}</h5>
+                <a href="{{ route('course.index') }}" class="btn btn-primary">
+                    View All Course
+                </a>
             </div>
             <div class="card-body">
                 <div class="row gx-3">
@@ -50,7 +53,7 @@
                                     </div>
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
                                     aria-selected="false">
@@ -62,7 +65,7 @@
                                         </div>
                                     </div>
                                 </button>
-                            </li>
+                            </li> --}}
                         </ul>
                         <div class="mb-3 col-md-12">
                             <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
@@ -71,8 +74,7 @@
                     <div class="col-lg-9 col-md-12">
                         <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                             <!-- Step 1 Content -->
-                            <div class="tab-pane fade show active" id="vStep1" role="tabpanel"
-                            aria-labelledby="vStep1-tab">
+                            <div class="tab-pane fade show active" id="vStep1" role="tabpanel" aria-labelledby="vStep1-tab">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h6 class="text-primary">{{ $program->program_name ?? '' }} Details</h6>
                                 </div>
@@ -85,14 +87,83 @@
                                         <label class="form-label fw-bold">Program Description:</label>
                                         <p class="form-control-plaintext">{!! $program->description ?? 'NULL' !!}</p>
                                     </div>  
-                                    
                                 </div>
                             </div>
 
-                            <!-- Step 2 Content -->
                             <div class="tab-pane fade" id="vStep2" role="tabpanel" aria-labelledby="vStep2-tab">
-                                @if(count($courses) > 10)
-                                    
+                                <style>
+                                    .double-strike {
+                                        position: relative;
+                                        display: inline-block;
+                                        color: black; /* Bootstrap's text-danger */
+                                    }
+                                    .double-strike::before,
+                                    .double-strike::after {
+                                        content: "";
+                                        position: absolute;
+                                        left: 0;
+                                        right: 0;
+                                        height: 1px;
+                                        background-color: currentColor;
+                                    }
+                                    .double-strike::before {
+                                        top: 40%;
+                                    }
+                                    .double-strike::after {
+                                        top: 60%;
+                                    }
+                                </style>
+                                @if(count($courses) > 0)
+                                    <div class="container py-4">
+                                        <h4 class="mb-4" style="font-weight:600;">Recommended Courses</h4>
+                                        <div class="row">
+                                            @foreach ($courses as $course)
+                                                @php
+                                                    $originalPrice = $course->course_price;
+                                                    $discountedPrice = $originalPrice - ($originalPrice * 0.10);
+                                                @endphp
+
+                                                <div class="col-md-4 mb-4">
+                                                    <div class="card shadow-sm" style="border-radius:12px; overflow:hidden;">
+                                                        <img src="{{ asset('course-banner/' . $course->banner) }}" alt="Course Banner" style="width:100%; height:180px; object-fit:cover;">
+                                                        <div class="card-body" style="padding:1.25rem;">
+                                                            <h5 style="font-weight:600; color:#333;">
+                                                                <a href="">{{substr($course->course_name, 0, 60) }} </a>
+                                                            </h5>
+                                                            @if($course->allocation)
+                                                                <p style="margin:0; color:#666;"><strong>Instructor: {{ $course->allocation->user->first_name . ' '. $course->allocation->user->last_name }} </strong></p>
+                                                            @else
+                                                                <p style="margin:0; color:#666;"><strong>Instructor: ELS Tutor</strong></p>
+                                                            @endif
+
+                                                            <div class="d-flex align-items-center mt-2 mb-2">
+                                                                @php $rating = $course->rating ?? 4.5; @endphp
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <i class="ri-star-fill" style="color:{{ $i <= $rating ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
+                                                                @endfor
+                                                                <span class="ms-2" style="font-size:0.9rem; color:#555;">
+                                                                    {{ number_format($rating, 1) }} ({{ $course->reviews }} reviews)
+                                                                </span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                <!-- Discounted Price (Left) -->
+                                                                <span style="font-weight:700; font-size:1rem;" class="badge rounded-pill bg-success text-white">
+                                                                    ₦{{ number_format($discountedPrice) }}
+                                                                </span>
+
+                                                                <!-- Original Price with Double Strikethrough (Right) -->
+                                                                <span class="badge rounded-pill bg-danger double-strike text-white" style="font-size:0.9rem; font-weight:700;">
+                                                                    ₦{{ number_format($originalPrice) }}
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                           
+                                        </div>
+                                    </div>
                                 @else
                                     <div class="col-12">
                                         <div class="card border-danger text-center">
@@ -100,7 +171,6 @@
                                                 <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
                                                 <h5 class="card-title text-danger">No Course was Found</h5>
                                                 <p class="card-text text-muted">There are currently no course available for this program.</p>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -111,64 +181,20 @@
                             <div class="tab-pane fade" id="vStep3" role="tabpanel" aria-labelledby="vStep3-tab">
                                 <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
                                     <span class="icon-box ms rounded-5 bg-primary me-3">
-                                    <i class="ri-information-line fs-3"></i>
+                                        <i class="ri-information-line fs-3"></i>
                                     </span>
                                     <div>
-                                    <strong>Almost there!</strong> Please review your project details carefully before final
-                                    submission.
-                                    <span class="d-block mt-1 small">Note: You wont be able to make changes once
-                                        submitted.</span>
+                                        <strong>Almost there!</strong> Please review your project details carefully before final
+                                        submission.
+                                        <span class="d-block mt-1 small">Note: You wont be able to make changes once
+                                            submitted.
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="card mb-3 bg-light-subtle">
-                                    <div class="card-body p-4">
-                                    <h6 class="card-title fw-bold mb-3">Project Summary</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="text-muted d-block mb-1 small">Project Name</label>
-                                            <p class="fw-semibold mb-0" id="summaryProjectName">E-commerce Redesign</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="text-muted d-block mb-1 small">Deadline</label>
-                                            <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryDeadline">
-                                            <i class="ri-calendar-line me-2 text-primary"></i>Aug 15, 2025
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="text-muted d-block mb-1 small">Team Lead</label>
-                                            <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryTeamLead">
-                                            <i class="ri-user-star-line me-2 text-primary"></i>Sarah Johnson
-                                            </p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="text-muted d-block mb-1 small">Team Size</label>
-                                            <p class="fw-semibold mb-0 d-flex align-items-center" id="summaryTeamSize">
-                                            <i class="ri-group-line me-2 text-primary"></i>4 members
-                                            </p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress small mb-2">
-                                        <div class="progress-bar bg-primary w-100" role="progressbar" aria-valuenow="100"
-                                        aria-valuemin="0" aria-valuemax="100" aria-label="Project completion progress">
-                                        </div>
-                                    </div>
-                                    <div class="badge bg-primary-subtle text-primary"><i class="ri-check-double-line"></i>
-                                        All
-                                        required information completed</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                    onclick="document.getElementById('vStep2-tab').click()">Previous</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
+                                
                             </div>
                         </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

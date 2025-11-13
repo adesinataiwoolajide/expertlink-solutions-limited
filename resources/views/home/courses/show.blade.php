@@ -133,7 +133,7 @@
                                         <p class="form-control-plaintext">{!! $course->program->description ?? 'NULL' !!}</p>
                                     </div>  
                                     <div class="mb-3 col-md-12">
-                                        <img src="{{ asset('program-banner/' . $course->program->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Program Banner">
+                                        {{-- <img src="{{ asset('program-banner/' . $course->program->banner) }}" class="img-fluid" style="max-height: 500px;" alt="Program Banner"> --}}
                                     </div>  
                                 </div>
                             </div>
