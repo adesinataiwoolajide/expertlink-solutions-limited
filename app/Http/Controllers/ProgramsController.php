@@ -24,6 +24,7 @@ class ProgramsController extends Controller
      */
     public function index()
     {
+        
         $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
         $trashedPrograms = Programs::onlyTrashed()->with('courses')->get();
         return view("home.programs.index")->with([

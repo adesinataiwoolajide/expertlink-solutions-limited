@@ -31,10 +31,26 @@ class CoursesController extends Controller
             return view('home.courses.index')->with([
                 'courses' => $courses
             ]);
+        }elseif(Auth::user()->hasAnyRole(['Student'])){
+            $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+            return view('home.courses.display')->with([
+                'courses' => $courses, 'program' => $program
+            ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
             return view('errors.403')->with(['message' => $message]);
         }
+    }
+
+    public function learning($slug){
+        $program = Programs::where('slug', $slug)->with(['courses', 'allocations'])->first();
+        if(!$program){
+            return redirect()->back()->with("error", "Program details does not exists");
+        }
+        $courses = $program->courses()->orderBy('course_name', 'desc')->get();
+        return view('home.courses.programCourse')->with([
+            'program' => $program, 'courses' => $courses
+        ]);
     }
 
     /**

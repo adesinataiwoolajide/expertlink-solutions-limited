@@ -22,8 +22,7 @@
         <div class="card-body">
             <div class="row gx-3">
                 <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
-                    <ul class="nav nav-pills flex-column vertical-form-wizard" id="verticalFormStepper"
-                        role="tablist">
+                    <ul class="nav nav-pills flex-column vertical-form-wizard" id="verticalFormStepper" role="tablist">
                         <li class="nav-item mb-3" role="presentation">
                             <button type="button" class="nav-link active w-100 text-start" id="vStep1-tab"
                                 data-bs-toggle="pill" data-bs-target="#vStep1" role="tab" aria-controls="vStep1" aria-selected="true">

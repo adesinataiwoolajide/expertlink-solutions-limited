@@ -35,13 +35,23 @@
 				</li>
 				@endif
 
-				<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">
-					<a href="{{ route('program.index') }}">
-						<i class="ri-list-settings-line"></i>
-						<span class="menu-text"> Course Program</span>
-					</a>
-				</li>
+				@if (Auth::user()->hasAnyRole(['Student']))
+
+					<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
+						<a href="{{ route('course.index') }}">
+							<i class="ri-list-settings-line"></i>
+							<span class="menu-text">Available Courses</span>
+						</a>
+					</li>
+				@endif
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+
+					<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">
+						<a href="{{ route('program.index') }}">
+							<i class="ri-list-settings-line"></i>
+							<span class="menu-text"> Course Program</span>
+						</a>
+					</li>
 				
 					<li class="treeview">
 						<a href="#!">

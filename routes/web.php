@@ -102,6 +102,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/details/{slug}', [CoursesController::class, 'show'])->name('course.show');
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
+        Route::prefix('learning')->group(function () {
+            Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
+        });
     });
 
     Route::prefix('course-notes')->group(function () {

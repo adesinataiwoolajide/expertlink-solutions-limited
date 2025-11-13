@@ -28,6 +28,8 @@ return new class extends Migration
             $table->longText('course_overview')->nullable();
             $table->longText('course_technologies')->nullable();
             $table->longText('packages_included')->nullable();
+            $table->longText('duration')->nullable()->default("3 Months");
+            $table->longText('ratings')->nullable()->default(4);
             $table->longText('benefits')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('created_at')->nullable();

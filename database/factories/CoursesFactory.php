@@ -35,6 +35,8 @@ class CoursesFactory extends Factory
             'course_technologies' => $this->faker->words(3, true),
             'packages_included' => $this->faker->sentence(),
             'benefits' => $this->faker->paragraph(),
+            'ratings' => 5,
+            'duration' => "3 Months",
             'created_at' => now(),
             'updated_at' => now(),
             
