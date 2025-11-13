@@ -104,6 +104,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
         Route::prefix('learning')->group(function () {
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
+            Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
         });
     });
 

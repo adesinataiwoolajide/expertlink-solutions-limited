@@ -53,19 +53,7 @@
                                     </div>
                                 </button>
                             </li>
-                            {{-- <li class="nav-item" role="presentation">
-                                <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
-                                    data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
-                                    aria-selected="false">
-                                    <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📋</span>
-                                        <div class="ms-2">
-                                            <span class="step-title fw-semibold d-block">Completion</span>
-                                            <small>Review and submit</small>
-                                        </div>
-                                    </div>
-                                </button>
-                            </li> --}}
+                            
                         </ul>
                         <div class="mb-3 col-md-12">
                             <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
@@ -128,7 +116,7 @@
                                                         <img src="{{ asset('course-banner/' . $course->banner) }}" alt="Course Banner" style="width:100%; height:180px; object-fit:cover;">
                                                         <div class="card-body" style="padding:1.25rem;">
                                                             <h5 style="font-weight:600; color:#333;">
-                                                                <a href="">{{substr($course->course_name, 0, 60) }} </a>
+                                                                <a href="{{ route('course.viewLearning',[$course->slug, $program->slug]) }}">{{substr($course->course_name, 0, 60) }} </a>
                                                             </h5>
                                                             @if($course->allocation)
                                                                 <p style="margin:0; color:#666;"><strong>Instructor: {{ $course->allocation->user->first_name . ' '. $course->allocation->user->last_name }} </strong></p>
@@ -146,12 +134,11 @@
                                                                 </span>
                                                             </div>
                                                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                <!-- Discounted Price (Left) -->
+                                                                
                                                                 <span style="font-weight:700; font-size:1rem;" class="badge rounded-pill bg-success text-white">
                                                                     ₦{{ number_format($discountedPrice) }}
                                                                 </span>
-
-                                                                <!-- Original Price with Double Strikethrough (Right) -->
+                                                                
                                                                 <span class="badge rounded-pill bg-danger double-strike text-white" style="font-size:0.9rem; font-weight:700;">
                                                                     ₦{{ number_format($originalPrice) }}
                                                                 </span>

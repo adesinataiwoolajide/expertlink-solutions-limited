@@ -31,6 +31,8 @@ return new class extends Migration
             $table->longText('duration')->nullable()->default("3 Months");
             $table->longText('ratings')->nullable()->default(4);
             $table->longText('benefits')->nullable();
+            $table->longText('course_discount')->nullable()->default(0);
+            $table->longText('course_introduction')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('deleted_at')->nullable();

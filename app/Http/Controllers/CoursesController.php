@@ -52,6 +52,20 @@ class CoursesController extends Controller
             'program' => $program, 'courses' => $courses
         ]);
     }
+    
+    public function learningShow($courseSlug, $programSlug){
+        $program = Programs::with(['courses', 'allocations'])->where('slug', $programSlug)->first();
+        $course = Courses::with(['user', 'notes', 'program', 'allocation.user'])->where(['slug' => $courseSlug ,'programSlug' => $programSlug])->first();
+        
+        if (!$program && !$course) {
+            return redirect()->back()->with('error', 'course details do not exist');
+        }
+
+        return view('home.courses.viewCourse', compact('program', 'course'));
+
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.
