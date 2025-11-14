@@ -31,6 +31,7 @@ class StoreCourseRequest extends FormRequest
             'course_price' => ['required', 'numeric', 'min:0'],
             'banner' => ['required', 'image', 'mimes:png,jpg,jpeg,svg'],
             'basic_requirements' => ['nullable', 'string'],
+            'course_technologies' => ['nullable'],
             'course_outline' => ['nullable', 'string'],
             'learning_module' => ['nullable', 'string'],
             'course_schedule' => ['nullable', 'string'],
@@ -39,12 +40,11 @@ class StoreCourseRequest extends FormRequest
             'training_type.*' => ['string'],
             'payment_structure' => ['nullable', 'string'],
             'course_overview' => ['nullable', 'string'],
-            'course_technologies' => ['nullable', 'string'],
             'packages_included' => ['nullable', 'string'],
             'benefits' => ['nullable', 'string'],
             'ratings' => ['nullable', 'string'],
             'course_discount' => ['required', 'string'],
-            'course_introduction' => ['required', 'mimes:mp4,webm,ogg', 'max:51200'], 
+            'course_introduction' => ['sometimes', 'mimes:mp4,webm,ogg', 'max:51200'], 
         ];
     }
 

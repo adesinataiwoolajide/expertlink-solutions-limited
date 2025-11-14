@@ -27,15 +27,19 @@
                         <form action="{{ route('course.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="mb-3 col-md-4">
-                                    <label class="form-label">Course Name:</label>
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label fw-bold text-primary">Course Name:</label>
                                     <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Intro to Web Development" value="{{ old('course_name') }}" required>
                                     <x-input-error :messages="$errors->get('course_name')" class="mt-2 text-danger" />
                                     <div id="course-name-feedback" class="mt-2 text-danger"></div>
                                 </div>
-                               
-                                <div class="mb-3 col-md-5">
-                                    <label class="form-label">Select Program:</label>
+                                @php
+                                    $trainingTypes = getTrainings();
+                                    $selectedTypes = old('training_type', []);
+                                @endphp
+                                <input type="hidden" class="form-control" id="ratings" name="ratings" value="5">
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label fw-bold text-primary">Select Program:</label>
                                     <select name="program_name" class="form-control select2" id="searchableSelect" required>
                                         <option value="{{  old('program_name') }}">{{ old('program_name')  ?? "-- Choose a Program --"}}</option>
                                         @foreach ($programs as $program)
@@ -46,28 +50,31 @@
                                     </select>
                                     <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
                                 </div>
-                                <div class="mb-3 col-md-3">
-                                    <label class="form-label">Course Price (₦):</label>
+                                
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label fw-bold text-primary">Course Price (₦):</label>
                                     <input type="number" class="form-control" placeholder="50000" name="course_price" value="{{ old('course_price') }}" required>
                                     <x-input-error :messages="$errors->get('course_price')" class="mt-2 text-danger" />
                                 </div>
-                                @php
-                                    $trainingTypes = getTrainings();
-                                    $selectedTypes = old('training_type', []);
-                                @endphp
-                                <input type="hidden" class="form-control" id="ratings" name="ratings" value="5">
-                                <div class="mb-3 col-md-3">
-                                    <label for="rangeWithValue" class="form-label">Course Discount(%): <span id="rangeValue">0</span></label>
+                               
+                                <div class="mb-3 col-md-4">
+                                    <label for="rangeWithValue" class="form-label fw-bold text-primary">Course Discount(%): <span id="rangeValue">0</span></label>
                                     <input type="range" class="form-range" id="rangeWithValue" min="0" max="50" value="{{ old('course_discount') ?? 0 }}" oninput="document.getElementById('rangeValue').textContent = this.value"
                                     name="course_discount"> <x-input-error :messages="$errors->get('course_discount')" class="mt-2 text-danger" />
                                 </div>
+
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label">Course Duration:</label>
+                                    <input type="text" class="form-control" placeholder="3-Months" name="duration" value="{{ old('duration')  }}" required>
+                                    <x-input-error :messages="$errors->get('duration')" class="mt-2 text-danger" />
+                                </div>
+
                                
-                                <div class="mb-4 col-md-9">
+                                <div class="mb-4 col-md-6">
                                     <label for="multiSelect" class="form-label fw-bold text-primary">
                                         <i class="bi bi-journal-text me-1"></i> Training Type
                                     </label>
                                     <select name="training_type[]" id="multiSelect" class="form-select select2-multi border-primary shadow-sm" multiple required>
-                                        
                                         @foreach ($trainingTypes as $type)
                                             <option value="{{ $type }}" {{ in_array($type, $selectedTypes) ? 'selected' : '' }}>
                                                 {{ ucfirst($type) }}
@@ -77,38 +84,52 @@
                                     <x-input-error :messages="$errors->get('training_type')" class="mt-2 text-danger small" />
                                 </div>
 
+                                <div class="mb-4 col-md-6">
+                                    <label for="courseTechSelect" class="form-label fw-bold text-primary">
+                                        <i class="bi bi-journal-text me-1"></i> Course Technologies
+                                    </label>
+                                    <select name="course_technologies[]" id="courseTechSelect" class="form-select select2-multi border-info shadow-sm" multiple required>
+                                        @foreach (getTechnologies() as $tech)
+                                            <option value="{{ $tech }}" {{ in_array($tech, old('course_technologies', [])) ? 'selected' : '' }}>
+                                                {{ ucfirst($tech) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('course_technologies')" class="mt-2 text-danger small" />
+                                </div>
+
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Basic Requirements:</label>
+                                    <label class="form-label fw-bold text-primary">Basic Requirements:</label>
                                     <textarea class="form-control summernote" name="basic_requirements" required>{{ old('basic_requirements') ?? 'Enter basic requirements here...' }}</textarea>
                                     <x-input-error :messages="$errors->get('basic_requirements')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Course Outline:</label>
+                                    <label class="form-label fw-bold text-primary">Course Outline:</label>
                                     <textarea class="form-control summernote" name="course_outline" required>{{ old('course_outline') ?? 'Provide a detailed course outline...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_outline')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Learning Module:</label>
+                                    <label class="form-label fw-bold text-primary">Learning Module:</label>
                                     <textarea class="form-control summernote" name="learning_module" required>{{ old('learning_module') ?? 'Describe the learning modules...' }}</textarea>
                                     <x-input-error :messages="$errors->get('learning_module')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Course Schedule:</label>
+                                    <label class="form-label fw-bold text-primary">Course Schedule:</label>
                                     <textarea class="form-control summernote" name="course_schedule" required>{{ old('course_schedule') ?? 'Outline the course schedule...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_schedule')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Course Overview:</label>
+                                    <label class="form-label fw-bold text-primary">Course Overview:</label>
                                     <textarea class="form-control summernote" name="course_overview" required>{{ old('course_overview') ?? 'Summarize the course overview...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_overview')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">Benefits:</label>
+                                    <label class="form-label fw-bold text-primary">Benefits:</label>
                                     <textarea class="form-control summernote" name="benefits" required>{{ old('benefits') ?? 'List the benefits of this course...' }}</textarea>
                                     <x-input-error :messages="$errors->get('benefits')" class="mt-2 text-danger" />
                                 </div>
@@ -123,17 +144,11 @@
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="videoUpload">Course Introduction Video:</label>
-                                    <input type="file" class="form-control" name="course_introduction" id="course_introduction" accept="video/mp4,video/webm,video/ogg" required>
+                                    <input type="file" class="form-control" name="course_introduction" id="course_introduction" accept="video/mp4,video/webm,video/ogg">
                                     <x-input-error :messages="$errors->get('course_introduction')" class="mt-2 text-danger" />
-
                                     <button type="button" id="deleteVideoBtn" class="btn btn-sm btn-danger mt-2" style="display: none;">Delete Video</button>
-
-                                    <!-- Video Preview -->
                                     <video id="videoPreview" width="100%" height="auto" controls style="margin-top: 1rem; display: none;"></video>
-
                                 </div>
-
-
                             </div>
                             <button type="submit" class="btn btn-primary">Create Course</button>
                         </form>
@@ -152,7 +167,6 @@
 
             feedback.textContent = '';
             feedback.classList.remove('text-success', 'text-danger');
-
             if (name === '') {
                 feedback.textContent = 'Course name is required.';
                 feedback.classList.add('text-danger');
@@ -187,37 +201,39 @@
         });
 
       
-    document.getElementById('course_introduction').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        const preview = document.getElementById('videoPreview');
-        const deleteBtn = document.getElementById('deleteVideoBtn');
-
-        if (file && file.type.startsWith('video/')) {
-            const url = URL.createObjectURL(file);
-            preview.src = url;
-            preview.style.display = 'block';
-            deleteBtn.style.display = 'inline-block';
-        } else {
-            preview.src = '';
-            preview.style.display = 'none';
-            deleteBtn.style.display = 'none';
-        }
-    });
-
-    document.getElementById('deleteVideoBtn').addEventListener('click', function () {
-        const confirmDelete = confirm("Are you sure you want to remove this video?");
-        if (confirmDelete) {
-            const input = document.getElementById('course_introduction');
+        document.getElementById('course_introduction').addEventListener('change', function (event) {
+            const file = event.target.files[0];
             const preview = document.getElementById('videoPreview');
             const deleteBtn = document.getElementById('deleteVideoBtn');
 
-            input.value = '';
-            preview.src = '';
-            preview.style.display = 'none';
-            deleteBtn.style.display = 'none';
-        }
-    });
-</script>
-</script>
+            if (file && file.type.startsWith('video/')) {
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+                preview.style.display = 'block';
+                deleteBtn.style.display = 'inline-block';
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }
+        });
+
+        document.getElementById('deleteVideoBtn').addEventListener('click', function () {
+            const confirmDelete = confirm("Are you sure you want to remove this video?");
+            if (confirmDelete) {
+                const input = document.getElementById('course_introduction');
+                const preview = document.getElementById('videoPreview');
+                const deleteBtn = document.getElementById('deleteVideoBtn');
+
+                input.value = '';
+                preview.src = '';
+                preview.style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }
+        });
+
+        
+    </script>
+
 
 </x-app-layout>

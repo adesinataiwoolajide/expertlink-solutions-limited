@@ -151,6 +151,14 @@
                     width: '100%'
                 });
             });
+
+             $(document).ready(function() {
+                $('#courseTechSelect').select2({
+                    placeholder: "Select an option",
+                    tags: true,
+                    width: '100%'
+                });
+            });
        
           $(document).ready(function() {
               $('#basicExample-2').DataTable({

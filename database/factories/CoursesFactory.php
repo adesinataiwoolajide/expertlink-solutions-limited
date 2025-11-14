@@ -714,7 +714,7 @@ class CoursesFactory extends Factory
                     'course_schedule' => $courseDetails[$courseName]['course_schedule'],
                     'course_overview' => $courseDetails[$courseName]['course_overview'],
                     'benefits' => $courseDetails[$courseName]['benefits'],
-                    'course_technologies' => $courseDetails[$courseName]['course_technologies'],
+                    'course_technologies' => json_encode($courseDetails[$courseName]['course_technologies']),
                     'duration' => $courseDetails[$courseName]['duration'],
                 ];
             }
@@ -733,7 +733,7 @@ class CoursesFactory extends Factory
                 'course_overview' => $this->faker->paragraph(),
                 'packages_included' => $this->faker->sentence(),
                 'benefits' => $this->faker->paragraph(),
-                'course_technologies' => $this->faker->words(10, true),
+                'course_technologies' => json_encode($this->faker->words(10, true)),
                 'duration' => '4 Weeks',
                 'training_type' => $this->faker->word(),
                 'payment_structure' => $this->faker->paragraph(),

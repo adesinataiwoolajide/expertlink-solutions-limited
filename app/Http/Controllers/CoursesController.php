@@ -113,8 +113,8 @@ class CoursesController extends Controller
 
         $ratings = $request->input('ratings');
         $course_discount = $request->input('course_discount');
-        $path = $request->file('course_introduction')->store('course_videos', 'public');
-        dd($path);
+        $course_technologies = $request->input('course_technologies');
+        
         $slug = RandomString(10);
         $data = new Courses([
             'slug' =>$slug,
@@ -130,10 +130,11 @@ class CoursesController extends Controller
             'training_type' => json_encode($training_type),
             'payment_structure' => $payment_structure,
             'course_overview' => $course_overview,
-            'course_technologies' => $course_technologies,
+            'course_technologies' => json_encode($course_technologies),
             'packages_included' => $packages_included,
             'benefits' => $benefits,
-            'ratings' => $ratings, 'course_discount' => $course_discount, 'course_introduction' => "Null"
+            'ratings' => $ratings, 'course_discount' => $course_discount, 'course_introduction' => "Null",
+            
         ]);
 
         if ($data->save()) {
@@ -143,8 +144,9 @@ class CoursesController extends Controller
             }
 
             if($request->hasFile('course_introduction')){
-                $file = createFileUpload('course-video', $request->file('course_introduction'), $course_name);
-                Courses::where('slug', $slug)->update([ 'course_introduction' => $file['png']]);
+                $path = $request->file('course_introduction')->store('course_videos', 'public');
+                $filename = basename($path);
+                Courses::where('slug', $slug)->update([ 'course_introduction' => $filename]);
             }
             
             createLog( 'Added ' . $course_name . ' to the course list ');
@@ -207,8 +209,11 @@ class CoursesController extends Controller
             }else{
                 $program_name = $course->program->program_name;
             }
+            $selectedTrainings = is_array($course->course_technologies) ? $course->course_technologies : json_decode($course->course_technologies, true);
+
             return view('home.courses.edit')->with([
-                'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name
+                'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
+                'selectedTrainings' => $selectedTrainings
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
@@ -243,6 +248,7 @@ class CoursesController extends Controller
         $previous_name = $request->input("previous_name");
         $ratings = $request->input('ratings');
         $course_discount = $request->input('course_discount');
+        $course_technologies = $request->input('course_technologies');
         $data = ([
             "course" => $this->model->show($course->course_id),
             'slug' =>$slug,
@@ -258,10 +264,11 @@ class CoursesController extends Controller
             'training_type' => json_encode($training_type),
             'payment_structure' => $payment_structure,
             'course_overview' => $course_overview,
-            'course_technologies' => $course_technologies,
+            'course_technologies' => json_encode($course_technologies),
             'packages_included' => $packages_included,
             'benefits' => $benefits, 'ratings' => $ratings, 
-            'course_discount' => $course_discount, 'course_introduction' => $course->course_introduction
+            'course_discount' => $course_discount, 'course_introduction' => $course->course_introduction,
+            
         ]);
 
         if($this->model->update($data, $course->course_id)){
@@ -271,8 +278,10 @@ class CoursesController extends Controller
             }
 
             if($request->hasFile('course_introduction')){
-                $file = createFileUpload('course-video', $request->file('course_introduction'), $course_name);
-                Courses::where('slug', $slug)->update([ 'course_introduction' => $file['png']]);
+                
+                $path = $request->file('course_introduction')->store('course_videos', 'public');
+                $filename = basename($path);
+                Courses::where('slug', $slug)->update([ 'course_introduction' => $filename]);
             }
             createLog( "Updated Course Name with Slug: $slug details and Changed the Course name from $previous_name to $course_name");
             $message = "You Have updated ". $request->input("program_name") . " Successfully";

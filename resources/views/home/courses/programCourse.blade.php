@@ -125,7 +125,7 @@
                                                             @endif
 
                                                             <div class="d-flex align-items-center mt-2 mb-2">
-                                                                @php $rating = $course->rating ?? 4.5; @endphp
+                                                                @php $rating = $course->ratings ?? 4.5; @endphp
                                                                 @for ($i = 1; $i <= 5; $i++)
                                                                     <i class="ri-star-fill" style="color:{{ $i <= $rating ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
                                                                 @endfor

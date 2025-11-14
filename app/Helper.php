@@ -1,5 +1,92 @@
 <?php
 
+    function getDiscountedPrice(float $originalPrice, float $discountRate): float
+    {
+        return $originalPrice - ($originalPrice * ($discountRate / 100));
+    }
+
+
+    function getTechnologies(){
+        $courseTechnologies = [
+            'Laravel',
+            'React',
+            'Vue',
+            'Node.js',
+            'Angular',
+            'Django',
+            'Flask',
+            'Spring Boot',
+            'Ruby on Rails',
+            'ASP.NET Core',
+            'Express.js',
+            'Next.js',
+            'Nuxt.js',
+            'Svelte',
+            'Tailwind CSS',
+            'Bootstrap',
+            'Material UI',
+            'jQuery',
+            'TypeScript',
+            'JavaScript',
+            'HTML5',
+            'CSS3',
+            'SASS',
+            'LESS',
+            'GraphQL',
+            'REST API',
+            'Firebase',
+            'MongoDB',
+            'PostgreSQL',
+            'MySQL',
+            'SQLite',
+            'Redis',
+            'Docker',
+            'Kubernetes',
+            'Git',
+            'GitHub',
+            'Bitbucket',
+            'CI/CD',
+            'Jenkins',
+            'Terraform',
+            'AWS',
+            'Azure',
+            'Google Cloud',
+            'Linux',
+            'Bash',
+            'Python',
+            'Java',
+            'C#',
+            'PHP',
+            'Go',
+            'Rust',
+            'Swift',
+            'Kotlin',
+            'Flutter',
+            'React Native',
+            'Xamarin',
+            'Unity',
+            'TensorFlow',
+            'PyTorch',
+            'OpenCV',
+            'Power BI',
+            'Tableau',
+            'Apache Spark',
+            'Hadoop',
+            'Elasticsearch',
+            'Solr',
+            'Salesforce',
+            'SAP',
+            'Oracle',
+            'MATLAB',
+            'R',
+            'Figma',
+            'Adobe XD',
+            'Canva'
+        ];
+
+        asort($courseTechnologies);
+        return array_values($courseTechnologies);
+    }
     function getIcons(){
         return $iconMap = [
             'pdf' => 'ri-file-pdf-line',

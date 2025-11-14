@@ -31,16 +31,15 @@
                         <form action="{{ route('course.update',$course->slug) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="mb-3 col-md-4">
+                                <div class="mb-3 col-md-6">
                                     <label class="form-label">Course Name:</label>
                                     <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Intro to Web Development" value="{{ old('course_name') ?? $course->course_name }}" required>
                                     <input type="hidden" name="previous_name" value="{{ $course->course_name }}">
                                     <x-input-error :messages="$errors->get('course_name')" class="mt-2 text-danger" />
                                     <div id="course-name-feedback" class="mt-2 text-danger"></div>
                                 </div>
-                               
-                                
-                                <div class="mb-3 col-md-5">
+                            
+                                <div class="mb-3 col-md-6">
                                     <label class="form-label">Select Program:</label>
                                     <select name="program_name" class="form-control select2" id="searchableSelect" required>
                                         <option value="{{  old('program_name') ?? $program_name }}" selected>{{ old('program_name')  ?? $program_name}}</option>
@@ -53,10 +52,22 @@
                                     </select>
                                     <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
                                 </div>
-                                <div class="mb-3 col-md-3">
+                                <input type="hidden" class="form-control" id="ratings" name="ratings" value="{{ $course->ratings }}">
+                                <div class="mb-3 col-md-4">
+                                    <label for="rangeWithValue" class="form-label fw-bold text-primary">Course Discount(%): <span id="rangeValue">{{ $course->course_discount }}</span></label>
+                                    <input type="range" class="form-range" id="rangeWithValue" min="0" max="50" value="{{ old('course_discount') ?? $course->course_discount  }}" oninput="document.getElementById('rangeValue').textContent = this.value"
+                                    name="course_discount"> <x-input-error :messages="$errors->get('course_discount')" class="mt-2 text-danger" />
+                                </div>
+                                <div class="mb-3 col-md-4">
                                     <label class="form-label">Course Price (₦):</label>
                                     <input type="number" class="form-control" placeholder="50000" name="course_price" value="{{ old('course_price') ?? $course->course_price  }}" required>
                                     <x-input-error :messages="$errors->get('course_price')" class="mt-2 text-danger" />
+                                </div>
+
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label">Course Duration:</label>
+                                    <input type="text" class="form-control" placeholder="3-Months" name="duration" value="{{ old('duration') ?? $course->duration  }}" required>
+                                    <x-input-error :messages="$errors->get('duration')" class="mt-2 text-danger" />
                                 </div>
                                 @php
                                     $trainingTypes = getTrainings();
@@ -64,7 +75,7 @@
                                     $fromDB = $course->training_type;
                                 @endphp
 
-                                <div class="mb-4 col-md-12">
+                                <div class="mb-4 col-md-6">
                                     <label for="multiSelect" class="form-label fw-bold text-primary">
                                         <i class="bi bi-journal-text me-1"></i> Training Type
                                     </label>
@@ -89,6 +100,35 @@
                                     </select>
                                     <x-input-error :messages="$errors->get('training_type')" class="mt-2 text-danger small" />
                                 </div>
+
+                                @php
+                                    $selectedTech = old('course_technologies', []);
+                                @endphp
+
+                                <div class="mb-4 col-md-6">
+                                    <label for="courseTechSelect" class="form-label fw-bold text-primary">
+                                        <i class="bi bi-journal-text me-1"></i> Course Technologies
+                                    </label>
+                                    <select name="course_technologies[]" id="courseTechSelect" class="form-select select2-multi border-primary shadow-sm" multiple required>
+                                        @if($selectedTrainings == null)
+                                            <option value="{{ $course->course_technologies }}" selected>{{ $course->course_technologies }}</option>
+                                        @else
+                                            @foreach ($selectedTrainings as $type)
+                                                <option value="{{ $type }}" {{ in_array($type, $selectedTrainings) ? 'selected' : '' }}>
+                                                    {{ ucfirst($type) }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                        <option value=""></option>
+                                        @foreach (getTechnologies() as $type)
+                                            <option value="{{ $type }}" {{ in_array($type, $selectedTech) ? 'selected' : '' }}>
+                                                {{ ucfirst($type) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('course_technologies')" class="mt-2 text-danger small" />
+                                </div>
+                               
 
                                 <div class="mb-3 col-md-4">
                                     <label class="form-label">Basic Requirements:</label>
@@ -125,7 +165,7 @@
                                     <textarea class="form-control summernote" name="benefits" required>{{ old('benefits') ??  $course->benefits}}</textarea>
                                     <x-input-error :messages="$errors->get('benefits')" class="mt-2 text-danger" />
                                 </div>
-                                <div class="mb-3 col-md-12">
+                                <div class="mb-3 col-md-6">
                                     <label class="imageUpload">Course Banner:</label>
                                     <input type="file" class="form-control" name="banner" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
                                     <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
@@ -136,6 +176,14 @@
                                     <img src="{{ asset('course-banner/'. $course->banner )}}" class="img-fluid login-logo" style="width: auto; height: 300px;" alt="" />
 
                                 </div>
+
+                                <div class="mb-3 col-md-6">
+                                    <label class="videoUpload">Course Introduction Video:</label>
+                                    <input type="file" class="form-control" name="course_introduction" id="course_introduction" accept="video/mp4,video/webm,video/ogg">
+                                    <x-input-error :messages="$errors->get('course_introduction')" class="mt-2 text-danger" />
+                                    <button type="button" id="deleteVideoBtn" class="btn btn-sm btn-danger mt-2" style="display: none;">Delete Video</button>
+                                    <video id="videoPreview" width="100%" height="auto" controls style="margin-top: 1rem; display: none;"></video>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Update Course Details</button>
                         </form>
@@ -144,6 +192,39 @@
             </div>
         </div>
     </div>
+    <script>
+         document.getElementById('course_introduction').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('videoPreview');
+            const deleteBtn = document.getElementById('deleteVideoBtn');
 
+            if (file && file.type.startsWith('video/')) {
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+                preview.style.display = 'block';
+                deleteBtn.style.display = 'inline-block';
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }
+        });
+
+        document.getElementById('deleteVideoBtn').addEventListener('click', function () {
+            const confirmDelete = confirm("Are you sure you want to remove this video?");
+            if (confirmDelete) {
+                const input = document.getElementById('course_introduction');
+                const preview = document.getElementById('videoPreview');
+                const deleteBtn = document.getElementById('deleteVideoBtn');
+
+                input.value = '';
+                preview.src = '';
+                preview.style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }
+        });
+
+        
+    </script>
    
 </x-app-layout>

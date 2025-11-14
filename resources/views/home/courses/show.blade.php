@@ -148,23 +148,49 @@
                                     @endif
                                 </div>
                                 <div class="row">
-                                    <div class="mb-3 col-md-4">
+                                    <div class="mb-3 col-md-6">
                                         <label class="form-label fw-bold">Course Name:</label>
                                         <p class="form-control-plaintext">{{ $course->course_name }}</p>
                                     </div>
 
-                                    <div class="mb-3 col-md-5">
-                                        <label class="form-label fw-bold">Program:</label>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label fw-bold">Program Name:</label>
                                         <p class="form-control-plaintext">{{ $program_name }}</p>
                                     </div>
 
-                                    <div class="mb-3 col-md-3">
-                                        <label class="form-label fw-bold">Course Price (₦):</label>
-                                        <p class="form-control-plaintext">{{ number_format($course->course_price) }}</p>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label fw-bold">Course Original Price (₦):</label>
+                                        <span class="badge rounded-pill bg-success text-white" style="font-weight:700; font-size:1rem;">
+                                            ₦{{ number_format($course->course_price,2) }}
+                                        </span>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label fw-bold">Course Discounted Price (₦):</label>
+                                        <span class="badge rounded-pill bg-danger text-white" style="font-weight:700; font-size:1rem;">
+                                            ₦{{ number_format(getDiscountedPrice($course->course_price, $course->course_discount),2) }}
+                                        </span>
                                     </div>
 
-                                    <div class="mb-4 col-md-12">
-                                        <label class="form-label fw-bold text-primary">Training Type:</label>
+                                    <div class="mb-3 col-md-6">
+                                        
+                                        <div class="d-flex align-items-center mt-2 mb-2">
+                                           <label class="form-label fw-bold">Course Ratings: </label>
+                                            @php $rating = $course->ratings; @endphp
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="ri-star-fill" style="color:{{ $i <= $rating ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
+                                            @endfor
+                                            <span class="ms-2" style="font-size:0.9rem; color:#555;">
+                                                {{ number_format($rating, 1) }} ({{ $course->reviews }} reviews)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label fw-bold">Course Duration: {{ $course->duration }}</label>
+                                    </div>
+
+
+                                    <div class="mb-4 col-md-6">
+                                        <label class="form-label fw-bold text-dark">Training Type:</label>
                                         <p class="form-control-plaintext">
                                             @foreach(explode(',', $course->training_type) as $type)
                                                 <span class="badge bg-info text-white me-1">{{ ucfirst(trim($type)) }}</span>
@@ -172,6 +198,15 @@
                                         </p>
                                     </div>
 
+                                    <div class="mb-4 col-md-6">
+                                        <label class="form-label fw-bold text-dark">Course Technologies:</label>
+                                        <p class="form-control-plaintext">
+                                            @foreach(explode(',', $course->course_technologies) as $types)
+                                                <span class="badge bg-dark text-white me-1">{{ ucfirst(trim($types)) }}</span>
+                                            @endforeach
+                                        </p>
+                                    </div>
+                                   
                                     <div class="mb-3 col-md-12">
                                         <label class="form-label fw-bold">Basic Requirements:</label>
                                         <div class="border p-2 rounded bg-light">{!! $course->basic_requirements !!}</div>

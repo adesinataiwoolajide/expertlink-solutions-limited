@@ -39,9 +39,13 @@ class UpdateCourseRequest extends FormRequest
             'training_type.*' => ['string'],
             'payment_structure' => ['nullable', 'string'],
             'course_overview' => ['nullable', 'string'],
-            'course_technologies' => ['nullable', 'string'],
+            'course_technologies' => ['nullable'],
             'packages_included' => ['nullable', 'string'],
+            'ratings' => ['nullable', 'string'],
+            'course_discount' => ['required', 'string'],
             'benefits' => ['nullable', 'string'],
+            'course_introduction' => ['sometimes', 'mimes:mp4,webm,ogg', 'max:51200'], 
+
         ];
     }
 }
