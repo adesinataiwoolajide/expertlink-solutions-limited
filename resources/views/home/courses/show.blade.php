@@ -192,7 +192,7 @@
                                     <div class="mb-4 col-md-6">
                                         <label class="form-label fw-bold text-dark">Training Type:</label>
                                         <p class="form-control-plaintext">
-                                            @foreach(explode(',', $course->training_type) as $type)
+                                            @foreach(json_decode($course->training_type) as $type)
                                                 <span class="badge bg-info text-white me-1">{{ ucfirst(trim($type)) }}</span>
                                             @endforeach
                                         </p>
@@ -201,7 +201,7 @@
                                     <div class="mb-4 col-md-6">
                                         <label class="form-label fw-bold text-dark">Course Technologies:</label>
                                         <p class="form-control-plaintext">
-                                            @foreach(explode(',', $course->course_technologies) as $types)
+                                            @foreach(json_decode($course->course_technologies) as $types)
                                                 <span class="badge bg-dark text-white me-1">{{ ucfirst(trim($types)) }}</span>
                                             @endforeach
                                         </p>

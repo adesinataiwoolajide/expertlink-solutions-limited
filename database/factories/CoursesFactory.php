@@ -716,6 +716,7 @@ class CoursesFactory extends Factory
                     'benefits' => $courseDetails[$courseName]['benefits'],
                     'course_technologies' => json_encode($courseDetails[$courseName]['course_technologies']),
                     'duration' => $courseDetails[$courseName]['duration'],
+                    'payment_structure' => "Auto Generated",
                 ];
             }
 
@@ -732,6 +733,7 @@ class CoursesFactory extends Factory
                 'course_schedule' => $this->faker->paragraph(),
                 'course_overview' => $this->faker->paragraph(),
                 'packages_included' => $this->faker->sentence(),
+                'payment_structure' => "Not-Auto Generated",
                 'benefits' => $this->faker->paragraph(),
                 'course_technologies' => json_encode($this->faker->words(10, true)),
                 'duration' => '4 Weeks',

@@ -144,8 +144,7 @@ class CoursesController extends Controller
             }
 
             if($request->hasFile('course_introduction')){
-                $path = $request->file('course_introduction')->store('course_videos', 'public');
-                $filename = basename($path);
+                $filename = uploadVideo($request->file('course_introduction'), 'course_videos');
                 Courses::where('slug', $slug)->update([ 'course_introduction' => $filename]);
             }
             
@@ -278,9 +277,7 @@ class CoursesController extends Controller
             }
 
             if($request->hasFile('course_introduction')){
-                
-                $path = $request->file('course_introduction')->store('course_videos', 'public');
-                $filename = basename($path);
+                $filename = uploadVideo($request->file('course_introduction'), 'course_videos');
                 Courses::where('slug', $slug)->update([ 'course_introduction' => $filename]);
             }
             createLog( "Updated Course Name with Slug: $slug details and Changed the Course name from $previous_name to $course_name");

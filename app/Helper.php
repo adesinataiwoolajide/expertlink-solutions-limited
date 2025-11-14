@@ -5,6 +5,18 @@
         return $originalPrice - ($originalPrice * ($discountRate / 100));
     }
 
+    function uploadVideo($file, $folder = 'course_videos')
+    {
+        if ($file) {
+            $originalName = $file->getClientOriginalName();
+            $path = $file->storeAs($folder, $originalName, 'public');
+            return basename($path);
+        }
+
+        return null;
+    }
+
+
 
     function getTechnologies(){
         $courseTechnologies = [

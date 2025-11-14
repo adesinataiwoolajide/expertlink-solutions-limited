@@ -128,8 +128,7 @@
                                     </select>
                                     <x-input-error :messages="$errors->get('course_technologies')" class="mt-2 text-danger small" />
                                 </div>
-                               
-
+                            
                                 <div class="mb-3 col-md-4">
                                     <label class="form-label">Basic Requirements:</label>
                                     <textarea class="form-control summernote" name="basic_requirements" required>{{ old('basic_requirements') ??  $course->basic_requirements }}</textarea>
