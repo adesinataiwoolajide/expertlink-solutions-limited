@@ -55,8 +55,14 @@
                                     $trainingTypes = getTrainings();
                                     $selectedTypes = old('training_type', []);
                                 @endphp
-
-                                <div class="mb-4 col-md-12">
+                                <input type="hidden" class="form-control" id="ratings" name="ratings" value="5">
+                                <div class="mb-3 col-md-3">
+                                    <label for="rangeWithValue" class="form-label">Course Discount(%): <span id="rangeValue">0</span></label>
+                                    <input type="range" class="form-range" id="rangeWithValue" min="0" max="50" value="{{ old('course_discount') ?? 0 }}" oninput="document.getElementById('rangeValue').textContent = this.value"
+                                    name="course_discount"> <x-input-error :messages="$errors->get('course_discount')" class="mt-2 text-danger" />
+                                </div>
+                               
+                                <div class="mb-4 col-md-9">
                                     <label for="multiSelect" class="form-label fw-bold text-primary">
                                         <i class="bi bi-journal-text me-1"></i> Training Type
                                     </label>
@@ -106,7 +112,7 @@
                                     <textarea class="form-control summernote" name="benefits" required>{{ old('benefits') ?? 'List the benefits of this course...' }}</textarea>
                                     <x-input-error :messages="$errors->get('benefits')" class="mt-2 text-danger" />
                                 </div>
-                                <div class="mb-3 col-md-12">
+                                <div class="mb-3 col-md-6">
                                     <label class="imageUpload">Course Banner:</label>
                                     <input type="file" class="form-control" name="banner" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg" required>
                                     <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
@@ -115,6 +121,19 @@
                                         <small class="text-muted">Image preview will appear here</small>
                                     </div>
                                 </div>
+                                <div class="mb-3 col-md-6">
+                                    <label class="videoUpload">Course Introduction Video:</label>
+                                    <input type="file" class="form-control" name="course_introduction" id="course_introduction" accept="video/mp4,video/webm,video/ogg" required>
+                                    <x-input-error :messages="$errors->get('course_introduction')" class="mt-2 text-danger" />
+
+                                    <button type="button" id="deleteVideoBtn" class="btn btn-sm btn-danger mt-2" style="display: none;">Delete Video</button>
+
+                                    <!-- Video Preview -->
+                                    <video id="videoPreview" width="100%" height="auto" controls style="margin-top: 1rem; display: none;"></video>
+
+                                </div>
+
+
                             </div>
                             <button type="submit" class="btn btn-primary">Create Course</button>
                         </form>
@@ -166,6 +185,39 @@
                 }
             });
         });
-    </script>
+
+      
+    document.getElementById('course_introduction').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('videoPreview');
+        const deleteBtn = document.getElementById('deleteVideoBtn');
+
+        if (file && file.type.startsWith('video/')) {
+            const url = URL.createObjectURL(file);
+            preview.src = url;
+            preview.style.display = 'block';
+            deleteBtn.style.display = 'inline-block';
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+            deleteBtn.style.display = 'none';
+        }
+    });
+
+    document.getElementById('deleteVideoBtn').addEventListener('click', function () {
+        const confirmDelete = confirm("Are you sure you want to remove this video?");
+        if (confirmDelete) {
+            const input = document.getElementById('course_introduction');
+            const preview = document.getElementById('videoPreview');
+            const deleteBtn = document.getElementById('deleteVideoBtn');
+
+            input.value = '';
+            preview.src = '';
+            preview.style.display = 'none';
+            deleteBtn.style.display = 'none';
+        }
+    });
+</script>
+</script>
 
 </x-app-layout>

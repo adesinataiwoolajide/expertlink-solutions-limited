@@ -42,6 +42,9 @@ class StoreCourseRequest extends FormRequest
             'course_technologies' => ['nullable', 'string'],
             'packages_included' => ['nullable', 'string'],
             'benefits' => ['nullable', 'string'],
+            'ratings' => ['nullable', 'string'],
+            'course_discount' => ['required', 'string'],
+            'course_introduction' => ['required', 'mimes:mp4,webm,ogg', 'max:51200'], 
         ];
     }
 

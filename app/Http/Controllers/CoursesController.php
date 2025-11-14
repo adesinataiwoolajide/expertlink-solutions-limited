@@ -110,6 +110,11 @@ class CoursesController extends Controller
         $course_technologies = $request->input('course_technologies');
         $packages_included = $request->input('packages_included');
         $benefits = $request->input('benefits');
+
+        $ratings = $request->input('ratings');
+        $course_discount = $request->input('course_discount');
+        $path = $request->file('course_introduction')->store('course_videos', 'public');
+        dd($path);
         $slug = RandomString(10);
         $data = new Courses([
             'slug' =>$slug,
@@ -128,12 +133,18 @@ class CoursesController extends Controller
             'course_technologies' => $course_technologies,
             'packages_included' => $packages_included,
             'benefits' => $benefits,
+            'ratings' => $ratings, 'course_discount' => $course_discount, 'course_introduction' => "Null"
         ]);
 
         if ($data->save()) {
             if ($request->hasFile('banner')) {
                 $file = createFileUpload('course-banner', $request->file('banner'), $request->input('course_name'));
                 $data->banner = $file['png'];
+            }
+
+            if($request->hasFile('course_introduction')){
+                $file = createFileUpload('course-video', $request->file('course_introduction'), $course_name);
+                Courses::where('slug', $slug)->update([ 'course_introduction' => $file['png']]);
             }
             
             createLog( 'Added ' . $course_name . ' to the course list ');
@@ -230,6 +241,8 @@ class CoursesController extends Controller
         $packages_included = $request->input('packages_included');
         $benefits = $request->input('benefits');
         $previous_name = $request->input("previous_name");
+        $ratings = $request->input('ratings');
+        $course_discount = $request->input('course_discount');
         $data = ([
             "course" => $this->model->show($course->course_id),
             'slug' =>$slug,
@@ -247,13 +260,19 @@ class CoursesController extends Controller
             'course_overview' => $course_overview,
             'course_technologies' => $course_technologies,
             'packages_included' => $packages_included,
-            'benefits' => $benefits,
+            'benefits' => $benefits, 'ratings' => $ratings, 
+            'course_discount' => $course_discount, 'course_introduction' => $course->course_introduction
         ]);
 
         if($this->model->update($data, $course->course_id)){
             if ($request->hasFile('banner')) {
                 $file = createFileUpload('course-banner', $request->file('banner'), $course_name);
                 Courses::where('slug', $slug)->update([ 'banner' => $file['png']]);
+            }
+
+            if($request->hasFile('course_introduction')){
+                $file = createFileUpload('course-video', $request->file('course_introduction'), $course_name);
+                Courses::where('slug', $slug)->update([ 'course_introduction' => $file['png']]);
             }
             createLog( "Updated Course Name with Slug: $slug details and Changed the Course name from $previous_name to $course_name");
             $message = "You Have updated ". $request->input("program_name") . " Successfully";

@@ -699,42 +699,47 @@ class CoursesFactory extends Factory
         $courseName = $courseTitles[$programName][array_rand($courseTitles[$programName])];
 
         // Safely return course data only if details exist
-        if (isset($courseDetails[$courseName])) {
-    return [
-        'course_name' => $courseName,
-        'banner' => 'els.png',
-        'user_id' => 1,
-        'programSlug' => $program->slug,
-        'basic_requirements' => $courseDetails[$courseName]['basic_requirements'],
-        'course_outline' => $courseDetails[$courseName]['course_outline'],
-        'learning_module' => $courseDetails[$courseName]['learning_module'],
-        'course_schedule' => $courseDetails[$courseName]['course_schedule'],
-        'course_overview' => $courseDetails[$courseName]['course_overview'],
-        'benefits' => $courseDetails[$courseName]['benefits'],
-        'course_technologies' => $courseDetails[$courseName]['course_technologies'],
-        'duration' => $courseDetails[$courseName]['duration'],
-    ];
-}
+        if (\App\Models\Courses::where('course_name', $courseName)->doesntExist()) {
 
-    // Fallback if course details are missing
-    return [
-        'course_name' => $courseName,
-        'banner' => 'els.png',
-        'user_id' => 1,
-        'programSlug' => $program->slug,
-        'basic_requirements' => $this->faker->paragraph(),
-        'course_outline' => $this->faker->paragraph(),
-        'learning_module' => $this->faker->paragraph(),
-        'course_schedule' => $this->faker->paragraph(),
-        'course_overview' => $this->faker->paragraph(),
-        'packages_included' => $this->faker->sentence(),
-        'benefits' => $this->faker->paragraph(),
-        'course_technologies' => $this->faker->words(10, true),
-        'duration' => '4 Weeks',
-        'training_type' => $this->faker->word(),
-        'payment_structure' => $this->faker->paragraph(),
+            if (isset($courseDetails[$courseName])) {
+                return [
+                    'slug' => RandomString(9),
+                    'course_name' => $courseName,
+                    'banner' => 'els.png',
+                    'user_id' => 1,
+                    'programSlug' => $program->slug,
+                    'basic_requirements' => $courseDetails[$courseName]['basic_requirements'],
+                    'course_outline' => $courseDetails[$courseName]['course_outline'],
+                    'learning_module' => $courseDetails[$courseName]['learning_module'],
+                    'course_schedule' => $courseDetails[$courseName]['course_schedule'],
+                    'course_overview' => $courseDetails[$courseName]['course_overview'],
+                    'benefits' => $courseDetails[$courseName]['benefits'],
+                    'course_technologies' => $courseDetails[$courseName]['course_technologies'],
+                    'duration' => $courseDetails[$courseName]['duration'],
+                ];
+            }
 
-    ];
+            // Fallback if course details are missing
+            return [
+                'slug' => RandomString(9),
+                'course_name' => $courseName,
+                'banner' => 'els.png',
+                'user_id' => 1,
+                'programSlug' => $program->slug,
+                'basic_requirements' => $this->faker->paragraph(),
+                'course_outline' => $this->faker->paragraph(),
+                'learning_module' => $this->faker->paragraph(),
+                'course_schedule' => $this->faker->paragraph(),
+                'course_overview' => $this->faker->paragraph(),
+                'packages_included' => $this->faker->sentence(),
+                'benefits' => $this->faker->paragraph(),
+                'course_technologies' => $this->faker->words(10, true),
+                'duration' => '4 Weeks',
+                'training_type' => $this->faker->word(),
+                'payment_structure' => $this->faker->paragraph(),
+
+            ];
+        }
         // $programName = $program->program_name;
         // $courseName = $courseTitles[$programName][array_rand($courseTitles[$programName])];
 
