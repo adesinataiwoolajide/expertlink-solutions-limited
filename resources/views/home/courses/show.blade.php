@@ -282,20 +282,36 @@
                                     </div>
 
                                     <div class="mb-3 col-md-12">
-                                        <label class="form-label fw-bold">Course Introduction Video:</label>
-                                       
-                                        <video width="100%" height="500" controls controlsList="nodownload">
-                                            <source src="{{ asset('storage/course_videos/' . $course->course_introduction) }}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        
+                                        <ul class="nav nav-tabs" id="courseTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">
+                                                    Basic Requirements
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="false">
+                                                    Introduction Video
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content mt-3" id="courseTabContent">
+                                            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                                               <div class="border p-2 rounded bg-light">{!! $course->basic_requirements !!}</div>
+                                            </div>
 
+                                            <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+                                                <div class="mb-3 col-md-12">
+                                                    
+                                                    <video width="100%" height="500" controls controlsList="nodownload">
+                                                        <source src="{{ asset('storage/course_videos/' . $course->course_introduction) }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                    
-                                    <div class="mb-3 col-md-12">
-                                        <label class="form-label fw-bold">Basic Requirements:</label>
-                                        <div class="border p-2 rounded bg-light">{!! $course->basic_requirements !!}</div>
-                                    </div>
-
                                     <div class="mb-3 col-md-12">
                                         <label class="form-label fw-bold">Course Outline:</label>
                                         <div class="border p-2 rounded bg-light">{!! $course->course_outline !!}</div>
