@@ -26,6 +26,7 @@ class CoursesController extends Controller
      */
     public function index()
     {
+        Courses::where(['payment_structure' => "Not-Auto Generated"])->delete();
         $courses = Courses::with(['user', 'notes', 'program', 'allocation.user'])->orderBy('course_name', 'asc')->get();
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             return view('home.courses.index')->with([
