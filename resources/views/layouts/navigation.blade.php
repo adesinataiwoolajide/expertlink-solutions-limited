@@ -39,11 +39,20 @@
 
 					<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
 						<a href="{{ route('course.index') }}">
-							<i class="ri-list-settings-line"></i>
+							<i class="ri-book-open-line"></i>
 							<span class="menu-text">Available Courses</span>
 						</a>
 					</li>
+
+					<li class="{{ request()->routeIs('myCourses') ? 'active current-page' : '' }}">
+						<a href="{{ route('myCourses') }}">
+							<i class="ri-graduation-cap-line"></i>
+							<span class="menu-text">My Courses</span>
+						</a>
+					</li>
+
 				@endif
+				
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
 
 					<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">

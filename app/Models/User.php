@@ -47,6 +47,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function courseSubscriptions()
+    {
+        return $this->hasMany(CourseSubscription::class, 'userSlug', 'slug');
+    }
+
     public function courses()
     {
         return $this->hasMany(Courses::class);

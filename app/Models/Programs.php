@@ -22,6 +22,11 @@ class Programs extends Model
         return $this->hasMany(Courses::class, 'programSlug', 'slug');
     }
 
+    public function courseSubscriptions()
+    {
+        return $this->hasMany(CourseSubscription::class, 'programSlug', 'slug');
+    }
+
      public function course()
     {
         return $this->belongsTo(Courses::class, 'programSlug', 'slug');

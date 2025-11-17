@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, User, CourseAllocationHistories};
+use App\Models\{Programs, Courses, User, CourseAllocationHistories, CourseSubscription,Payment};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
@@ -41,6 +41,12 @@ class CoursesController extends Controller
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
             return view('errors.403')->with(['message' => $message]);
         }
+    }
+
+    public function myCourses()
+    {
+        $courses = CourseSubscription::where('userSlug', Auth::user()->slug)->with('course', 'program', 'user')->orderBy('created_at', 'desc')->get();
+        dd($courses);
     }
 
     public function learning($slug){

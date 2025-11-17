@@ -123,6 +123,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         
     });
 
+    Route::prefix('my-courses')->group(function () {
+        Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
+    });
+
+
+
     Route::prefix('payments')->group(function () {
         Route::get('/checkout', [PaymentController::class, 'showCheckout'])->name('payment.checkout');
     

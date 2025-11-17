@@ -21,4 +21,9 @@ class Payment extends Model
     {
         return $this->belongsTo(User::class, 'userSlug', 'slug');
     }
+
+    public function courseSubscriptions()
+    {
+        return $this->hasMany(CourseSubscription::class, 'paymentSlug', 'slug');
+    }
 }

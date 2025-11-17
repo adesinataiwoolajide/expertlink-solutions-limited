@@ -27,8 +27,16 @@ class CourseSubscription extends Model
         return $this->belongsTo(User::class, 'userSlug', 'slug');
     }
 
-   public function allocations()
-   {
-      return $this->hasMany(CourseAllocation::class, 'courseSlug', 'slug');
-   }
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'paymentSlug', 'slug');
+    }
+
+    // 🔹 Relationship to Course
+    public function course()
+    {
+        return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
+    }
+
+
 }
