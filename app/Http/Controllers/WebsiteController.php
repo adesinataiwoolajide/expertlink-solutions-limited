@@ -132,7 +132,7 @@ class WebsiteController extends Controller
 
     public function courses()
     {
-        $courses = Courses::with(['program'])->orderBy('course_name', 'asc')->get();
+        $courses = Courses::with(['program'])->orderBy('course_name', 'asc')->paginate(24);
         return view('website.courses')->with(
             ['courses' => $courses]
         );
@@ -144,7 +144,6 @@ class WebsiteController extends Controller
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        
         return view('website.courseView')->with([
             'course' => $course, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
         ]);

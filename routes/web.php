@@ -42,6 +42,13 @@ Route::prefix('programs')->group(function () {
     });
 });
 
+Route::prefix('our-courses')->group(function () {
+    Route::get('/', [WebsiteController::class, 'courses'])->name('website.courses');
+    Route::get('/{courseSlug}', [WebsiteController::class, 'courseDetails'])->name('website.courseDetails');
+}); 
+
+
+
 
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);

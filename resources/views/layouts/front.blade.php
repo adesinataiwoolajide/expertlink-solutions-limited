@@ -139,7 +139,7 @@
                                                     <a href="{{ route('website') }}"><span>Home</span></a>
                                                 </li>
                                                 <li class="has-children has-children--multilevel-submenu">
-                                                    <a href="{{ route('website.programs') }}"><span>Training Courses</span></a>
+                                                    <a href="{{ route('website.programs') }}"><span>Our Programs</span></a>
                                                     <ul class="submenu">
                                                         @foreach(getRecordData('App\Models\Programs', ['courses'], 'program_name', 'asc', 'get') as $key => $value)
                                                             
@@ -153,9 +153,13 @@
                                                                     </ul>
                                                                 @endif
                                                             </li>
+                                                            
                                                         @endforeach
                                                         
                                                     </ul>
+                                                </li>
+                                                 <li class="">
+                                                    <a href="{{ route('website.courses') }}"><span>Our Courses</span></a>
                                                 </li>
                                                 <li class="">
                                                     <a href="{{ route('website.aboutus') }}"><span>About Us</span></a>
