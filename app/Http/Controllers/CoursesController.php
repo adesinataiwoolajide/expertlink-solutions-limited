@@ -57,15 +57,55 @@ class CoursesController extends Controller
     public function learningShow($courseSlug, $programSlug){
         $program = Programs::with(['courses', 'allocations'])->where('slug', $programSlug)->first();
         $course = Courses::with(['user', 'notes', 'program', 'allocation.user'])->where(['slug' => $courseSlug ,'programSlug' => $programSlug])->first();
-        $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
+        
         $program_name = $program->program_name ?? 'NIL';
         if (!$program && !$course) {
             return redirect()->back()->with('error', 'course details do not exist');
         }
         $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->paginate(15);
-        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'selectedTypes', 'courses'));
+        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses'));
 
     }
+
+    public function addToCart($slug)
+    {
+        
+        $course = Courses::where('slug', $slug)->with('program', 'allocations', 'materials', 'notes')->first();
+        if(!$course){
+            return redirect()->back()->with("error", "Course details does not exists");
+        }
+        $cart = session()->get('cart', []);
+        if (isset($cart[$slug])) {
+            return redirect()->back()->with('error', 'Course is already in your cart.');
+        } else {
+            $cart[$slug] = [
+                'course_name' => $course->course_name,
+                'price' => $course->course_price,
+                'slug' => $course->slug,
+                'quantity' => 1,
+            ];
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Course added to cart successfully!');
+        }
+    }
+    public function viewCart(){
+        $cart = session()->get('cart', []);
+        return view('home.courses.cart', compact('cart'));
+    }
+
+    public function removeFromCart($id)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Course removed from cart.');
+        }
+
+        return redirect()->back()->with('error', 'Course not found in cart.');
+    }
+
+
 
     
 

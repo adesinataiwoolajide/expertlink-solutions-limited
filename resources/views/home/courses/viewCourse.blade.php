@@ -245,13 +245,20 @@
                                                             </div>
 
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <span class="badge bg-success text-white fw-bold px-3 py-2">
-                                                                    ₦{{ number_format($discountedPrice) }}
-                                                                </span>
-                                                                <span class="badge bg-danger text-white double-strike fw-bold px-3 py-2">
-                                                                    ₦{{ number_format($originalPrice) }}
-                                                                </span>
+                                                                <div>
+                                                                    <span class="badge bg-success text-white fw-bold px-3 py-2">
+                                                                        ₦{{ number_format($discountedPrice) }}
+                                                                    </span>
+                                                                    <span class="badge bg-danger text-white double-strike fw-bold px-3 py-2 ms-2">
+                                                                        ₦{{ number_format($originalPrice) }}
+                                                                    </span>
+                                                                </div>
+                                                                <a href="{{ route('cart.add', [$course->slug]) }}"
+                                                                class="btn btn-sm btn-outline-primary fw-semibold">
+                                                                    <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+                                                                </a>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>

@@ -133,15 +133,19 @@
                                                                     {{ number_format($rating, 1) }} ({{ $course->reviews }} reviews)
                                                                 </span>
                                                             </div>
-                                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                
-                                                                <span style="font-weight:700; font-size:1rem;" class="badge rounded-pill bg-success text-white">
-                                                                    ₦{{ number_format($discountedPrice) }}
-                                                                </span>
-                                                                
-                                                                <span class="badge rounded-pill bg-danger double-strike text-white" style="font-size:0.9rem; font-weight:700;">
-                                                                    ₦{{ number_format($originalPrice) }}
-                                                                </span>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <span class="badge bg-success text-white fw-bold px-3 py-2">
+                                                                        ₦{{ number_format($discountedPrice) }}
+                                                                    </span>
+                                                                    <span class="badge bg-danger text-white double-strike fw-bold px-3 py-2 ms-2">
+                                                                        ₦{{ number_format($originalPrice) }}
+                                                                    </span>
+                                                                </div>
+                                                                <a href="{{ route('cart.add', [$course->slug]) }}"
+                                                                class="btn btn-sm btn-outline-primary fw-semibold">
+                                                                    <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+                                                                </a>
                                                             </div>
 
                                                         </div>

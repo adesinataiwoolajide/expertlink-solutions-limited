@@ -112,6 +112,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::prefix('learning')->group(function () {
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
+            Route::prefix('cart')->group(function () {
+                Route::get('/', [CoursesController::class, 'viewCart'])->name('cart.view');
+                Route::get('/add/{slug}', [CoursesController::class, 'addToCart'])->name('cart.add');
+                Route::get('/remove/{id}', [CoursesController::class, 'removeFromCart'])->name('cart.remove');
+
+            });
         });
     });
 
