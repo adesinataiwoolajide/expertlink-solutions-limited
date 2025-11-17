@@ -63,6 +63,8 @@ class PaymentController extends Controller
         $response = Http::withToken(env('PAYSTACK_SECRET_KEY'))->get("https://api.paystack.co/transaction/verify/{$reference}");
         if ($response->successful() && $response['data']['status'] === 'success') {
             dd($response['data']);
+            session()->forget('cart');
+
             // return redirect()->route('course.index')->with('success', 'Payment verified successfully.');
         }
         return redirect()->back()->with('error', 'Payment verification failed.');
@@ -72,20 +74,16 @@ class PaymentController extends Controller
     {
         $reference = $request->query('paymentReference');
 
-        $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY'))
-            ->post('https://api.monnify.com/api/v1/auth/login');
-
+        $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY'))->post('https://api.monnify.com/api/v1/auth/login');
         $token = $auth['responseBody']['accessToken'];
-
         $verify = Http::withToken($token)->get('https://api.monnify.com/api/v2/merchant/transactions/query', [
             'paymentReference' => $reference
         ]);
         dd($verify['responseBody']);
         if ($verify['responseBody']['paymentStatus'] === 'PAID') {
-
+            session()->forget('cart');
             // return redirect()->route('course.index')->with('success', 'Monnify payment verified.');
         }
-
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
 

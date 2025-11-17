@@ -13,7 +13,21 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('userSlug');
+            $table->string('slug');
+            $table->string('amount');
+            $table->string('paymentMethod');
+            $table->string('courseSlug');
+            $table->string('programSlug');
+            $table->string('email');
+            $table->string('currencyCode');
+            $table->string('paymentDescription');
+            $table->string('transactionReference');
+            $table->string('paymentReference');
+            $table->string('paymentStatus');
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
