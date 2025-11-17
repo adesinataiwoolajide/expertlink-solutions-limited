@@ -42,7 +42,12 @@
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">Select Program:</label>
                                     <select name="program_name" class="form-control select2" id="searchableSelect" required>
-                                        <option value="{{  old('program_name') ?? $program_name }}" selected>{{ old('program_name')  ?? $program_name}}</option>
+                                        @if(str_contains($program_name, 'NIL'))
+                                            <option value="{{  old('program_name') }}" selected>{{ old('program_name')}}</option>
+
+                                        @else
+                                            <option value="{{  old('program_name') ?? $program_name }}" selected>{{ old('program_name')  ?? $program_name}}</option>
+                                        @endif
                                         <option value=""></option>
                                         @foreach ($programs as $program)
                                             <option value="{{ $program->slug }}" {{ old('program_name') == $program->program_name ? 'selected' : '' }}>

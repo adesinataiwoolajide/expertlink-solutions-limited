@@ -136,19 +136,22 @@
 
                                             <ul>
                                                 <li class="">
-                                                    <a href="./"><span>Home</span></a>
+                                                    <a href="{{ route('website') }}"><span>Home</span></a>
                                                 </li>
                                                 <li class="has-children has-children--multilevel-submenu">
                                                     <a href="{{ route('website.programs') }}"><span>Training Courses</span></a>
                                                     <ul class="submenu">
                                                         @foreach(getRecordData('App\Models\Programs', ['courses'], 'program_name', 'asc', 'get') as $key => $value)
+                                                            
                                                             <li class="has-children">
                                                                 <a href="{{ route('website.programs.show',$value->slug)}}"><span>{{$value->program_name}}</span></a>
-                                                                @foreach($value->courses as $cos)
+                                                                @if(count($value->courses) > 0)
                                                                     <ul class="submenu">
-                                                                        <li><a href="{{ route('website.programs.courseShow',[$cos->slug,$value->slug])}}"><span>{{ $cos->course_name }}</span></a></li>
+                                                                        @foreach($value->courses as $cos)
+                                                                            <li><a href="{{ route('website.programs.courseShow',[$cos->slug,$value->slug])}}"><span>{{ $cos->course_name }}</span></a></li>
+                                                                        @endforeach
                                                                     </ul>
-                                                                @endforeach
+                                                                @endif
                                                             </li>
                                                         @endforeach
                                                         
@@ -177,9 +180,14 @@
                                                  <li class="has-children has-children--multilevel-submenu">
                                                     <a href="#"><span>Account</span></a>
                                                     <ul class="submenu">
-                                                        <li><a href="/login"><span>Login</span></a></li>
-                                                        <li><a href="/register"><span>Register</span></a></li>
-                                                        <li><a href="{{ route('website.blog') }}"><span>Logout</span></a></li>
+                                                        @guest
+                                                            <li><a href="/login"><span>Login</span></a></li>
+                                                            <li><a href="/register"><span>Register</span></a></li>
+                                                        @else
+                                                            <li><a href="/login"><span>Logout</span></a></li>
+                                                            <li><a href="{{ route('dashboard') }}"><span>My Dashboard</span></a></li>
+                                                        @endguest
+                                                        
                                                     </ul>
                                                 </li>
                                             </ul>

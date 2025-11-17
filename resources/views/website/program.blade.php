@@ -7,7 +7,7 @@
                     <div class="breadcrumb_box text-center">
                         <h2 class="breadcrumb-title">Our programs</h2>
                         <ul class="breadcrumb-list">
-                            <li class="breadcrumb-item"><a href="./">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('website') }}">Home</a></li>
                             <li class="breadcrumb-item active">Our programs</li>
                         </ul>
                         

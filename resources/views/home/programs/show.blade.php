@@ -113,6 +113,7 @@
 
                         <div class="tab-pane fade" id="vStep2" role="tabpanel" aria-labelledby="vStep2-tab">
                             @if(count($courses) > 0)
+                            
                                 <div class="table-responsive">
                                     <table id="basicExample" class="table custom-table">
 

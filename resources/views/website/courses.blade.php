@@ -6,12 +6,12 @@
                 <div class="col-12">
                     <div class="breadcrumb_box text-center">
                         <h2 class="breadcrumb-title">Our courses</h2>
-                        <!-- breadcrumb-list start -->
+                       
                         <ul class="breadcrumb-list">
-                            <li class="breadcrumb-item"><a href="./">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('website') }}">Home</a></li>
                             <li class="breadcrumb-item active">Our courses</li>
                         </ul>
-                        <!-- breadcrumb-list end -->
+                       
                     </div>
                 </div>
             </div>

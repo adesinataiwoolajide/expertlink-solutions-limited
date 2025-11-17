@@ -33,7 +33,7 @@
                 <button class="nav-link px-4 py-2" id="tab-three-tab" data-bs-toggle="tab"
                     data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three"
                     aria-selected="true">
-                    View All Progamms 
+                    View All Programs 
                     <span class="badge bg-success ms-2 rounded-pill">{{count($programs)}}</span>
                 </button>
             </li>

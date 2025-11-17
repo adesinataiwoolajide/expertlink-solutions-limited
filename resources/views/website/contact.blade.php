@@ -8,7 +8,7 @@
                         <h2 class="breadcrumb-title">Contact us</h2>
                         <!-- breadcrumb-list start -->
                         <ul class="breadcrumb-list">
-                            <li class="breadcrumb-item"><a href="./">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('website') }}">Home</a></li>
                             <li class="breadcrumb-item active">Contact us</li>
                         </ul>
                         
@@ -33,8 +33,8 @@
                         <div class="col-lg-6 col-lg-6">
                             <div class="contact-form-wrap">
 
-                                <!-- <form id="contact-form" action="http://whizthemes.com/mail-php/jowel/mitech/php/mail.php" method="post"> -->
-                                <form id="contact-form" action="https://htmldemo.net/mitech/assets/php/mail.php" method="post">
+                                
+                                <form id="contact-form" action="" method="post">
                                     <div class="contact-form">
                                         <div class="contact-input">
                                             <div class="contact-inner">

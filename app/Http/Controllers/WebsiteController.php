@@ -144,7 +144,7 @@ class WebsiteController extends Controller
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-       
+        
         return view('website.courseView')->with([
             'course' => $course, 'courseSlug' => $courseSlug, 'programSlug' => $programSlug,
         ]);

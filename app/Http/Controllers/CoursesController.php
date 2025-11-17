@@ -135,7 +135,6 @@ class CoursesController extends Controller
             'packages_included' => $packages_included,
             'benefits' => $benefits,
             'ratings' => $ratings, 'course_discount' => $course_discount, 'course_introduction' => "Null",
-            
         ]);
 
         if ($data->save()) {
@@ -268,7 +267,6 @@ class CoursesController extends Controller
             'packages_included' => $packages_included,
             'benefits' => $benefits, 'ratings' => $ratings, 
             'course_discount' => $course_discount, 'course_introduction' => $course->course_introduction,
-            
         ]);
 
         if($this->model->update($data, $course->course_id)){
