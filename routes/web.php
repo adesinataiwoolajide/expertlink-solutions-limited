@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController, VerificationController};
+use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController, VerificationController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -112,14 +112,28 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::prefix('learning')->group(function () {
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
-            Route::prefix('cart')->group(function () {
-                Route::get('/', [CoursesController::class, 'viewCart'])->name('cart.view');
-                Route::get('/add/{slug}', [CoursesController::class, 'addToCart'])->name('cart.add');
-                Route::get('/remove/{id}', [CoursesController::class, 'removeFromCart'])->name('cart.remove');
-
-            });
+           
         });
+        Route::prefix('cart')->group(function () {
+            Route::get('/view', [CoursesController::class, 'viewCart'])->name('cart.view');
+            Route::get('/add/{slug}', [CoursesController::class, 'addToCart'])->name('cart.add');
+            Route::get('/remove/{id}', [CoursesController::class, 'removeFromCart'])->name('cart.remove');
+            Route::get('/clear', [PaymentController::class, 'clear'])->name('cart.clear');
+        });
+        
     });
+
+    Route::prefix('payments')->group(function () {
+        Route::get('/checkout', [PaymentController::class, 'showCheckout'])->name('payment.checkout');
+        Route::get('/paystack/callback', [PaymentController::class, 'paystackCallback'])->name('paystack.callback');
+        Route::post('/checkout/paystack', [PaymentController::class, 'initializePaystack'])->name('payment.paystack'); Route::get('/monnify/callback', [PaymentController::class, 'monnifyCallback'])->name('monnify.callback');
+        Route::get('/monnify/callback', [PaymentController::class, 'monnifyCallback'])->name('monnify.callback');
+        Route::post('/checkout/monnify', [PaymentController::class, 'initializeMonnify'])->name('payment.monnify');
+
+        Route::post('/payment/stripe', [PaymentController::class, 'stripe'])->name('payment.stripe');
+
+    });
+        
 
     Route::prefix('course-notes')->group(function () {
         

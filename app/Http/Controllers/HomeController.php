@@ -76,6 +76,7 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
             Auth::logout();
+            session()->forget('cart');
             return redirect()->route("login");
         }else{
             return redirect()->route('dashboard');

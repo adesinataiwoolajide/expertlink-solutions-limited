@@ -15,11 +15,28 @@
     @include('layouts.alert')
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">{{ $program->program_name }}</h5>
-                <a href="{{ route('course.index') }}" class="btn btn-primary">
-                    View All Course
-                </a>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">{{ $program->program_name }}</h5>
+
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ route('course.index') }}" class="btn btn-primary">
+                        View All Courses
+                    </a>
+
+                    @php
+                        $cartCount = count(session()->get('cart', []));
+                    @endphp
+                    @if($cartCount > 0)
+                        <a href="{{ route('cart.view') }}" class="btn btn-outline-secondary position-relative">
+                            <i class="ri-shopping-cart-2-line fs-5"></i>
+                            @if($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
+                </div>
             </div>
             <div class="card-body">
                 <div class="row gx-3">
@@ -102,41 +119,46 @@
                                     }
                                 </style>
                                 @if(count($courses) > 0)
-                                    <div class="container py-4">
-                                        <h4 class="mb-4" style="font-weight:600;">Recommended Courses</h4>
-                                        <div class="row">
+                                    <div class="container py-5">
+                                        <h4 class="mb-4 fw-bold text-primary text-center">Recommended Courses</h4>
+                                        <div class="row g-4">
                                             @foreach ($courses as $course)
                                                 @php
                                                     $originalPrice = $course->course_price;
-                                                    $discountedPrice = $originalPrice - ($originalPrice * 0.10);
+                                                    $rating = $course->ratings ?? 4.5;
                                                 @endphp
-
-                                                <div class="col-md-4 mb-4">
-                                                    <div class="card shadow-sm" style="border-radius:12px; overflow:hidden;">
-                                                        <img src="{{ asset('course-banner/' . $course->banner) }}" alt="Course Banner" style="width:100%; height:180px; object-fit:cover;">
-                                                        <div class="card-body" style="padding:1.25rem;">
-                                                            <h5 style="font-weight:600; color:#333;">
-                                                                <a href="{{ route('course.viewLearning',[$course->slug, $program->slug]) }}">{{substr($course->course_name, 0, 60) }} </a>
+                                                <div class="col-md-4">
+                                                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                                                        <img src="{{ asset('course-banner/' . $course->banner) }}"
+                                                            alt="{{ $course->course_name }}"
+                                                            class="img-fluid"
+                                                            style="height: 180px; object-fit: cover;">
+                                                        <div class="card-body">
+                                                            <h5 class="fw-semibold text-dark mb-2">
+                                                                <a href="{{ route('course.viewLearning', [$course->slug, $program->slug]) }}"
+                                                                class="text-decoration-none text-dark">
+                                                                    {{ Str::limit($course->course_name, 60) }}
+                                                                </a>
                                                             </h5>
-                                                            @if($course->allocation)
-                                                                <p style="margin:0; color:#666;"><strong>Instructor: {{ $course->allocation->user->first_name . ' '. $course->allocation->user->last_name }} </strong></p>
-                                                            @else
-                                                                <p style="margin:0; color:#666;"><strong>Instructor: ELS Tutor</strong></p>
-                                                            @endif
+                                                            <p class="mb-1 text-muted">
+                                                                <strong>Instructor:</strong>
+                                                                {{ $course->allocation ? $course->allocation->user->first_name . ' ' . $course->allocation->user->last_name : 'ELS Tutor' }}
+                                                            </p>
 
-                                                            <div class="d-flex align-items-center mt-2 mb-2">
-                                                                @php $rating = $course->ratings ?? 4.5; @endphp
+                                                            <div class="d-flex align-items-center mb-2">
                                                                 @for ($i = 1; $i <= 5; $i++)
-                                                                    <i class="ri-star-fill" style="color:{{ $i <= $rating ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
+                                                                    <i class="ri-star-fill"
+                                                                    style="color:{{ $i <= $rating ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
                                                                 @endfor
-                                                                <span class="ms-2" style="font-size:0.9rem; color:#555;">
+                                                                <span class="ms-2 text-muted small">
                                                                     {{ number_format($rating, 1) }} ({{ $course->reviews }} reviews)
                                                                 </span>
                                                             </div>
+
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
                                                                     <span class="badge bg-success text-white fw-bold px-3 py-2">
-                                                                        ₦{{ number_format($discountedPrice) }}
+                                                                        ₦{{ number_format(getDiscountedPrice($course->course_price, $course->course_discount),2) }}
                                                                     </span>
                                                                     <span class="badge bg-danger text-white double-strike fw-bold px-3 py-2 ms-2">
                                                                         ₦{{ number_format($originalPrice) }}
@@ -152,12 +174,12 @@
                                                     </div>
                                                 </div>
                                             @endforeach
-                                            <div class="ht-pagination mt-30 pagination justify-content-center">
-                                                <div class="pagination-wrapper">
-                                                    {{$courses->links()}}
-                                                </div>
+                                        </div>
+
+                                        <div class="ht-pagination mt-5 pagination justify-content-center">
+                                            <div class="pagination-wrapper">
+                                                {{ $courses->links() }}
                                             </div>
-                                           
                                         </div>
                                     </div>
                                 @else

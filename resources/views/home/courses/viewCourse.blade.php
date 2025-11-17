@@ -15,9 +15,28 @@
     @include('layouts.alert')
      <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">{{$course->course_name}} Details</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">{{ $course->course_name }} Details</h5>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ route('course.index') }}" class="btn btn-primary">
+                        View All Courses
+                    </a>
+                    @php
+                        $cartCount = count(session()->get('cart', []));
+                    @endphp
+                    @if($cartCount > 0)
+                        <a href="{{ route('cart.view') }}" class="btn btn-outline-secondary position-relative">
+                            <i class="ri-shopping-cart-2-line fs-5"></i>
+                            @if($cartCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
+                </div>
             </div>
+           
             <div class="card-body">
                 <div class="row gx-3">
                     <div class="col-lg-3 col-md-12 mb-lg-0 mb-4">
@@ -213,7 +232,6 @@
                                             @foreach ($courses as $course)
                                                 @php
                                                     $originalPrice = $course->course_price;
-                                                    $discountedPrice = $originalPrice - ($originalPrice * 0.10);
                                                     $rating = $course->ratings ?? 4.5;
                                                 @endphp
                                                 <div class="col-md-4">
@@ -247,7 +265,7 @@
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
                                                                     <span class="badge bg-success text-white fw-bold px-3 py-2">
-                                                                        ₦{{ number_format($discountedPrice) }}
+                                                                        ₦{{ number_format(getDiscountedPrice($course->course_price, $course->course_discount),2) }}
                                                                     </span>
                                                                     <span class="badge bg-danger text-white double-strike fw-bold px-3 py-2 ms-2">
                                                                         ₦{{ number_format($originalPrice) }}

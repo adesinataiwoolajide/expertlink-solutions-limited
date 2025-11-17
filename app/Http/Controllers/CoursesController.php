@@ -78,11 +78,12 @@ class CoursesController extends Controller
         if (isset($cart[$slug])) {
             return redirect()->back()->with('error', 'Course is already in your cart.');
         } else {
+            $discount = getDiscountedPrice($course->course_price, $course->course_discount);
             $cart[$slug] = [
                 'course_name' => $course->course_name,
-                'price' => $course->course_price,
-                'slug' => $course->slug,
-                'quantity' => 1,
+                'price' => $course->course_price,'slug' => $course->slug,
+                'quantity' => 1,'banner' => $course->banner,
+                'course' => $course, 'discount' => $discount,
             ];
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Course added to cart successfully!');
@@ -90,7 +91,8 @@ class CoursesController extends Controller
     }
     public function viewCart(){
         $cart = session()->get('cart', []);
-        return view('home.courses.cart', compact('cart'));
+
+        return view('home.payments.cart', compact('cart'));
     }
 
     public function removeFromCart($id)
@@ -101,7 +103,6 @@ class CoursesController extends Controller
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Course removed from cart.');
         }
-
         return redirect()->back()->with('error', 'Course not found in cart.');
     }
 
