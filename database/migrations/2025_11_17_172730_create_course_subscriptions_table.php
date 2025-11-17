@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('course_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->string('userSlug');
             $table->string('slug');
-            $table->string('totalAmount');
-            $table->string('paymentMethod');
-            $table->string('currencyCode');
-            $table->string('paymentDescription');
-            $table->string('transactionReference');
-            $table->string('paymentReference');
-            $table->string('paymentStatus');
-            $table->string('paymentProvider');
+            $table->string('paymentSlug');
+            $table->string('courseSlug');
+            $table->string('programSlug');
+            $table->string('course_amount');
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('course_subscriptions');
     }
 };

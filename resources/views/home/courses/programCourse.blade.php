@@ -164,10 +164,15 @@
                                                                         ₦{{ number_format($originalPrice) }}
                                                                     </span>
                                                                 </div>
-                                                                <a href="{{ route('cart.add', [$course->slug]) }}"
-                                                                class="btn btn-sm btn-outline-primary fw-semibold">
-                                                                    <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
-                                                                </a>
+                                                                @php
+                                                                    $subStatus = getDoubleInformation('course_subscriptions', 'courseSlug', $course->slug, 'userSlug', Auth::user()->slug, 'count');
+                                                                @endphp
+                                                                @if($subStatus == 0)
+                                                                    <a href="{{ route('cart.add', [$course->slug]) }}"
+                                                                    class="btn btn-sm btn-outline-primary fw-semibold">
+                                                                        <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+                                                                    </a>
+                                                                @endif
                                                             </div>
 
                                                         </div>

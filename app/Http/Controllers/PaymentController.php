@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Models\{CourseSubscription,Payment};
 use Illuminate\Http\Request;
 use Http;
+use Illuminate\Support\Facades\{Auth};
+use App\Repositories\GeneralRepository;
+
 class PaymentController extends Controller
 {
+    protected $model;
+    public function __construct(Payment $payment, CourseSubscription $courseSubscription)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Student');
+        $this->model = new GeneralRepository($courseSubscription, $payment);
+    }
+
     public function initializeMonnify(Request $request)
     {
         $auth = base64_encode(env('MONNIFY_API_KEY') . ':' . env('MONNIFY_SECRET_KEY'));
@@ -46,26 +57,37 @@ class PaymentController extends Controller
         return redirect()->route('course.index')->with('success', 'Cart cleared successfully.');
     }
 
-    public function stripe(Request $request)
-    {
-        // Example logic — replace with actual Stripe integration
-        $email = $request->input('email');
-        $name = $request->input('name');
-        $amount = $request->input('amount');
-
-        // You can redirect to Stripe checkout or handle payment here
-        return redirect()->route('course.index')->with('success', 'Stripe payment initiated.');
-    }
-
     public function paystackVerify(Request $request)
     {
         $reference = $request->query('reference');
         $response = Http::withToken(env('PAYSTACK_SECRET_KEY'))->get("https://api.paystack.co/transaction/verify/{$reference}");
         if ($response->successful() && $response['data']['status'] === 'success') {
-            dd($response['data']);
+           
+            $cart = session()->get('cart', []);
+            $paymentSlug = $response['data']['reference'];
+            $totalAmount = $response['data']['amount'] / 100;
+            $userSlug = Auth::user()->slug;
+            foreach($cart as $id => $item){
+                
+                $course = $item['course'];
+                $courseSlug = $item['slug'];
+                $course_name = $item['course_name'];
+                $price = $item['price'];
+                $programSlug = $course->programSlug;
+                $slug = RandomString(12);
+                if(CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()){
+                    createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
+                    createLog( 'Made Payment for ' . $course_name . ' with Slug '. $slug);
+                }
+            }
+            if(Payment::where(['slug' => $paymentSlug])->doesntExist()){
+                createPayment($userSlug, $paymentSlug, $totalAmount, 
+                $response['data']['channel'], $response['data']['currency'], 'Course payment via Paystack', 
+                $response['data']['reference'], $response['data']['reference'], $response['data']['status'], 'Paystack');
+                createLog( 'Made Payment of ' . $totalAmount . ' with Reference '. $paymentSlug);
+            }
             session()->forget('cart');
-
-            // return redirect()->route('course.index')->with('success', 'Payment verified successfully.');
+            return redirect()->route('course.index')->with('success', 'Payment verified successfully.');
         }
         return redirect()->back()->with('error', 'Payment verification failed.');
     }

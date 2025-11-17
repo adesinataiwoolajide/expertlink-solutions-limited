@@ -1,5 +1,27 @@
 <?php
 
+    function createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $courseAmount)
+    {
+        $data = [
+            'userSlug' => $userSlug,
+            'slug' => $slug,
+            'paymentSlug' => $paymentSlug,
+            'courseSlug' => $courseSlug,
+            'programSlug' => $programSlug,
+            'course_amount' => $courseAmount,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+        return \DB::table('course_subscriptions')->insert($data);
+    }
+
+    function createPayment($userSlug, $slug, $totalAmount, $paymentMethod, $currencyCode, $paymentDescription, $transactionReference, $paymentReference, $paymentStatus, $paymentProvider) {
+        $data = ['userSlug' => $userSlug, 'slug' => $slug, 'totalAmount' => $totalAmount, 'paymentMethod' => $paymentMethod, 'currencyCode' => $currencyCode, 'paymentDescription' => $paymentDescription, 'transactionReference' => $transactionReference, 'paymentReference' => $paymentReference, 
+         'paymentStatus' => $paymentStatus, 'paymentProvider' => $paymentProvider, 'created_at' => now(), 'updated_at' => now()];
+
+        return \DB::table('payments')->insert($data);
+    }
+
     function getPaystack() {
         return 'pk_test_6cfdd86d8b0b4d20925905348b4f7d18b95fa875';
     }
@@ -174,6 +196,14 @@
     {
         return \DB::table($table_name)->where([
             "$column_name" => $val,
+        ])->orderBy('created_at', 'desc')->$opt();
+    }
+
+     function getDoubleInformation($table_name, $column_name, $val, $column_two, $val_two, $opt)
+    {
+        return \DB::table($table_name)->where([
+            "$column_name" => $val,
+            $column_two => $val_two,
         ])->orderBy('created_at', 'desc')->$opt();
     }
 
