@@ -148,6 +148,11 @@
                                                     </div>
                                                 </div>
                                             @endforeach
+                                            <div class="ht-pagination mt-30 pagination justify-content-center">
+                                                <div class="pagination-wrapper">
+                                                    {{$courses->links()}}
+                                                </div>
+                                            </div>
                                            
                                         </div>
                                     </div>

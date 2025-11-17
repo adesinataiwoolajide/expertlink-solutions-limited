@@ -48,7 +48,7 @@ class CoursesController extends Controller
         if(!$program){
             return redirect()->back()->with("error", "Program details does not exists");
         }
-        $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->get();
+        $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->paginate(15);
         return view('home.courses.programCourse')->with([
             'program' => $program, 'courses' => $courses
         ]);
@@ -57,12 +57,13 @@ class CoursesController extends Controller
     public function learningShow($courseSlug, $programSlug){
         $program = Programs::with(['courses', 'allocations'])->where('slug', $programSlug)->first();
         $course = Courses::with(['user', 'notes', 'program', 'allocation.user'])->where(['slug' => $courseSlug ,'programSlug' => $programSlug])->first();
-        
+        $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
+        $program_name = $program->program_name ?? 'NIL';
         if (!$program && !$course) {
             return redirect()->back()->with('error', 'course details do not exist');
         }
-
-        return view('home.courses.viewCourse', compact('program', 'course'));
+        $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->paginate(15);
+        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'selectedTypes', 'courses'));
 
     }
 

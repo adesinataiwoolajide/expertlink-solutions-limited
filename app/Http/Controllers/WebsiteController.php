@@ -112,7 +112,7 @@ class WebsiteController extends Controller
      */
     public function program()
     {
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+        $program = Programs::orderBy('program_name', 'asc')->with('courses')->paginate(15);
         return view('website.program')->with(
             ['programs' => $program]
         );

@@ -19,84 +19,84 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{$course->course_name}} Details</h5>
-                
             </div>
             <div class="card-body">
+                
                 <div class="row gx-3">
-                    <div class="row gx-3">
 
-                        <!-- Card 1: Total Sales -->
-                        <div class="col-xxl-3 col-sm-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box md bg-primary-subtle rounded-circle me-3">
-                                            <i class="ri-line-chart-line text-primary fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="text-muted">Total Revenue</h6>
-                                            <h3 class="mb-0">₦0.00</h3>
-                                        </div>
+                    <!-- Card 1: Total Sales -->
+                    <div class="col-xxl-3 col-sm-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box md bg-primary-subtle rounded-circle me-3">
+                                        <i class="ri-line-chart-line text-primary fs-4"></i>
                                     </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2: Conversion Rate -->
-                        <div class="col-xxl-3 col-sm-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box md bg-primary-subtle rounded-circle me-3">
-                                            <i class="ri-book-line text-primary fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="text-muted">Total Course Notes</h6>
-                                            <h3 class="mb-0">0</h3>
-                                        </div>
+                                    <div>
+                                        <h6 class="text-muted">Total Revenue</h6>
+                                        <h3 class="mb-0">₦0.00</h3>
                                     </div>
-
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Card 3: Average Order Value -->
-                        <div class="col-xxl-3 col-sm-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box md bg-primary-subtle rounded-circle me-3">
-                                            <i class="ri-exchange-dollar-line text-primary fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="text-muted">Average Order Value</h6>
-                                            <h3 class="mb-0">₦0.00</h3>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4: Active Customers -->
-                        <div class="col-xxl-3 col-sm-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box md bg-primary-subtle rounded-circle me-3">
-                                            <i class="ri-user-heart-line text-primary fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="text-muted">Active Learners</h6>
-                                            <h3 class="mb-0">0</h3>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Card 2: Conversion Rate -->
+                    <div class="col-xxl-3 col-sm-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box md bg-primary-subtle rounded-circle me-3">
+                                        <i class="ri-book-line text-primary fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted">Total Course Notes</h6>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Average Order Value -->
+                    <div class="col-xxl-3 col-sm-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box md bg-primary-subtle rounded-circle me-3">
+                                        <i class="ri-exchange-dollar-line text-primary fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted">Average Order Value</h6>
+                                        <h3 class="mb-0">₦0.00</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Active Customers -->
+                    <div class="col-xxl-3 col-sm-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box md bg-primary-subtle rounded-circle me-3">
+                                        <i class="ri-user-heart-line text-primary fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted">Active Learners</h6>
+                                        <h3 class="mb-0">0</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gx-3">
                     <div class="col-lg-3 col-md-12 mb-lg-0 mb-4">
                         <ul class="nav nav-pills flex-column vertical-form-wizard" id="verticalFormStepper" role="tablist">
                             <li class="nav-item mb-3" role="presentation">

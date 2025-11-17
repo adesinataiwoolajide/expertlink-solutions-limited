@@ -28,12 +28,12 @@
                         <div class="messonry-button text-center  section-space--mb_60">
                             <div class="projects-case-wrap">
                                 <div class="row mesonry-list">
-                                    @foreach(getRecordData('App\Models\Programs', ['courses'], 'program_name', 'asc', 'get') as $keys => $val)
+                                    @foreach($programs as $keys => $val)
                                         <div class="col-lg-4 col-md-6 cat--2">
                                             <a href="{{ route('website.programs.show',[$val->slug]) }}" class="projects-wrap style-01">
                                                 <div class="projects-image-box">
                                                     <div class="projects-image">
-                                                        <img class="img-fluid" src="{{ asset('elsFront/images/projects/case-study-01-480x298.webp')}}" alt="">
+                                                        <img class="img-fluid" src="{{ asset('program-banner/' . $val->banner) }}" alt="" style="width: 200px;" alt="">
                                                     </div>
                                                     <div class="content">
                                                         <h6 class="heading">Expert Link Solutions</h6>
@@ -48,6 +48,11 @@
                                             </a>
                                         </div>
                                     @endforeach
+                                    <div class="ht-pagination mt-30 pagination justify-content-center">
+                                        <div class="pagination-wrapper">
+                                            {{$programs->links()}}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

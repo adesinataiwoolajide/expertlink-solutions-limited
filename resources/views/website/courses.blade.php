@@ -29,17 +29,16 @@
                         <div class="messonry-button text-center  section-space--mb_60">
                             <div class="projects-case-wrap">
                                 <div class="row mesonry-list">
-                                    @foreach($courses as $keys => $val)
+                                    @foreach($courses as $course)
                                         <div class="col-lg-4 col-md-6 cat--2">
-                                            <a href="" class="projects-wrap style-01">
+                                            <a href="{{ route('website.programs.courseShow', [$course->slug, $course->programSlug]) }}" class="projects-wrap style-01">
                                                 <div class="projects-image-box">
                                                     <div class="projects-image">
-                                                        <img class="img-fluid" src="{{ asset('course-banner/' . $val->banner) }}" alt="" style="width: 200px;">
+                                                        <img class="img-fluid" src="{{ asset('course-banner/' . $course->banner) }}" alt="" style="width: 200px;">
                                                     </div>
                                                     <div class="content">
                                                         <h6 class="heading">Expert Link Solutions</h6>
-                                                        <div class="post-categories">{{$val->course_name}}</div>
-                                                        
+                                                        <div class="post-categories">{{$course->course_name}}</div>
                                                         <div class="box-projects-arrow">
                                                             <span class="button-text">View course details </span>
                                                             <i class="fas fa-arrow-right ml-1"></i>
