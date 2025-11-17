@@ -1,5 +1,16 @@
 <?php
 
+    function getPaystack() {
+        return 'pk_test_6cfdd86d8b0b4d20925905348b4f7d18b95fa875';
+    }
+
+    function getMonnifyApiKey() {
+        return 'MK_TEST_W82MW7CVL9';
+    }
+
+    function getMonnifyContractCode() {
+        return '1684679593';
+    }
     function getDiscountedPrice(float $originalPrice, float $discountRate): float
     {
         return $originalPrice - ($originalPrice * ($discountRate / 100));

@@ -10,40 +10,72 @@
             <div class="card-body">
                 <div class="row g-4">
                     <!-- Payment Options -->
+                    @if(count($cart) > 0)
                     <div class="col-md-3">
                         <div class="d-grid gap-3">
-                            
-                            <form action="{{ route('payment.paystack') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="email" value="{{ auth()->user()->email }}">
-                                <input type="hidden" name="amount" value="{{ $grandTotal }}">
-                                <button type="submit" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center">
-                                    <i class="ri-wallet-3-line me-2 fs-5"></i> Pay with Paystack
-                                </button>
-                            </form>
+                            <script src="https://js.paystack.co/v1/inline.js"></script>
+                            <button type="button" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center"
+                                onclick="payWithPaystack()">
+                                <i class="ri-wallet-3-line me-2 fs-5"></i> Pay with Paystack
+                            </button>
+                            <script>
+                                function payWithPaystack() {
+                                    let handler = PaystackPop.setup({
+                                        key: '{{ getPaystack() }}',
+                                        email: '{{ auth()->user()->email }}',
+                                        amount: {{ $grandTotal * 100 }},
+                                        currency: 'NGN',
+                                        ref: 'PSK_' + Math.floor((Math.random() * 1000000000) + 1), 
+                                        callback: function(response) {
+                                            window.location.href = "{{ route('payment.verify') }}?reference=" + response.reference;
+                                        },
+                                        onClose: function() {
+                                            alert('Transaction was not completed on Paystack, window closed.');
+                                        }
+                                    });
+                                    handler.openIframe();
+                                }
+                            </script>
 
-                            <form action="{{ route('payment.monnify') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="email" value="{{ auth()->user()->email }}">
-                                <input type="hidden" name="name" value="{{ auth()->user()->first_name. ' '. auth()->user()->last_name }}">
-                                <input type="hidden" name="amount" value="{{ $grandTotal }}">
-                                <button type="submit" class="btn btn-outline-warning btn-lg d-flex align-items-center justify-content-center text-dark">
-                                    <i class="ri-bank-line me-2 fs-5"></i> Pay with Monnify
-                                </button>
-                            </form>
-                            
-                            <form action="{{ route('payment.stripe') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="email" value="{{ auth()->user()->email }}">
-                                <input type="hidden" name="name" value="{{ auth()->user()->first_name . ' ' . auth()->user()->last_name }}">
-                                <input type="hidden" name="amount" value="{{ $grandTotal }}">
-                                <button type="submit" class="btn btn-outline-dark btn-lg d-flex align-items-center justify-content-center">
-                                    <i class="ri-credit-card-line me-2 fs-5"></i> Pay with Stripe
-                                </button>
-                            </form>
+                            <script src="https://sdk.monnify.com/plugin/monnify.js"></script>
+                            <button type="button"
+                                class="btn btn-outline-warning btn-lg d-flex align-items-center justify-content-center text-dark"
+                                onclick="payWithMonnify()">
+                                <i class="ri-bank-line me-2 fs-5"></i> Pay with Monnify
+                            </button>
 
+                            <script>
+                                function payWithMonnify() {
+                                    const paymentRef = "MN_" + Math.floor(Math.random() * 1000000000 + 1);
+
+                                    MonnifySDK.initialize({
+                                        amount: {{ $grandTotal }},
+                                        currency: "NGN",
+                                        reference: paymentRef,
+                                        customerName: "{{ auth()->user()->first_name . ' ' . auth()->user()->last_name }}",
+                                        customerEmail: "{{ auth()->user()->email }}",
+                                        apiKey: "{{ config('monnify.api_key') }}",
+                                        contractCode: "{{ config('monnify.contract_code') }}",
+                                        paymentDescription: "Course Payment",
+                                        isTestMode: true, // Set to false in production
+                                        onComplete: function(response) {
+                                            if (response.paymentStatus === 'FAILED') {
+                                                alert('Payment failed: ' + response.responseMessage);
+                                            } else {
+                                                window.location.href = "{{ route('monnify.verify') }}?paymentReference=" + response.paymentReference;
+                                            }
+                                        }
+
+                                        onClose: function() {
+                                            alert('Transaction was not completed on Monnify, window closed.');
+                                        }
+                                    });
+                                }
+                            </script>
+                            
                         </div>
                     </div>
+                    @endif
 
                     <!-- Cart Table -->
                     <div class="col-md-9">
@@ -92,6 +124,9 @@
                                         <tr>
                                             <td colspan="4" class="text-center text-muted">
                                                 <i class="ri-shopping-cart-line me-1"></i> Your cart is currently empty.
+                                                <a href="{{ route('course.index') }}" class="btn btn-outline-info text-dark">
+                                                    View Courses
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforelse

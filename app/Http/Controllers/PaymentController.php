@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 use Http;
 class PaymentController extends Controller
 {
-    public function initializePaystack(Request $request)
-    {
-        $response = Http::withToken(env('PAYSTACK_SECRET_KEY'))->post('https://api.paystack.co/transaction/initialize', [
-            'email' => $request->email,
-            'amount' => $request->amount * 100,
-            'callback_url' => route('paystack.callback'),
-        ]);
-
-        return redirect($response['data']['authorization_url']);
-    }
-
     public function initializeMonnify(Request $request)
     {
         $auth = base64_encode(env('MONNIFY_API_KEY') . ':' . env('MONNIFY_SECRET_KEY'));
@@ -67,6 +56,40 @@ class PaymentController extends Controller
         // You can redirect to Stripe checkout or handle payment here
         return redirect()->route('course.index')->with('success', 'Stripe payment initiated.');
     }
+
+    public function paystackVerify(Request $request)
+    {
+        $reference = $request->query('reference');
+        $response = Http::withToken(env('PAYSTACK_SECRET_KEY'))->get("https://api.paystack.co/transaction/verify/{$reference}");
+        if ($response->successful() && $response['data']['status'] === 'success') {
+            dd($response['data']);
+            // return redirect()->route('course.index')->with('success', 'Payment verified successfully.');
+        }
+        return redirect()->back()->with('error', 'Payment verification failed.');
+    }
+
+    public function verifyMonnify(Request $request)
+    {
+        $reference = $request->query('paymentReference');
+
+        $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY'))
+            ->post('https://api.monnify.com/api/v1/auth/login');
+
+        $token = $auth['responseBody']['accessToken'];
+
+        $verify = Http::withToken($token)->get('https://api.monnify.com/api/v2/merchant/transactions/query', [
+            'paymentReference' => $reference
+        ]);
+        dd($verify['responseBody']);
+        if ($verify['responseBody']['paymentStatus'] === 'PAID') {
+
+            // return redirect()->route('course.index')->with('success', 'Monnify payment verified.');
+        }
+
+        return redirect()->back()->with('error', 'Payment verification failed.');
+    }
+
+
 
 
    

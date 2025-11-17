@@ -125,12 +125,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
     Route::prefix('payments')->group(function () {
         Route::get('/checkout', [PaymentController::class, 'showCheckout'])->name('payment.checkout');
-        Route::get('/paystack/callback', [PaymentController::class, 'paystackCallback'])->name('paystack.callback');
-        Route::post('/checkout/paystack', [PaymentController::class, 'initializePaystack'])->name('payment.paystack'); Route::get('/monnify/callback', [PaymentController::class, 'monnifyCallback'])->name('monnify.callback');
-        Route::get('/monnify/callback', [PaymentController::class, 'monnifyCallback'])->name('monnify.callback');
-        Route::post('/checkout/monnify', [PaymentController::class, 'initializeMonnify'])->name('payment.monnify');
+    
+        Route::get('/monnify/verify', [PaymentController::class, 'verifyMonnify'])->name('monnify.verify');
+        Route::get('/paystack/verify', [PaymentController::class, 'paystackVerify'])->name('payment.verify');
 
-        Route::post('/payment/stripe', [PaymentController::class, 'stripe'])->name('payment.stripe');
 
     });
         
