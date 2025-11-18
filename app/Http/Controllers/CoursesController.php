@@ -46,7 +46,7 @@ class CoursesController extends Controller
     public function myCourses()
     {
         $subList = CourseSubscription::with(['course' => fn($q) => $q->with(['program', 'allocations', 'allocation.user', 'materials', 'notes', 'user']), 'program', 'user'])
-        ->where('userSlug', Auth::user()->slug)->latest()->get();
+        ->where(['userSlug' => Auth::user()->slug])->latest()->get();
         $programSlugs = CourseSubscription::where('userSlug', Auth::user()->slug)->pluck('programSlug')->unique();
         $myProgram = Programs::whereIn('slug', $programSlugs)->get();
         $courses = $subList->pluck('course')->sortBy('course_name')->values();
@@ -56,19 +56,24 @@ class CoursesController extends Controller
     }
     public function startLearning($slug)
     {
-        $course = Courses::with([
-            'notes.materials',
-            'notes.instructor',
-            'allocation.user',
-            'program',
-            'user'
-        ])->where(['slug' => $slug, 'userSlug', Auth::user()->slug])->first();
+        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' ])->where(['slug' => $slug])->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
         $programSlugs = CourseSubscription::where('userSlug', Auth::user()->slug)->pluck('programSlug')->unique();
         $myProgram = Programs::whereIn('slug', $programSlugs)->get();
-        return view('home.courses.start-learning', compact('course'));
+        $filePath = 'course_videos/' . $course->course_introduction;
+        return view('home.notes.reading', compact('course', 'myProgram', 'filePath'));
+    }
+
+    public function viewLearning($noteSlug, $courseSlug)
+    {
+        $notes = CourseNotes::where(['slug' => $noteSlug, 'courseSlug' => $courseSlug])->with('materials', 'allocation', 'instructor', 'course')->first();
+        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' ])->where(['slug' => $courseSlug])->first();
+        if (!$notes || !$course) {
+            return redirect()->back()->with("error", "Course note details do not exist");
+        }
+        return view('home.notes.view-reading', compact('course', 'notes'));
     }
 
     public function markCompleted($slug)
@@ -76,7 +81,6 @@ class CoursesController extends Controller
         $note = CourseNotes::where('slug', $slug)->firstOrFail();
         $note->readStatus = 'completed';
         $note->save();
-
         return response()->json(['readStatus' => 'completed']);
     }
 
@@ -89,8 +93,6 @@ class CoursesController extends Controller
         CourseNotes::where('courseSlug', $course->slug)->update(['readStatus' => null]);
         return response()->json(['status' => 'reset']);
     }
-
-
 
     public function learning($slug){
         $program = Programs::where('slug', $slug)->with(['courses', 'allocations'])->first();

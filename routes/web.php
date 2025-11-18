@@ -126,6 +126,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
     Route::prefix('my-courses')->group(function () {
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
         Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
+        Route::get('{noteSlug}/{courseSlug}', action: [CoursesController::class, 'viewLearning'])->name('note.viewLearning');
 
     });
 
@@ -158,16 +159,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/note/{slug}/complete', [CoursesController::class, 'markCompleted'])->name('note.complete');
         Route::post('/course/{slug}/reset-progress', [CoursesController::class, 'resetProgress'])->name('course.resetProgress');
 
-
-        
-        // Route::get('students/{slug}', [CourseNotesController::class, 'student'])->name('course.note.student');
-        // Route::get('view/{slug}/{note_slug}', [CourseNotesController::class, 'read'])->name('course.note.read');
-        // Route::get('reading/{slug}/{action}/{note_slug}/{id}', [CourseNotesController::class, 'reading'])->name('course.note.reading');
-        // Route::get('student/{user_id}/{slug}/{subscription_id}/{allocation_id}', [CourseNotesController::class, 'noting'])->name('course.student.note');
-        // Route::get('post/{user_id}/{slug}/{subscription_id}/{allocation_id}/{instructor_id}', [CourseLibraryController::class, 'postNote'])->name('course.post.note');
-        // Route::get('un-post/{library_id}', [CourseLibraryController::class, 'unpostNote'])->name('course.unpostNote.note');
-        // Route::get('{action}/{note_slug}', [CourseNotesController::class, 'action'])->name('course.note.action');
-        // Route::get('delete/{note_slug}', [CourseNotesController::class, 'destroy'])->name('note.delete');
     });
 
 
