@@ -12,7 +12,7 @@ class CourseNotes extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
        'slug', 'topic', 'content', 'title', 'chapter', 'link_one', 'link_two', 'link_three', 'link_four', 
-       'status', 'instructorSlug', 'allocatonSlug', 'courseSlug', 'programSlug', 'addedByUserSlug'
+       'status', 'instructorSlug', 'allocatonSlug', 'courseSlug', 'programSlug', 'addedByUserSlug', 'status'
     ];
     protected $dates = ['deleted_at'];
 

@@ -21,7 +21,9 @@ return new class extends Migration
             $table->text('link_one')->nullable();
             $table->text('link_two')->nullable();
             $table->text('link_three')->nullable();
+            $table->text('status')->nullable();
             $table->text('link_four')->nullable();
+            $table->text('readStatus')->nullable();
             $table->boolean('status')->nullable()->default(true);
             $table->text('addedByUserSlug');
             $table->text('instructorSlug')->references('slug')->on('users')->onDelete('cascade');

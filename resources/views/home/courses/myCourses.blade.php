@@ -1,39 +1,19 @@
 @php $title = "My Courses"; $segments = Request::segments();  @endphp
 <x-app-layout>
-    <div class="app-hero-header d-flex align-items-center m-2">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item">
-                    <a href="{{route('dashboard') }}" title="Home">
-                        <i class="ri-home-4-line me-1"></i> <span class="visually-hidden">Home</span>
-                    </a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{ route('course.index') }}" title="View all Courses">View all Courses</a></li>
-            </ol>
-        </nav>
-    </div>
+    
     @include('layouts.alert')
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
     <div class="card-body" style="background-color:#f8f9fa;">
-        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-            <h4 style="font-weight:600;">Lets start learning</h4>
-            <a href="{{ route('myCourses') }}" style="text-decoration:none; color:#007bff; font-weight:500;">My learning</a>
-        </div>
-        
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-
-        <!-- Section Title and Filter Buttons -->
+       
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center mb-5">
                     <h2 class="fw-bold">
-                        Proud projects that <span class="text-primary">make us stand out</span>
+                        Explore the <span class="text-primary">amazing courses</span> you have enrolled in
                     </h2>
-                    <p class="text-muted mt-2">Explore our diverse portfolio across key technology domains.</p>
+                    <p class="text-muted mt-2">Dive into your personalized learning journey and continue where you left off.</p>
                 </div>
-
                 <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
                     <button data-filter="*" class="btn btn-outline-primary active">
                         All <span class="badge bg-primary ms-1">{{ count($subList) }}</span>
@@ -50,7 +30,6 @@
             </div>
         </div>
 
-        <!-- Course Cards -->
         <div class="row" id="course-grid">
             @foreach ($courses as $course)
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4 course-item cat--{{ $course->programSlug }}">
@@ -80,7 +59,6 @@
                                 @endif
                             </p>
 
-                            <!-- Ratings -->
                             <div class="d-flex align-items-center mb-3">
                                 @php $rating = $course->ratings; @endphp
                                 @for ($i = 1; $i <= 5; $i++)
@@ -89,11 +67,9 @@
                                 <span class="ms-2 text-muted small">{{ number_format($rating, 1) }}/5</span>
                             </div>
 
-                            <!-- Actions -->
                             <div class="mt-auto d-flex justify-content-between align-items-center">
-                                <a href="#" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
-                                <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}"
-                                class="text-decoration-none text-muted small">
+                                <a href="{{ route('startLearning',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
+                                <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}" class="text-decoration-none text-muted small">
                                     Read More →
                                 </a>
                             </div>
@@ -102,8 +78,6 @@
                 </div>
             @endforeach
         </div>
-
-        <!-- Isotope Filtering Script -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 var grid = document.querySelector('#course-grid');

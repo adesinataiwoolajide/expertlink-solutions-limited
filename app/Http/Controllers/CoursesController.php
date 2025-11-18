@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, User, CourseAllocationHistories, CourseSubscription,Payment};
+use App\Models\{Programs, Courses, User, CourseAllocationHistories, CourseSubscription,CourseNotes};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
@@ -54,6 +54,40 @@ class CoursesController extends Controller
             'subList' => $subList, 'courses' => $courses, 'myProgram' => $myProgram
         ]);
     }
+    public function startLearning($slug)
+    {
+        $course = Courses::with([
+            'notes.materials',
+            'notes.instructor',
+            'allocation.user',
+            'program',
+            'user'
+        ])->where('slug', $slug)->firstOrFail();
+
+        return view('home.courses.start-learning', compact('course'));
+    }
+
+    public function markCompleted($slug)
+    {
+        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+
+        // Optional: check if the user is authorized
+        $note->readStatus = 'completed';
+        $note->save();
+
+        return response()->json(['readStatus' => 'completed']);
+    }
+
+    public function resetProgress($slug)
+    {
+        $course = Courses::where('slug', $slug)->firstOrFail();
+        // Optional: check if the user is enrolled
+        CourseNotes::where('courseSlug', $course->slug)->update(['readStatus' => null]);
+
+        return response()->json(['status' => 'reset']);
+    }
+
+
 
     public function learning($slug){
         $program = Programs::where('slug', $slug)->with(['courses', 'allocations'])->first();

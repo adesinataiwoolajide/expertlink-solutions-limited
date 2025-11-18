@@ -125,6 +125,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
     Route::prefix('my-courses')->group(function () {
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
+        Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
+
     });
 
 
@@ -152,6 +154,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::prefix('materials')->group(function () {
             Route::get('delete/{slug}', [CourseNotesController::class, 'destroyNote'])->name('material.delete');
         });
+
+        Route::post('/note/{slug}/complete', [CoursesController::class, 'markCompleted'])->name('note.complete');
+        Route::post('/course/{slug}/reset-progress', [CoursesController::class, 'resetProgress'])->name('course.resetProgress');
 
 
         

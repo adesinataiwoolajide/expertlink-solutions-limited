@@ -20,6 +20,8 @@ class CourseNotesController extends Controller
         $this->model = new GeneralRepository($courses);
     }
 
+    
+
     /**
      * Display a listing of the resource.
      */
