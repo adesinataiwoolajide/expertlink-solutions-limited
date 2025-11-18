@@ -62,16 +62,18 @@ class CoursesController extends Controller
             'allocation.user',
             'program',
             'user'
-        ])->where('slug', $slug)->firstOrFail();
-
+        ])->where(['slug' => $slug, 'userSlug', Auth::user()->slug])->first();
+        if(!$course){
+            return redirect()->back()->with("error", "Course details does not exists");
+        }
+        $programSlugs = CourseSubscription::where('userSlug', Auth::user()->slug)->pluck('programSlug')->unique();
+        $myProgram = Programs::whereIn('slug', $programSlugs)->get();
         return view('home.courses.start-learning', compact('course'));
     }
 
     public function markCompleted($slug)
     {
         $note = CourseNotes::where('slug', $slug)->firstOrFail();
-
-        // Optional: check if the user is authorized
         $note->readStatus = 'completed';
         $note->save();
 
@@ -80,10 +82,11 @@ class CoursesController extends Controller
 
     public function resetProgress($slug)
     {
-        $course = Courses::where('slug', $slug)->firstOrFail();
-        // Optional: check if the user is enrolled
+        $course = Courses::where('slug', $slug)->first();
+        if(!$course){
+            return redirect()->back()->with("error", "Course details does not exists");
+        }
         CourseNotes::where('courseSlug', $course->slug)->update(['readStatus' => null]);
-
         return response()->json(['status' => 'reset']);
     }
 
