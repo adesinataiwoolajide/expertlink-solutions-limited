@@ -46,8 +46,15 @@
 
 					<li class="{{ request()->routeIs('myCourses') ? 'active current-page' : '' }}">
 						<a href="{{ route('myCourses') }}">
-							<i class="ri-graduation-cap-line"></i>
+							<i class="ri-file-list-3-line"></i>
 							<span class="menu-text">My Courses</span>
+						</a>
+					</li>
+
+					<li class="">
+						<a href="">
+							<i class="ri-wallet-line"></i>
+							<span class="menu-text">Payment History</span>
 						</a>
 					</li>
 

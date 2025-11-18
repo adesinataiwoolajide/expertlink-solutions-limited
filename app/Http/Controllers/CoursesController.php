@@ -26,14 +26,14 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        Courses::where(['payment_structure' => "Not-Auto Generated"])->delete();
+        // Courses::where(['payment_structure' => "Not-Auto Generated"])->delete();
         $courses = Courses::with(['user', 'notes', 'program', 'allocation.user'])->orderBy('course_name', 'asc')->get();
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             return view('home.courses.index')->with([
                 'courses' => $courses
             ]);
         }elseif(Auth::user()->hasAnyRole(['Student'])){
-            $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+            $program = Programs::orderBy('program_name', 'asc')->with('courses', 'course')->get();
             return view('home.courses.display')->with([
                 'courses' => $courses, 'program' => $program
             ]);
@@ -45,8 +45,14 @@ class CoursesController extends Controller
 
     public function myCourses()
     {
-        $courses = CourseSubscription::where('userSlug', Auth::user()->slug)->with('course', 'program', 'user')->orderBy('created_at', 'desc')->get();
-        dd($courses);
+        $subList = CourseSubscription::with(['course' => fn($q) => $q->with(['program', 'allocations', 'allocation.user', 'materials', 'notes', 'user']), 'program', 'user'])
+        ->where('userSlug', Auth::user()->slug)->latest()->get();
+        $programSlugs = CourseSubscription::where('userSlug', Auth::user()->slug)->pluck('programSlug')->unique();
+        $myProgram = Programs::whereIn('slug', $programSlugs)->get();
+        $courses = $subList->pluck('course')->sortBy('course_name')->values();
+        return view('home.courses.myCourses')->with([
+            'subList' => $subList, 'courses' => $courses, 'myProgram' => $myProgram
+        ]);
     }
 
     public function learning($slug){

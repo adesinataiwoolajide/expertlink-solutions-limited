@@ -87,7 +87,7 @@ class PaymentController extends Controller
                 createLog( 'Made Payment of ' . $totalAmount . ' with Reference '. $paymentSlug);
             }
             session()->forget('cart');
-            return redirect()->route('course.index')->with('success', 'Payment verified successfully.');
+            return redirect()->route('myCourses')->with('success', 'Payment completed successfully.');
         }
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
@@ -108,9 +108,5 @@ class PaymentController extends Controller
         }
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
-
-
-
-
    
 }

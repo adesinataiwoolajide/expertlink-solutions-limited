@@ -80,6 +80,11 @@
                                             <i class="bi bi-pencil-square me-1"></i> Edit Details
                                         </a>
                                     @endif
+                                    @if (Auth::user()->hasAnyRole(['Student']))
+                                        <a href="{{ route('myCourses', ) }}" class="btn btn-info text-white">
+                                            <i class="bi bi-book-square me-1"></i>View My Learning
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
@@ -271,11 +276,17 @@
                                                                         ₦{{ number_format($originalPrice) }}
                                                                     </span>
                                                                 </div>
-                                                                <a href="{{ route('cart.add', [$course->slug]) }}"
-                                                                class="btn btn-sm btn-outline-primary fw-semibold">
-                                                                    <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
-                                                                </a>
+                                                                @php
+                                                                    $subStatus = getDoubleInformation('course_subscriptions', 'courseSlug', $course->slug, 'userSlug', Auth::user()->slug, 'count');
+                                                                @endphp
+                                                                @if($subStatus == 0)
+                                                                    <a href="{{ route('cart.add', [$course->slug]) }}"
+                                                                    class="btn btn-sm btn-outline-primary fw-semibold">
+                                                                        <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+                                                                    </a>
+                                                                @endif
                                                             </div>
+                                                            
 
                                                         </div>
                                                     </div>
