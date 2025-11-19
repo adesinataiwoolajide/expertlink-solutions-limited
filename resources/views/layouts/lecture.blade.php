@@ -11,12 +11,39 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" media="screen" href="{{ asset('lect-sidebar/bootstrap.css') }}" data-turbolinks-track="true" />
         <link href="{{ asset('lect-sidebar/basebbdc.css')}}" rel="stylesheet" data-turbolinks-track="true"></link>
+        
         <style type="text/css">
+            .video-container {
+                max-width: 1300px;       /* limit width */
+                margin: 20px auto;      /* center horizontally */
+                border-radius: 12px;    /* rounded corners */
+                overflow: hidden;       /* ensures corners apply to iframe */
+                box-shadow: 0 6px 18px rgba(0,0,0,0.25); /* soft shadow */
+            }
+            .video-container iframe {
+                width: 100%;
+                height: 450px;          /* adjust height as needed */
+                border: none;           /* remove default border */
+                display: block;
+            }
+
+            .pdf-container {
+                max-width: 1300px;       /* limit width */
+                margin: 20px auto;      /* center horizontally */
+                border-radius: 12px;    /* rounded corners */
+                overflow: hidden;       /* ensures corners apply to iframe */
+                box-shadow: 0 6px 18px rgba(0,0,0,0.25); /* soft shadow */
+            }
+            .pdf-container iframe {
+                width: 100%;
+                height: 500px;          /* adjust height as needed */
+                border: none;           /* remove default border */
+                display: block;
+            }
             .maliver, .btn:hover {
                 background-color: #666;
                 color: white;
             }
-
             .active-note {
                 background-color: #e6f7ff !important;
                 box-shadow: 0 3px 8px rgba(0,0,0,0.1);
@@ -91,7 +118,7 @@
                         </a>
                     </div>
 
-                    @if(Auth::user()->hasRole('Student'))
+                    @if(Auth::user()->hasAnyRole(['Student', 'Administrator', 'Admin']))
                         <!-- Program Name -->
                         <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
                             <span style="vertical-align:middle; margin-right:6px;">
@@ -119,7 +146,6 @@
                             </i>
                         </div>
 
-                        <!-- Notes List -->
                         <ul style="list-style:none; padding:0; margin:0;">
                             @foreach($course->notes as $note)
                                 @php

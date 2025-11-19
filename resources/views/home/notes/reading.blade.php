@@ -33,9 +33,7 @@
             <label style="font-weight:bold;">Course Duration: {{ $course->duration }}</label>
         </div>
 
-      
-        <!-- Introduction Video -->
-        <div style="width:100%; clear:both; padding:10px; box-sizing:border-box; margin-bottom:20px;">
+        <div class="video-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
             @if(!empty($course->course_introduction))
                 <label style="font-weight:bold;">Introduction Video:</label>
                 @if(Storage::disk('public')->exists($filePath))

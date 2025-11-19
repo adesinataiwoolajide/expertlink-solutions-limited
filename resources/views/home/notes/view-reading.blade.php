@@ -12,6 +12,7 @@
         {{ $notes->topic }}
     </h3>
     <div style="width:100%;">
+        
         <p style="display: block; list-style-type: none; font-size: 15px; color: #425252; font-family:Proxima; text-decoration: none; font-weight: 200">
            {!! $notes->content !!} 
         </p>
@@ -23,14 +24,14 @@
             $extension = pathinfo(strtolower($materials->course_file), PATHINFO_EXTENSION);
             $fileUrl = asset('storage/course-material/' . $materials->course_file);
             ?>
-            <div style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
+            <div class="pdf-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
                 <iframe width="100%" height="600" src="{{$fileUrl }}#zoom=150&toolbar=0&navpanes=1&scrollbar=1"  type="application/pdf" 
                 frameborder="1" scrolling="auto"> </iframe>
             </div>
         @endforeach
         
         @foreach (['link_one', 'link_two', 'link_three', 'link_four'] as $index => $link)
-            <div style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
+            <div class="video-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
                 @php 
                     $youtubeLink = $notes->$link;
                     if (strpos($youtubeLink, 'watch?v=') !== false) {
