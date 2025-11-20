@@ -67,4 +67,34 @@ class User extends Authenticatable
         return $this->hasMany(CourseAllocation::class);
     }
 
+    public function studentTasks()
+    {
+        return $this->hasMany(Task::class, 'studentSlug', 'slug');
+    }
+
+    // Tasks where this user is the instructor
+    public function instructorTasks()
+    {
+        return $this->hasMany(Task::class, 'instructorSlug', 'slug');
+    }
+
+    // Notes authored/allocated to this instructor (optional, if you use instructorSlug)
+    public function authoredNotes()
+    {
+        return $this->hasMany(CourseNotes::class, 'instructorSlug', 'slug');
+    }
+
+    public function assignmentsAsStudent()
+    {
+        return $this->hasMany(Assignment::class, 'studentSlug', 'slug');
+    }
+
+    // Inverse of Assignment::instructor()
+    public function assignmentsAsInstructor()
+    {
+        return $this->hasMany(Assignment::class, 'instructorSlug', 'slug');
+    }
+
+
+
 }

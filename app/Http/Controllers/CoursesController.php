@@ -65,7 +65,7 @@ class CoursesController extends Controller
         $filePath = 'course_videos/' . $course->course_introduction;
         return view('home.notes.reading', compact('course', 'myProgram', 'filePath'));
     }
-    
+
 
     public function viewLearning($noteSlug, $courseSlug)
     {
@@ -117,7 +117,6 @@ class CoursesController extends Controller
         return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses'));
 
     }
-
     public function addToCart($slug)
     {
         

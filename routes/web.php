@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
-    FaqController, VerificationController, CourseSubscriptionController};
+    FaqController, VerificationController, CourseSubscriptionController, TaskController, AssignmentController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -108,7 +108,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
         Route::prefix('learning')->group(function () {
-            // Route::get('/', [CoursesController::class, 'mylearning'])->name('course.mylearning');
+           
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
            
@@ -119,7 +119,22 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
             Route::get('/remove/{id}', [CoursesController::class, 'removeFromCart'])->name('cart.remove');
             Route::get('/clear', [PaymentController::class, 'clear'])->name('cart.clear');
         });
+
+        Route::prefix('assignments')->group(callback: function () {
+            Route::get('/', [AssignmentController::class, 'index'])->name('assignment.index');
+            Route::get('/view/{slug}', [AssignmentController::class, 'show'])->name('cart.remove');
+            Route::get('/create/{noteSlug}', [AssignmentController::class, 'create'])->name('task.create');
+            Route::post('/store', [AssignmentController::class, 'store'])->name('task.store');
+            Route::post('/update/{slug}', [AssignmentController::class, 'update'])->name('task.update');
+        });
         
+        Route::prefix('tasks')->group(function () {
+            Route::get('/', [TaskController::class, 'index'])->name('task.index');
+            Route::get('/view/{slug}', [TaskController::class, 'show'])->name('cart.remove');
+            Route::get('/create/{noteSlug}', [TaskController::class, 'create'])->name('task.create');
+            Route::post('/store', [TaskController::class, 'store'])->name('task.store');
+            Route::post('/update/{slug}', [TaskController::class, 'update'])->name('task.update');
+        });
     });
 
     Route::prefix('my-learnings')->group(function () {

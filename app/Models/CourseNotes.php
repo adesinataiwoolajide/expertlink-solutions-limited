@@ -36,4 +36,16 @@ class CourseNotes extends Model
         return $this->belongsTo(User::class, 'instructorSlug', 'slug');
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'noteSlug', 'slug');
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class, 'noteSlug', 'slug');
+    }
+
+
+
 }

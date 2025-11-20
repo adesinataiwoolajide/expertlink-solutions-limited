@@ -55,6 +55,18 @@ class Courses extends Model
       return $this->belongsTo(User::class, 'user_id', 'id');
    }
 
+   public function tasks()
+   {
+      return $this->hasMany(Task::class, 'courseSlug', 'slug');
+   }
+
+   public function assignments()
+   {
+      return $this->hasMany(Assignment::class, 'courseSlug', 'slug');
+   }
+
+
+
 }
 
 ?>
