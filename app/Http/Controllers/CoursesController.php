@@ -65,6 +65,7 @@ class CoursesController extends Controller
         $filePath = 'course_videos/' . $course->course_introduction;
         return view('home.notes.reading', compact('course', 'myProgram', 'filePath'));
     }
+    
 
     public function viewLearning($noteSlug, $courseSlug)
     {
@@ -104,11 +105,10 @@ class CoursesController extends Controller
             'program' => $program, 'courses' => $courses
         ]);
     }
-    
+
     public function learningShow($courseSlug, $programSlug){
         $program = Programs::with(['courses', 'allocations'])->where('slug', $programSlug)->first();
         $course = Courses::with(['user', 'notes', 'program', 'allocation.user'])->where(['slug' => $courseSlug ,'programSlug' => $programSlug])->first();
-        
         $program_name = $program->program_name ?? 'NIL';
         if (!$program && !$course) {
             return redirect()->back()->with('error', 'course details do not exist');
@@ -155,9 +155,6 @@ class CoursesController extends Controller
         }
         return redirect()->back()->with('error', 'Course not found in cart.');
     }
-
-
-
     
 
     /**

@@ -79,7 +79,8 @@
                             </div>
 
                             <div class="mt-auto d-flex justify-content-between align-items-center">
-                                <a href="{{ route('startLearning',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
+                                <a href="{{ route('mycourse.note.index',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
+                                {{-- <a href="{{ route('startLearning',$course->slug) }}" class="btn btn-sm btn-outline-info px-3">OldStart Learning</a> --}}
                                 <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}" class="text-decoration-none text-muted small">
                                     Read More →
                                 </a>

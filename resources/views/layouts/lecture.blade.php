@@ -56,6 +56,8 @@
         <script src="{{ asset('lect-sidebar/student-globals.js') }}"></script>
         <script src="{{ asset('lect-sidebar/student-legacy.js') }}"></script>
         <script src="{{ asset('lect-sidebar/student.js') }}"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
     </head>
     <body data-no-turbolink="true" class="revamped_lecture_player">
@@ -144,6 +146,7 @@
 
                         <!-- Notes -->
                         <ul style="list-style:none; padding:0; margin:0;">
+                            
                             @foreach($course->notes as $note)
                                 @php
                                     $isActive = request()->routeIs('note.viewLearning') && request()->route('slug') == $note->slug;
@@ -162,6 +165,7 @@
                                         📚 {!! wordwrap($note->topic,34,"<br>\n". '<span style="padding-left: 25px;">') !!}
                                     </a>
                                 </li>
+                                
                             @endforeach
                         </ul>
                     @endif

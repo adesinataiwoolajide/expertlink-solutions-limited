@@ -27,17 +27,27 @@ class CourseNotesController extends Controller
      */
     public function index($courseSlug)
     {
+        $user = Auth::user();
         $course = Courses::where('slug', $courseSlug)->with('program', 'allocations', 'materials', 'notes')->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(20);
-        $allocation = $course->allocations();
+        if ($user->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) {
+            $query = $course->notes()->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc');
+            if ($user->hasRole('Instructor')) {
+                $query->where(['instructorSlug'=> Auth::user()->slug]);
+            }
+            $filePath = 'course_videos/' . $course->course_introduction;
+            $notes = $query->paginate(50);
+            return view('home.notes.courseIndex')->with([
+                'course' => $course, 'notes' => $notes, 'filePath' => $filePath
+            ]);
         
-        return view('home.notes.index')->with([
-            'course' => $course, 'allocation' => $allocation
-        ]);
-        
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
+        }
+      
     }
 
     /**

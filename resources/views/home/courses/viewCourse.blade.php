@@ -238,6 +238,11 @@
                                                 @php
                                                     $originalPrice = $course->course_price;
                                                     $rating = $course->ratings ?? 4.5;
+                                                    $subStatus = getDoubleInformation('course_subscriptions', 'courseSlug', $course->slug, 'userSlug', Auth::user()->slug, 'count');
+                                                    $cart = session()->get('cart', []);
+                                                    $inCart = collect($cart)->contains(function ($item) use ($course) {
+                                                        return $item['slug'] === $course->slug;
+                                                    });
                                                 @endphp
                                                 <div class="col-md-4">
                                                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
@@ -268,7 +273,7 @@
                                                             </div>
 
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <div>
+                                                                <div class="d-flex flex-wrap justify-content-left gap-2">
                                                                     <span class="badge bg-success text-white fw-bold px-3 py-2">
                                                                         ₦{{ number_format(getDiscountedPrice($course->course_price, $course->course_discount),2) }}
                                                                     </span>
@@ -276,17 +281,45 @@
                                                                         ₦{{ number_format($originalPrice) }}
                                                                     </span>
                                                                 </div>
-                                                                @php
-                                                                    $subStatus = getDoubleInformation('course_subscriptions', 'courseSlug', $course->slug, 'userSlug', Auth::user()->slug, 'count');
-                                                                @endphp
+                                                               
                                                                 @if($subStatus == 0)
-                                                                    <a href="{{ route('cart.add', [$course->slug]) }}"
-                                                                    class="btn btn-sm btn-outline-primary fw-semibold">
-                                                                        <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+
+                                                                    @if(!$inCart)
+                                                                        <a href="{{ route('cart.add', [$course->slug]) }}"
+                                                                        class="btn btn-sm btn-outline-primary fw-semibold">
+                                                                            <i class="ri-shopping-cart-2-line me-1"></i> Add to Cart
+                                                                        </a>
+                                                                    @else
+                                                                        <a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $course->slug }}">
+                                                                            <i class="ri-delete-bin-line me-1"></i> Remove Item
+                                                                        </a>
+                                                                        <div class="modal fade" id="deleteModal-{{ $course->slug}}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $course->slug }}" aria-hidden="true">
+                                                                            <div class="modal-dialog">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header bg-danger">
+                                                                                        <h5 class="modal-title" id="deleteModalLabel-{{ $course->slug }}">Confirm Cart Removal</h5>
+                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        Are you sure you want to remove <strong>{{ $course->course_name }} </strong>? This action cannot be undone.
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                                        <a href="{{ route('cart.remove', $course->slug) }}" class="btn btn-danger">Yes, Remove from the Cart</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                @else
+                                                                    <a href="{{ route('mycourse.note.index', [$course->slug]) }}">
+                                                                         <span class="badge bg-primary text-white fw-bold px-3 py-2">
+                                                                            View Notes
+                                                                        </span>
                                                                     </a>
                                                                 @endif
+
                                                             </div>
-                                                            
 
                                                         </div>
                                                     </div>

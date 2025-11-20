@@ -88,8 +88,9 @@ class PaymentController extends Controller
                     $response['data']['reference'], $response['data']['reference'], $response['data']['status'], 'Paystack');
                     createLog( 'Made Payment of ' . $totalAmount . ' with Reference '. $paymentSlug);
                 }
+                $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
                 session()->forget('cart');
-                return redirect()->route('myCourses')->with('success', 'Payment completed successfully.');
+                return redirect($redirectRoute)->with('success', 'Payment completed successfully.');
             }
             return redirect()->back()->with('error', 'Payment verification failed.');
         }else{

@@ -199,6 +199,12 @@
                                                                             </div>
                                                                         </div>
                                                                     @endif
+                                                                @else
+                                                                    <a href="{{ route('mycourse.note.index', [$course->slug]) }}">
+                                                                         <span class="badge bg-primary text-white fw-bold px-3 py-2">
+                                                                            View Notes
+                                                                        </span>
+                                                                    </a>
                                                                 @endif
 
                                                             </div>

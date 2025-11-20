@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, FaqController, VerificationController};
+use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
+    FaqController, VerificationController, CourseSubscriptionController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -47,10 +48,6 @@ Route::prefix('our-courses')->group(function () {
     Route::get('/', [WebsiteController::class, 'courses'])->name('website.courses');
     Route::get('/{courseSlug}', [WebsiteController::class, 'courseDetails'])->name('website.courseDetails');
 }); 
-
-
-
-
 
 Route::get('/email/resend', [VerificationController::class, 'resend']);
 // Auth::routes(['verify' => true]);
@@ -111,6 +108,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::post('/validate-course-name', [CoursesController::class, 'checkCourseName'])->name('check.course.name');
 
         Route::prefix('learning')->group(function () {
+            // Route::get('/', [CoursesController::class, 'mylearning'])->name('course.mylearning');
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
            
@@ -124,8 +122,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         
     });
 
-    Route::prefix('my-courses')->group(function () {
+    Route::prefix('my-learnings')->group(function () {
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
+        Route::get('/view/{slug}', [CourseSubscriptionController::class, 'show'])->name('mycourse.note.index');
+        Route::get('read/{noteSlug}/{courseSlug}', action: [CourseSubscriptionController::class, 'viewLearning'])->name('mycourse.note.read');
+
+
         Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
         Route::get('{noteSlug}/{courseSlug}', action: [CoursesController::class, 'viewLearning'])->name('note.viewLearning');
 
