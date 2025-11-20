@@ -32,39 +32,16 @@ class CourseSubscriptionController extends Controller
         return view('home.notes.assignments', compact('note', 'assignments'));
     }
 
-
-    // public function progress($slug)
-    // {
-    //     $course = Courses::where('slug', $slug)->firstOrFail();
-
-    //     $assignmentProgress = $course->progressForStudent();
-    //     $taskProgress = $course->taskProgressForStudent();
-    //     $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
-
-    //     return view('courses.progress', compact('course', 'assignmentProgress', 'taskProgress', 'overallProgress'));
-    // }
-
-    // public function tasks($slug)
-    // {
-    //     $course = Courses::where('slug', $slug)->firstOrFail();
-
-    //     $tasks = Task::where('courseSlug', $course->slug)
-    //         ->where('studentSlug', Auth::user()->slug)
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(20);
-
-    //     return view('courses.tasks', compact('course', 'tasks'));
-    // }
-    public function tasks($slug)
+     public function courseassignments($slug)
     {
-        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+        $course = Courses::where('slug', $slug)->firstOrFail();
 
-        $tasks = $note->tasks()
+        $assignments = Assignment::where('courseSlug', $course->slug)
             ->where('studentSlug', Auth::user()->slug)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('home.notes.tasks', compact('note', 'tasks'));
+        return view('home.courses.assignments', compact('course', 'assignments'));
     }
 
     public function progress($slug)
@@ -79,17 +56,38 @@ class CourseSubscriptionController extends Controller
     }
 
 
-    // public function assignments($slug)
-    // {
-    //     $course = Courses::where('slug', $slug)->firstOrFail();
 
-    //     $assignments = Assignment::where('courseSlug', $course->slug)
-    //         ->where('studentSlug', Auth::user()->slug)
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(20);
 
-    //     return view('courses.assignments', compact('course', 'assignments'));
-    // }
+    public function courseprogress($slug)
+    {
+        $course = Courses::where('slug', $slug)->firstOrFail();
+        $assignmentProgress = $course->progressForStudent();
+        $taskProgress = $course->taskProgressForStudent();
+        $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
+
+        return view('home.courses.progress', compact('course', 'assignmentProgress', 'taskProgress', 'overallProgress'));
+    }
+
+      public function coursetasks($slug)
+    {
+        $course = Courses::where('slug', $slug)->firstOrFail();
+        $tasks = Task::where('courseSlug', $course->slug)
+            ->where('studentSlug', Auth::user()->slug)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('home.courses.tasks', compact('course', 'tasks'));
+    }
+    public function tasks($slug)
+    {
+        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+        $tasks = $note->tasks()->where('studentSlug', Auth::user()->slug)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('home.notes.tasks', compact('note', 'tasks'));
+    }
+
 
     public function index()
     {

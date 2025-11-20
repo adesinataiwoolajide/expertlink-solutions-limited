@@ -78,18 +78,7 @@
                                 @endfor
                                 <span class="ms-2 text-muted small">{{ number_format($rating, 1) }}/5</span>
                             </div>
-
-                            <!-- Progress badges -->
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm">
-                                    📝 {{ $course->student_assignments_count ?? 0 }} Assignments
-                                </span>
-                                <span class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm">
-                                    ✅ {{ $course->student_tasks_count ?? 0 }} Tasks
-                                </span>
-                            </div>
-
-                            <!-- Progress bar with dynamic color + tooltip -->
+                             <!-- Progress bar with dynamic color + tooltip -->
                             @php
                                 $assignmentProgress = $course->progressForStudent();
                                 $taskProgress = $course->taskProgressForStudent();
@@ -105,19 +94,33 @@
 
                                 $tooltipText = "{$course->student_assignments_count} assignments, {$course->student_tasks_count} tasks completed";
                             @endphp
+                            <!-- Progress badges -->
+                             <div class="mt-auto d-flex flex-wrap gap-2 mb-2">
+                                <!-- Assignments badge -->
+                                <a href="{{ route('student.course.assignments', $course->slug) }}"
+                                    class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="View your {{ $course->student_assignments_count }} submitted assignments">
+                                        📝 {{ $course->student_assignments_count }} Assignments
+                                </a>
 
-                            <div class="mb-3">
-                                <span class="text-muted small">Overall Progress: {{ $overallProgress }}%</span>
-                                <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                    <div class="progress-bar {{ $progressColor }}" role="progressbar"
-                                        style="width: {{ $overallProgress }}%; min-width: 5px;"
-                                        aria-valuenow="{{ $overallProgress }}" aria-valuemin="0" aria-valuemax="100"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tooltipText }}">
-                                    </div>
-                                </div>
+                                <!-- Tasks badge -->
+                                <a href="{{ route('student.course.tasks', $course->slug) }}"
+                                    class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="View your {{ $course->student_tasks_count }} completed tasks">
+                                        ✅ {{ $course->student_tasks_count }} Tasks
+                                </a>
+
+                                <!-- Progress badge -->
+                                <a href="{{ route('student.course.progress', $course->slug) }}"
+                                    class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Your overall progress on this course is {{ $course->progressForStudent() }}%">
+                                        📊 {{ $course->progressForStudent() }}% Progress
+                                </a>
                             </div>
-
-                            <!-- Actions -->
+                            
                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                 <a href="{{ route('mycourse.note.index',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
                                 <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}" class="text-decoration-none text-muted small">

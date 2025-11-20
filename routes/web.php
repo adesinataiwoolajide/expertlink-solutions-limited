@@ -120,23 +120,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
             Route::get('/clear', [PaymentController::class, 'clear'])->name('cart.clear');
         });
 
-        Route::prefix('assignments')->group(callback: function () {
-            Route::get('/{slug}', [CourseSubscriptionController::class, 'assignments'])->name('course.assignments');
-            // Route::get('/', [AssignmentController::class, 'index'])->name('assignment.index');
-            // Route::get('/view/{slug}', [AssignmentController::class, 'show'])->name('cart.remove');
-            // Route::get('/create/{noteSlug}', [AssignmentController::class, 'create'])->name('task.create');
-            // Route::post('/store', [AssignmentController::class, 'store'])->name('task.store');
-            // Route::post('/update/{slug}', [AssignmentController::class, 'update'])->name('task.update');
-        });
+        Route::prefix('performance')->group(callback: function () {
+
+            Route::prefix('assignments')->group(callback: function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'courseassignments'])->name('student.course.assignments');
+            });
+            Route::prefix('tasks')->group(function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'coursetasks'])->name('student.course.tasks');
+            });
+            Route::prefix('overall')->group(function () {
+                Route::get('/progress/{slug}', [CourseSubscriptionController::class, 'courseprogress'])->name('student.course.progress');
+            });
         
-        Route::prefix('tasks')->group(function () {
-            Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('course.tasks');
-            // Route::get('/', [TaskController::class, 'index'])->name('task.index');
-            // Route::get('/view/{slug}', [TaskController::class, 'show'])->name('cart.remove');
-            // Route::get('/create/{noteSlug}', [TaskController::class, 'create'])->name('task.create');
-            // Route::post('/store', [TaskController::class, 'store'])->name('task.store');
-            // Route::post('/update/{slug}', [TaskController::class, 'update'])->name('task.update');
         });
+
+        
     });
 
    
@@ -144,14 +142,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
         Route::get('/view/{slug}', [CourseSubscriptionController::class, 'show'])->name('mycourse.note.index');
         Route::get('read/{noteSlug}/{courseSlug}', action: [CourseSubscriptionController::class, 'viewLearning'])->name('mycourse.note.read');
-        Route::get('/progress/{slug}', [CourseSubscriptionController::class, 'progress'])->name('course.progress');
 
         Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
         Route::get('{noteSlug}/{courseSlug}', action: [CoursesController::class, 'viewLearning'])->name('note.viewLearning');
 
     });
-
-
 
     Route::prefix('payments')->group(function () {
         Route::get('/checkout', [PaymentController::class, 'showCheckout'])->name('payment.checkout');
@@ -180,7 +175,19 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
         Route::post('/note/{slug}/complete', [CoursesController::class, 'markCompleted'])->name('note.complete');
         Route::post('/course/{slug}/reset-progress', [CoursesController::class, 'resetProgress'])->name('course.resetProgress');
+        Route::prefix('performance')->group(callback: function () {
 
+            Route::prefix('assignments')->group(callback: function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'assignments'])->name('note.course.assignments');
+            });
+            Route::prefix('tasks')->group(function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('note.course.tasks');
+            });
+            Route::prefix('overall')->group(function () {
+                Route::get('/progress/{slug}', [CourseSubscriptionController::class, 'progress'])->name('note.course.progress');
+            });
+        
+        });
     });
 
 

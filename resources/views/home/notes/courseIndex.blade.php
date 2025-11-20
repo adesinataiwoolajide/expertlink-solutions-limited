@@ -108,27 +108,27 @@
 
                                 <div class="mt-auto d-flex flex-wrap gap-2">
                                     <!-- Assignments badge -->
-                                    <a href="{{ route('course.assignments', $note->slug) }}"
-                                    class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="View your {{ $note->student_assignments_count }} submitted assignments">
-                                        📝 {{ $note->student_assignments_count }} Assignments
+                                    <a href="{{ route('note.course.assignments', $note->slug) }}"
+                                        class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="View your {{ $note->student_assignments_count }} submitted assignments">
+                                            📝 {{ $note->student_assignments_count }} Assignments
                                     </a>
 
                                     <!-- Tasks badge -->
-                                    <a href="{{ route('course.tasks', $note->slug) }}"
-                                    class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="View your {{ $note->student_tasks_count }} completed tasks">
-                                        ✅ {{ $note->student_tasks_count }} Tasks
+                                    <a href="{{ route('note.course.tasks', $note->slug) }}"
+                                        class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="View your {{ $note->student_tasks_count }} completed tasks">
+                                            ✅ {{ $note->student_tasks_count }} Tasks
                                     </a>
 
                                     <!-- Progress badge -->
-                                    <a href="{{ route('course.progress', $note->slug) }}"
-                                    class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
-                                        📊 {{ $note->progressForStudent() }}% Progress
+                                    <a href="{{ route('note.course.progress', $note->slug) }}"
+                                        class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
+                                            📊 {{ $note->progressForStudent() }}% Progress
                                     </a>
                                 </div>
 
