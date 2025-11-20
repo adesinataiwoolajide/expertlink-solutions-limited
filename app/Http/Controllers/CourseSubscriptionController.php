@@ -55,9 +55,6 @@ class CourseSubscriptionController extends Controller
         return view('home.notes.progress', compact('note', 'assignmentProgress', 'taskProgress', 'overallProgress'));
     }
 
-
-
-
     public function courseprogress($slug)
     {
         $course = Courses::where('slug', $slug)->firstOrFail();
@@ -152,8 +149,15 @@ class CourseSubscriptionController extends Controller
         if (!$note || !$course) {
             return redirect()->back()->with("error", "Course note details do not exist");
         }
-        $notes = $course->notes()->whereNotIn('slug', [$noteSlug]) ->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
-        return view('home.notes.courseRead', compact('course', 'note', 'notes'));
+        //$notes = $course->notes()->whereNotIn('slug', [$noteSlug]) ->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
+        $notes = $course->notes()->with(['course','allocation','materials','instructor'])
+        ->withCount([
+            'assignments as student_assignments_count' => fn($q) => $q->forStudent(),
+            'tasks as student_tasks_count' => fn($q) => $q->forStudent(),
+        ])->whereNotIn('slug', [$noteSlug])->orderBy('created_at','desc')->paginate(20);
+        $assignmentProgress = $course->progressForStudent();
+        $taskProgress = $course->taskProgressForStudent();
+        return view('home.notes.courseRead', compact('course', 'note', 'notes', 'assignmentProgress', 'taskProgress'));
     }
 
     /**
