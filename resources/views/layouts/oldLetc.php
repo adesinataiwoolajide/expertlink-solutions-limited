@@ -7,14 +7,14 @@
         <meta content='width=device-width,initial-scale=1.0,user-scalable=no' name='viewport'>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="asset_host" content="">
-        <title><?php echo e(config('app.name', '')); ?></title>
-        <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-        <link rel="stylesheet" media="screen" href="<?php echo e(asset('lect-sidebar/bootstrap.css')); ?>" data-turbolinks-track="true" />
-        <link href="<?php echo e(asset('lect-sidebar/basebbdc.css')); ?>" rel="stylesheet" data-turbolinks-track="true"></link>
+        <title>{{ config('app.name', '') }}</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" media="screen" href="{{ asset('lect-sidebar/bootstrap.css') }}" data-turbolinks-track="true" />
+        <link href="{{ asset('lect-sidebar/basebbdc.css')}}" rel="stylesheet" data-turbolinks-track="true"></link>
         
         <style type="text/css">
             .video-container {
-                max-width: 1000px;       /* limit width */
+                max-width: 1300px;       /* limit width */
                 margin: 20px auto;      /* center horizontally */
                 border-radius: 12px;    /* rounded corners */
                 overflow: hidden;       /* ensures corners apply to iframe */
@@ -53,9 +53,9 @@
 
         </style>
         
-        <script src="<?php echo e(asset('lect-sidebar/student-globals.js')); ?>"></script>
-        <script src="<?php echo e(asset('lect-sidebar/student-legacy.js')); ?>"></script>
-        <script src="<?php echo e(asset('lect-sidebar/student.js')); ?>"></script>
+        <script src="{{ asset('lect-sidebar/student-globals.js') }}"></script>
+        <script src="{{ asset('lect-sidebar/student-legacy.js') }}"></script>
+        <script src="{{ asset('lect-sidebar/student.js') }}"></script>
 
     </head>
     <body data-no-turbolink="true" class="revamped_lecture_player">
@@ -75,7 +75,7 @@
         </script>
         <header class='full-width half-height is-not-signed-in'>
             <div class='lecture-left'>
-                <a class='nav-icon-back' aria-label='Back to course curriculum' data-no-turbolink="true" role='button' href='<?php echo e(route('dashboard')); ?>'>
+                <a class='nav-icon-back' aria-label='Back to course curriculum' data-no-turbolink="true" role='button' href='{{ route('dashboard') }}'>
                     <svg width="24" height="24" title="Back to course curriculum">
                         <use xlink:href="#icon__Home"></use>
                     </svg>
@@ -98,88 +98,76 @@
                         <h3 style="font-size:1.2rem; font-weight:bold; color:#1982c4; margin:0;">📚 Course Navigation</h3>
                     </div>
 
-                    <!-- Dashboard -->
-                    <div style="margin-bottom:12px;">
-                        <a href="<?php echo e(route('dashboard')); ?>" target="_blank"
-                        style="display:block; padding:12px; border-radius:8px; font-weight:600; font-size:1rem; color:#333; text-decoration:none; transition:all 0.3s;"
-                        onmouseover="this.style.backgroundColor='#e6f0ff'; this.style.color='#1982c4';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                   
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
+                        
+                        <a href="{{ route('dashboard') }}" style="color:#000; text-decoration:none; transition:all 0.3s;"
+                            onmouseover="this.style.textDecoration='underline';"  onmouseout="this.style.textDecoration='none';">
                             📊 Dashboard
                         </a>
                     </div>
 
-                    <!-- My Courses -->
-                    <div style="margin-bottom:12px;">
-                        <a href="<?php echo e(route('myCourses')); ?>"
-                        style="display:block; padding:12px; border-radius:8px; font-weight:600; font-size:1rem; color:#333; text-decoration:none; transition:all 0.3s;"
-                        onmouseover="this.style.backgroundColor='#e6f0ff'; this.style.color='#1982c4';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
+                        
+                        <a href="{{ route('myCourses') }}" style="color:#000; text-decoration:none; transition:all 0.3s;"
+                            onmouseover="this.style.textDecoration='underline';"  onmouseout="this.style.textDecoration='none';">
                             🎓 My Courses
                         </a>
                     </div>
 
-                    <?php if(Auth::user()->hasAnyRole(['Student', 'Administrator', 'Admin'])): ?>
-                        <!-- Program Name -->
+                    @if(Auth::user()->hasAnyRole(['Student', 'Administrator', 'Admin']))
+                        
                         <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
                             <span style="vertical-align:middle; margin-right:6px;">
                                 <svg width="20" height="20">
-                                    <use xlink:href="#icon__LockClock"></use>
+                                    <use xlink:href="#icon__Subject"></use>
                                 </svg>
                             </span>
-                            <a href="<?php echo e(route('startLearning',$course->slug)); ?>"
+                            <a href="{{ route('startLearning',$course->slug) }}"
                             style="color:#000; text-decoration:none; transition:all 0.3s;"
                             onmouseover="this.style.textDecoration='underline';"
                             onmouseout="this.style.textDecoration='none';">
-                                <?php echo e($course->program->program_name); ?>
-
+                                {{ $course->program->program_name }}
                             </a>
                         </div>
 
-                        <!-- Notes Section -->
-                        <div style="margin-bottom:12px; font-weight:600; font-size:1rem; color:#444;">
-                            <span style="vertical-align:middle; margin-right:6px;">
-                                <svg width="20" height="20">
-                                    <use xlink:href="#icon__LockClock"></use>
-                                </svg>
-                            </span>
-                            <i>
-                                <?php echo wordwrap("List of Course Notes",43,"<br>\n". '<span style="padding-left: 30px;">'); ?>
-
-                            </i>
-                        </div>
-
                         <ul style="list-style:none; padding:0; margin:0;">
-                            <?php $__currentLoopData = $course->notes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $note): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php
-                                    $isActive = request()->routeIs('note.viewLearning')  && request()->slug == $note->slug;
-                                ?>
-                                <li style="margin-bottom:10px;">
-                                    <a href="<?php echo e(route('note.viewLearning',[$note->slug,$note->courseSlug])); ?>" class="<?php echo e($isActive ? 'active-note' : ''); ?>"
-                                    style="display:flex; align-items:center; padding:12px; border:1px solid #eee; border-radius:8px; background:#fafafa; text-decoration:none; color:#333; transition:all 0.3s;"
-                                    onmouseover="this.style.backgroundColor='#f0f8ff'; this.style.boxShadow='0 3px 8px rgba(0,0,0,0.1)';"
-                                    onmouseout="this.style.backgroundColor='<?php echo e($isActive ? '#e6f7ff' : '#fafafa'); ?>'; this.style.boxShadow='none';">
-                                        <span style="margin-right:10px; color:#1982c4;">
-                                            <svg width="20" height="20">
-                                                <use xlink:href="#icon__Subject"></use>
-                                            </svg>
-                                        </span>
-                                        <span style="font-size:0.95rem; line-height:1.4;">
-                                            <?php echo wordwrap($note->topic,34,"<br>\n". '<span style="padding-left: 25px;">'); ?>
-
-                                        </span>
+                            @foreach($course->notes as $note)
+                                @php
+                                    $isActive = request()->routeIs('note.viewLearning')  && request()->route('slug') == $note->slug;
+                                @endphp
+                                <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
+                                    <span style="vertical-align:middle; margin-right:6px;">
+                                        <svg width="20" height="20">
+                                            <use xlink:href="#icon__Subject"></use>
+                                        </svg>
+                                    </span>
+                                    <a href="{{ route('note.viewLearning', [$note->slug, $note->courseSlug]) }}" style="color:#000; text-decoration:none; transition:all 0.3s;"
+                                        onmouseover="this.style.textDecoration='underline';"  onmouseout="this.style.textDecoration='none';">
+                                        {!! wordwrap($note->topic,34,"<br>\n". '<span style="padding-left: 25px;">') !!}
                                     </a>
-                                </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
+                              
+                            @endforeach
                         </ul>
-                    <?php endif; ?>
+                    @endif
+
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
+                        
+                        <a href="{{ route('signout') }}" style="color:#000; text-decoration:none; transition:all 0.3s;"
+                            onmouseover="this.style.textDecoration='underline';"  onmouseout="this.style.textDecoration='none';">
+                            📊 Logout
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="course-mainbar lecture-content full-width-content">
-                <?php echo $__env->yieldContent('content'); ?>
+                @yield('content')
             </div>
 
 
         </section>
         
     </body>
-</html><?php /**PATH C:\xampp\htdocs\expertlink_solutions\resources\views/layouts/lecture.blade.php ENDPATH**/ ?>
+</html>

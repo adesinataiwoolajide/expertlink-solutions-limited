@@ -14,19 +14,30 @@
                     </h2>
                     <p class="text-muted mt-2">Dive into your personalized learning journey and continue where you left off.</p>
                 </div>
-                <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
-                    <button data-filter="*" class="btn btn-outline-primary active">
-                        All <span class="badge bg-primary ms-1">{{ count($subList) }}</span>
-                    </button>
-                    @foreach($myProgram as $program)
-                        @php
-                            $count = $subList->where('programSlug', $program->slug)->count();
-                        @endphp
-                        <button data-filter=".cat--{{ $program->slug }}" class="btn btn-outline-secondary">
-                            {{ $program->program_name }} <span class="badge bg-secondary ms-1">{{ $count }}</span>
+
+                @if(count($myProgram) > 0)
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+                        <button data-filter="*" class="btn btn-outline-primary active">
+                            All <span class="badge bg-primary ms-1">{{ count($subList) }}</span>
                         </button>
-                    @endforeach
-                </div>
+                        @foreach($myProgram as $program)
+                            @php
+                                $count = $subList->where('programSlug', $program->slug)->count();
+                            @endphp
+                            <button data-filter=".cat--{{ $program->slug }}" class="btn btn-outline-secondary">
+                                {{ $program->program_name }} <span class="badge bg-secondary ms-1">{{ $count }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center my-5">
+                        <p class="mb-3 text-danger">You don’t have any enrolled courses yet.</p>
+                        <a href="{{ route('course.index') }}" class="btn btn-primary">
+                            Browse Available Courses
+                        </a>
+                    </div>
+
+                @endif
             </div>
         </div>
 

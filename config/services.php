@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'opay' => [
+        'merchant_id' => env('OPAY_MERCHANT_ID'),
+        'public_key'  => env('OPAY_PUBLIC_KEY'),
+        'secret_key'  => env('OPAY_SECRET_KEY'),
+    ],
+
+
 ];

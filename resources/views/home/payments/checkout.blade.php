@@ -38,9 +38,10 @@
                             </script>
 
                             <script src="https://sdk.monnify.com/plugin/monnify.js"></script>
+
                             <button type="button"
-                                class="btn btn-outline-warning btn-lg d-flex align-items-center justify-content-center text-dark"
-                                onclick="payWithMonnify()">
+                                    class="btn btn-outline-warning btn-lg d-flex align-items-center justify-content-center text-dark"
+                                    onclick="payWithMonnify()">
                                 <i class="ri-bank-line me-2 fs-5"></i> Pay with Monnify
                             </button>
 
@@ -58,13 +59,14 @@
                                         contractCode: "{{ config('monnify.contract_code') }}",
                                         paymentDescription: "Course Payment",
                                         isTestMode: true, // Set to false in production
+
                                         onComplete: function(response) {
                                             if (response.paymentStatus === 'FAILED') {
                                                 alert('Payment failed: ' + response.responseMessage);
                                             } else {
                                                 window.location.href = "{{ route('monnify.verify') }}?paymentReference=" + response.paymentReference;
                                             }
-                                        }
+                                        },
 
                                         onClose: function() {
                                             alert('Transaction was not completed on Monnify, window closed.');
@@ -72,7 +74,40 @@
                                     });
                                 }
                             </script>
-                            
+
+                            <!-- Include Opay JS SDK -->
+                            <script src="https://cashier.opayweb.com/static/js/pay.js"></script>
+
+                            <button type="button" 
+                                    class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center"
+                                    onclick="payWithOpay()">
+                                <i class="ri-wallet-3-line me-2 fs-5"></i> Pay with Opay
+                            </button>
+
+                            <script>
+                                function payWithOpay() {
+                                    let orderId = 'OPAY_' + Math.floor((Math.random() * 1000000000) + 1);
+
+                                    OpayCheckout.init({
+                                        merchantId: '256612345678901',   // Your Opay merchant ID
+                                        publicKey: 'OPAYPUB17635699443980.20201496315731027', // Your Opay public key
+                                        amount: {{ $grandTotal }},
+                                        currency: 'NGN',
+                                        orderId: orderId,
+                                        userEmail: '{{ auth()->user()->email }}',
+                                        callbackUrl: "{{ route('opay.verify') }}",
+                                        onSuccess: function(response) {
+                                            window.location.href = "{{ route('opay.verify') }}?reference=" + response.reference;
+                                        },
+                                        onError: function(error) {
+                                            alert('Transaction failed: ' + error.message);
+                                        },
+                                        onClose: function() {
+                                            alert('Transaction was not completed on Opay, window closed.');
+                                        }
+                                    });
+                                }
+                            </script>
                         </div>
                     </div>
                     @endif
@@ -93,14 +128,12 @@
                                     @forelse($cart as $id => $item)
                                         <tr>
                                             <td class="fw-semibold">{{ $item['course_name'] }}</td>
-                                            <td>{{ $item['course']->program->program_name }}</td>
-                                            <td>₦{{ number_format(getDiscountedPrice($item['course']->course_price, $item['course']->course_discount),2) }}</td>
+                                            <td>{{ $item['program_name'] ?? 'NIL' }}</td>
+                                            <td>₦{{ number_format(getDiscountedPrice($item['price'], $item['course_discount']),2) }}</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $item['slug'] }}">
-                                                    <i class="ri-delete-bin-line me-1"></i> Remove
+                                                    <i class="ri-delete-bin-line me-1"></i>
                                                 </a>
-
-                                                <!-- Delete Modal -->
                                                 <div class="modal fade" id="deleteModal-{{ $item['slug'] }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $item['slug'] }}" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">

@@ -9,6 +9,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('view:clear');
     Artisan::call('config:clear');
     Session::forget('cart');
+    session()->forget('cart');
     return redirect()->back()->with([
         'success' => "All Application cache flushed successfully",
     ]);
@@ -138,6 +139,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/monnify/verify', [PaymentController::class, 'verifyMonnify'])->name('monnify.verify');
         Route::get('/paystack/verify', [PaymentController::class, 'paystackVerify'])->name('payment.verify');
 
+        Route::get('/opay/verify', [PaymentController::class, 'verifyOPay'])->name('opay.verify');
 
     });
         

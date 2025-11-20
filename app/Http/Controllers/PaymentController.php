@@ -59,37 +59,42 @@ class PaymentController extends Controller
 
     public function paystackVerify(Request $request)
     {
+        
+        $cartCount = count(session()->get('cart', []));
         $reference = $request->query('reference');
         $response = Http::withToken(env('PAYSTACK_SECRET_KEY'))->get("https://api.paystack.co/transaction/verify/{$reference}");
-        if ($response->successful() && $response['data']['status'] === 'success') {
-           
-            $cart = session()->get('cart', []);
-            $paymentSlug = $response['data']['reference'];
-            $totalAmount = $response['data']['amount'] / 100;
-            $userSlug = Auth::user()->slug;
-            foreach($cart as $id => $item){
-                
-                $course = $item['course'];
-                $courseSlug = $item['slug'];
-                $course_name = $item['course_name'];
-                $price = $item['price'];
-                $programSlug = $course->programSlug;
-                $slug = RandomString(12);
-                if(CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()){
-                    createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
-                    createLog( 'Made Payment for ' . $course_name . ' with Slug '. $slug);
+        if($cartCount > 0){
+            if ($response->successful() && $response['data']['status'] === 'success') {
+            
+                $cart = session()->get('cart', []);
+                $paymentSlug = $response['data']['reference'];
+                $totalAmount = $response['data']['amount'] / 100;
+                $userSlug = Auth::user()->slug;
+                foreach($cart as $id => $item){
+                   
+                    $courseSlug = $item['slug'];
+                    $course_name = $item['course_name'];
+                    $price = $item['price'];
+                    $programSlug = $item['programSlug'];
+                    $slug = RandomString(12);
+                    if(CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()){
+                        createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
+                        createLog( 'Made Payment for ' . $course_name . ' with Slug '. $slug);
+                    }
                 }
+                if(Payment::where(['slug' => $paymentSlug])->doesntExist()){
+                    createPayment($userSlug, $paymentSlug, $totalAmount, 
+                    $response['data']['channel'], $response['data']['currency'], 'Course payment via Paystack', 
+                    $response['data']['reference'], $response['data']['reference'], $response['data']['status'], 'Paystack');
+                    createLog( 'Made Payment of ' . $totalAmount . ' with Reference '. $paymentSlug);
+                }
+                session()->forget('cart');
+                return redirect()->route('myCourses')->with('success', 'Payment completed successfully.');
             }
-            if(Payment::where(['slug' => $paymentSlug])->doesntExist()){
-                createPayment($userSlug, $paymentSlug, $totalAmount, 
-                $response['data']['channel'], $response['data']['currency'], 'Course payment via Paystack', 
-                $response['data']['reference'], $response['data']['reference'], $response['data']['status'], 'Paystack');
-                createLog( 'Made Payment of ' . $totalAmount . ' with Reference '. $paymentSlug);
-            }
-            session()->forget('cart');
-            return redirect()->route('myCourses')->with('success', 'Payment completed successfully.');
+            return redirect()->back()->with('error', 'Payment verification failed.');
+        }else{
+            return redirect()->route('myCourses')->with('success', 'Operation completed successfully.');
         }
-        return redirect()->back()->with('error', 'Payment verification failed.');
     }
 
     public function verifyMonnify(Request $request)
@@ -108,5 +113,30 @@ class PaymentController extends Controller
         }
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
+
+    public function verifyOPay(Request $request)
+    {
+        $reference = $request->query('reference');
+
+        // Call Opay API to verify transaction
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('services.opay.secret_key'),
+            'Content-Type' => 'application/json',
+        ])->post('https://api.opaycheckout.com/api/v1/inquire', [
+            'orderId' => $reference,
+        ]);
+
+        $data = $response->json();
+
+        if (isset($data['code']) && $data['code'] === '0000') {
+            // Payment successful
+            // Update your order/payment record here
+            return redirect()->route('payment.success')->with('status', 'Payment successful!');
+        } else {
+            // Payment failed
+            return redirect()->route('payment.failed')->with('status', 'Payment verification failed.');
+        }
+    }
+
    
 }

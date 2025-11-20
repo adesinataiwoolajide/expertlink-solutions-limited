@@ -89,9 +89,9 @@
             </div>
         </header>
         <section class="lecture-page-layout">
-            <div role="navigation" class='course-sidebar lecture-page navbar-collapse navbar-sidebar-collapse' id='courseSidebar'>
+            <div role="navigation" class='course-sidebar lecture-page navbar-collapse navbar-sidebar-collapse' id='courseSidebar' style="background: ">
                 
-                <div style="width:100%; background:#fff; border:1px solid #ddd; border-radius:10px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08);" class="lecture-sidebar">
+                <div style="width:100%; border:1px solid #ddd; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.08);" class="lecture-sidebar">
 
                     <!-- Sidebar Header -->
                     <div style="margin-bottom:20px; text-align:center; border-bottom:1px solid #eee; padding-bottom:10px;">
@@ -99,76 +99,86 @@
                     </div>
 
                     <!-- Dashboard -->
-                    <div style="margin-bottom:12px;">
-                        <a href="{{ route('dashboard') }}" target="_blank"
-                        style="display:block; padding:12px; border-radius:8px; font-weight:600; font-size:1rem; color:#333; text-decoration:none; transition:all 0.3s;"
-                        onmouseover="this.style.backgroundColor='#e6f0ff'; this.style.color='#1982c4';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px;
+                                background:linear-gradient(90deg,#dddad9 10%,#1982c4 90%);
+                                font-weight:600; font-size:1rem; color:#000; transition:all 0.3s;"
+                        onmouseover="this.style.background='#1982c4'; this.style.color='#fff';"
+                        onmouseout="this.style.background='linear-gradient(90deg,#dddad9 10%,#1982c4 90%)'; this.style.color='#000';">
+                        <a href="{{ route('dashboard') }}" style="color:inherit; text-decoration:none; transition:all 0.3s;"
+                        onmouseover="this.style.textDecoration='underline';"
+                        onmouseout="this.style.textDecoration='none';">
                             📊 Dashboard
                         </a>
                     </div>
 
                     <!-- My Courses -->
-                    <div style="margin-bottom:12px;">
-                        <a href="{{ route('myCourses') }}"
-                        style="display:block; padding:12px; border-radius:8px; font-weight:600; font-size:1rem; color:#333; text-decoration:none; transition:all 0.3s;"
-                        onmouseover="this.style.backgroundColor='#e6f0ff'; this.style.color='#1982c4';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px;
+                                background:linear-gradient(90deg,#dddad9 10%,#1982c4 90%);
+                                font-weight:600; font-size:1rem; color:#000; transition:all 0.3s;"
+                        onmouseover="this.style.background='#1982c4'; this.style.color='#fff';"
+                        onmouseout="this.style.background='linear-gradient(90deg,#dddad9 10%,#1982c4 90%)'; this.style.color='#000';">
+                        <a href="{{ route('myCourses') }}" style="color:inherit; text-decoration:none; transition:all 0.3s;"
+                        onmouseover="this.style.textDecoration='underline';"
+                        onmouseout="this.style.textDecoration='none';">
                             🎓 My Courses
                         </a>
                     </div>
 
-                    @if(Auth::user()->hasAnyRole(['Student', 'Administrator', 'Admin']))
-                        <!-- Program Name -->
-                        <div style="margin-bottom:15px; padding:12px; border-radius:8px; background:linear-gradient(90deg,#dddad9 20%,#1982c4 80%); font-weight:600; font-size:1rem; color:#000;">
-                            <span style="vertical-align:middle; margin-right:6px;">
-                                <svg width="20" height="20">
-                                    <use xlink:href="#icon__LockClock"></use>
-                                </svg>
+                    @if(Auth::user()->hasAnyRole(['Student','Administrator','Admin']))
+                        <!-- Program -->
+                        <div style="margin-bottom:15px; padding:12px; border-radius:8px;
+                                    background:linear-gradient(90deg,#dddad9 10%,#1982c4 90%);
+                                    font-weight:600; font-size:1rem; color:#000; display:flex; align-items:center; transition:all 0.3s;"
+                            onmouseover="this.style.background='#1982c4'; this.style.color='#fff';"
+                            onmouseout="this.style.background='linear-gradient(90deg,#dddad9 10%,#1982c4 90%)'; this.style.color='#000';">
+                            <span style="vertical-align:middle; margin-right:8px;">
+                                <svg width="20" height="20"><use xlink:href="#icon__Subject"></use></svg>
                             </span>
                             <a href="{{ route('startLearning',$course->slug) }}"
-                            style="color:#000; text-decoration:none; transition:all 0.3s;"
+                            style="color:inherit; text-decoration:none; transition:all 0.3s;"
                             onmouseover="this.style.textDecoration='underline';"
                             onmouseout="this.style.textDecoration='none';">
                                 {{ $course->program->program_name }}
                             </a>
                         </div>
 
-                        <!-- Notes Section -->
-                        <div style="margin-bottom:12px; font-weight:600; font-size:1rem; color:#444;">
-                            <span style="vertical-align:middle; margin-right:6px;">
-                                <svg width="20" height="20">
-                                    <use xlink:href="#icon__LockClock"></use>
-                                </svg>
-                            </span>
-                            <i>
-                                {!! wordwrap("List of Course Notes",43,"<br>\n". '<span style="padding-left: 30px;">') !!}
-                            </i>
-                        </div>
-
+                        <!-- Notes -->
                         <ul style="list-style:none; padding:0; margin:0;">
                             @foreach($course->notes as $note)
                                 @php
-                                    $isActive = request()->routeIs('note.viewLearning')  && request()->slug == $note->slug;
+                                    $isActive = request()->routeIs('note.viewLearning') && request()->route('slug') == $note->slug;
                                 @endphp
-                                <li style="margin-bottom:10px;">
-                                    <a href="{{ route('note.viewLearning',[$note->slug,$note->courseSlug]) }}" class="{{ $isActive ? 'active-note' : '' }}"
-                                    style="display:flex; align-items:center; padding:12px; border:1px solid #eee; border-radius:8px; background:#fafafa; text-decoration:none; color:#333; transition:all 0.3s;"
-                                    onmouseover="this.style.backgroundColor='#f0f8ff'; this.style.boxShadow='0 3px 8px rgba(0,0,0,0.1)';"
-                                    onmouseout="this.style.backgroundColor='{{ $isActive ? '#e6f7ff' : '#fafafa' }}'; this.style.boxShadow='none';">
-                                        <span style="margin-right:10px; color:#1982c4;">
-                                            <svg width="20" height="20">
-                                                <use xlink:href="#icon__Subject"></use>
-                                            </svg>
-                                        </span>
-                                        <span style="font-size:0.95rem; line-height:1.4;">
-                                            {!! wordwrap($note->topic,34,"<br>\n". '<span style="padding-left: 25px;">') !!}
-                                        </span>
+                                <li style="margin-bottom:12px; padding:12px; border-radius:8px;
+                                        background:{{ $isActive ? '#1982c4' : 'linear-gradient(90deg,#dddad9 10%,#1982c4 90%)' }};
+                                        font-weight:600; font-size:0.95rem;
+                                        color:{{ $isActive ? '#fff' : '#000' }};
+                                        transition:all 0.3s;"
+                                    onmouseover="if(!{{ $isActive ? 'true' : 'false' }}){this.style.background='#1982c4'; this.style.color='#fff';}"
+                                    onmouseout="if(!{{ $isActive ? 'true' : 'false' }}){this.style.background='linear-gradient(90deg,#dddad9 10%,#1982c4 90%)'; this.style.color='#000';}">
+                                    <a href="{{ route('note.viewLearning', [$note->slug, $note->courseSlug]) }}"
+                                    style="color:inherit; text-decoration:none; display:block;"
+                                    onmouseover="this.style.textDecoration='underline';"
+                                    onmouseout="this.style.textDecoration='none';">
+                                        📚 {!! wordwrap($note->topic,34,"<br>\n". '<span style="padding-left: 25px;">') !!}
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
                     @endif
+
+                    <!-- Logout -->
+                    <div style="margin-bottom:15px; padding:12px; border-radius:8px;
+                                background:linear-gradient(90deg,#dddad9 10%,#1982c4 90%);
+                                font-weight:600; font-size:1rem; color:#000; transition:all 0.3s;"
+                        onmouseover="this.style.background='#1982c4'; this.style.color='#fff';"
+                        onmouseout="this.style.background='linear-gradient(90deg,#dddad9 10%,#1982c4 90%)'; this.style.color='#000';">
+                        <a href="{{ route('signout') }}" style="color:inherit; text-decoration:none; transition:all 0.3s;"
+                        onmouseover="this.style.textDecoration='underline';"
+                        onmouseout="this.style.textDecoration='none';">
+                            🚪 Logout
+                        </a>
+                    </div>
+
                 </div>
             </div>
             <div class="course-mainbar lecture-content full-width-content">

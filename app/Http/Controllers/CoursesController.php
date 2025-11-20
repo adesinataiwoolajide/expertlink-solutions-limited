@@ -131,10 +131,10 @@ class CoursesController extends Controller
         } else {
             $discount = getDiscountedPrice($course->course_price, $course->course_discount);
             $cart[$slug] = [
-                'course_name' => $course->course_name,
-                'price' => $course->course_price,'slug' => $course->slug,
+                'course_name' => $course->course_name, 'program_name' => $course->program->program_name ?? 'NIL',
+                'price' => $course->course_price,'slug' => $course->slug, 'programSlug' => $course->programSlug,
                 'quantity' => 1,'banner' => $course->banner,
-                'course' => $course, 'discount' => $discount,
+                'discount' => $discount, 'course_discount' => $course->course_discount
             ];
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Course added to cart successfully!');
@@ -142,7 +142,6 @@ class CoursesController extends Controller
     }
     public function viewCart(){
         $cart = session()->get('cart', []);
-
         return view('home.payments.cart', compact('cart'));
     }
 

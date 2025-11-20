@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold text-primary mb-0">🛒 Your Learning Cart</h3>
         <a href="{{ route('course.index') }}" class="btn btn-primary">
-            <i class="ri-add-line me-1"></i> Add More Courses
+            <i class="ri-add-line me-1"></i> Add Courses
         </a>
     </div>
 
@@ -40,11 +40,12 @@
                     <tr>
                         <td>{{ $nos++ }}</td>
                         <td class="fw-semibold">{{ $item['course_name'] }}</td>
-                        <td>{{ $item['course']->program->program_name }}</td>
-                        <td>₦{{ number_format(getDiscountedPrice($item['course']->course_price, $item['course']->course_discount),2) }}</td>
+                       
+                        <td>{{ $item['program_name'] ?? 'NIL' }}</td>
+                        <td>₦{{ number_format(getDiscountedPrice($item['price'], $item['course_discount']),2) }}</td>
                         <td class="text-center">
                             <a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $item['slug'] }}">
-                                <i class="ri-delete-bin-line me-1"></i> Remove
+                                <i class="ri-delete-bin-line me-1"></i>
                             </a>
                             <div class="modal fade" id="deleteModal-{{ $item['slug']}}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $item['slug'] }}" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -93,7 +94,7 @@
                                 <span>₦{{ number_format($grandTotal) }}</span>
                             </li>
                         </ul>
-                        <div class="text-end">
+                        <div class="d-flex flex-wrap justify-content-end gap-4">
                             <a href="{{ route('cart.clear') }}" class="btn btn-outline-danger">
                                 <i class="ri-delete-bin-line me-1"></i> Clear Cart
                             </a>
@@ -102,6 +103,7 @@
                                 <i class="ri-bank-card-line me-1"></i> Proceed to Checkout
                             </a>
                         </div>
+
                     </div>
                 </div>
             </div>
