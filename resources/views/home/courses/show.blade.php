@@ -548,30 +548,72 @@
                             <div class="tab-pane fade" id="vStep5" role="tabpanel" aria-labelledby="vStep5-tab">
 
                                 @if(count($notes) > 0)
-                                    <div class="row g-4">
+                                   <div class="row g-4">
                                         @foreach ($notes as $voll)
-                                            <div class="col-md-6">
-                                                <div class="card shadow-sm h-100">
-                                                    <div class="card-header bg-primary text-white">
-                                                        <h6 class="mb-0">{{ $voll->topic }}</h5>
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                                                    <!-- Header -->
+                                                    <div class="card-header bg-gradient bg-primary text-white d-flex justify-content-between align-items-center">
+                                                        <h6 class="mb-0 fw-bold">
+                                                            <i class="bi bi-journal-text me-2"></i> {{ $voll->topic }}
+                                                        </h6>
+                                                        <span class="badge bg-light text-dark">
+                                                            {{ $voll->created_at->format('d M Y') }}
+                                                        </span>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <ul class="list-group list-group-flush mb-3">
-                                                            <li class="list-group-item"><strong>Instructor Name: </strong> {{ $voll->instructor->first_name . ' '. $voll->instructor->last_name ?: "NULL"}}</li>
-                                                            <li class="list-group-item"><strong>Course Materials:</strong> {{ $voll->materials->count() ?? '0' }}</li>
-                                                            <li class="list-group-item"><strong>Created On:</strong> {{ $voll->created_at->format('d M Y') }}</li>
+
+                                                    <!-- Body -->
+                                                    <div class="card-body p-4">
+                                                        <!-- Info list -->
+                                                        <ul class="list-group list-group-flush mb-4">
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <span><i class="bi bi-person-badge me-2 text-primary"></i><strong>Instructor</strong></span>
+                                                                <span>{{ $voll->instructor->first_name . ' ' . $voll->instructor->last_name ?: "NULL" }}</span>
+                                                            </li>
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <span><i class="bi bi-folder-check me-2 text-success"></i><strong>Materials</strong></span>
+                                                                <span class="badge bg-success rounded-pill">{{ $voll->materials->count() ?? '0' }}</span>
+                                                            </li>
                                                         </ul>
-                                                        <a href="{{ route('course.note.show', $voll->slug) }}" class="btn btn-outline-primary w-100">
-                                                            View Note Details
+
+                                                        <!-- Progress bars -->
+                                                        <div class="mb-3">
+                                                            <span class="text-muted small">Assignments Progress (All Students)</span>
+                                                            <div class="progress rounded-pill bg-light" style="height: 8px;">
+                                                                <div class="progress-bar bg-info" role="progressbar"
+                                                                    style="width: {{ $assignmentProgress }}%; min-width: 5px;"
+                                                                    aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
+                                                                    data-bs-toggle="tooltip" title="{{ $assignmentProgress }}% of assignments completed">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <span class="text-muted small">Tasks Progress (All Students)</span>
+                                                            <div class="progress rounded-pill bg-light" style="height: 8px;">
+                                                                <div class="progress-bar bg-success" role="progressbar"
+                                                                    style="width: {{ $taskProgress }}%; min-width: 5px;"
+                                                                    aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
+                                                                    data-bs-toggle="tooltip" title="{{ $taskProgress }}% of tasks completed">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Action button -->
+                                                        <a href="{{ route('course.note.show', $voll->slug) }}"
+                                                        class="btn btn-outline-primary w-100 rounded-pill fw-semibold">
+                                                            <i class="bi bi-eye me-1"></i> View Note Details
                                                         </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         @endforeach
+
                                         @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
-                                            <div class="col-md-12">
-                                                <a href="{{ route('course.note.index', $course->slug) }}" class="btn btn-info text-white">
-                                                    <i class="bi bi-pencil-square me-1"></i> View All Course Notes
+                                            <div class="col-12">
+                                                <a href="{{ route('mycourse.note.index', $course->slug) }}"
+                                                class="btn btn-info text-white w-100 rounded-pill fw-bold shadow-sm">
+                                                    <i class="bi bi-pencil-square me-2"></i> View All Course Notes
                                                 </a>
                                             </div>
                                         @endif

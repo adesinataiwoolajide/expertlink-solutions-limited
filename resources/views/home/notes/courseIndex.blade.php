@@ -130,6 +130,12 @@
                                         title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
                                             📊 {{ $note->progressForStudent() }}% Progress
                                     </a>
+                                    @if (Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
+                                    <a href="{{ route('course.note.edit', $note->slug) }}"
+                                        class="badge bg-dark text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                                        Edit Note
+                                    </a>
+                                    @endif
                                 </div>
 
                             </div>

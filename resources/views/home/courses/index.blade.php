@@ -42,80 +42,82 @@
                             <tbody>
                                 @php $num =1; @endphp
                                 @foreach($courses as $course)
-                                    @php 
-                                        $program_name = $course->program ? $course->program->program_name : "NIL";
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $num++ }}</td>
-                                        <td>{{ $course->course_name }}</td>
-                                        <td>
-                                            @if($course->user && isset($course->user->email))
-                                                <span class="badge bg-success text-white">{{ $course->user->email }}</span>
-                                            @else
-                                                <span class="badge bg-info text-white">NULL</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($course->allocation)
-                                                <span class="badge bg-indigo text-white">Allocated To: <br>
-                                                    {{ $course->allocation->user->first_name . ' '. $course->allocation->user->last_name }}
-                                                </span>
-                                            @else
-                                                <span class="badge bg-danger text-white">Pending <br> Allocation</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($course->program)
-                                                <span class="badge bg-dark text-white">{{ $course->program->program_name }}</span>
-                                            @else
-                                                <span class="badge bg-orange text-white">{{ $course->programSlug }}</span>
-                                            @endif
-                                        </td>
+    @php 
+        $program_name = $course->program->program_name ?? $course->programSlug ?? "NIL";
+        $noteCount = $course->notes_count ?? $course->notes()->count(); // prefer withCount in controller
+    @endphp
 
-                                        <td class="text-center"><span class="badge bg-secondary text-white">{{ number_format($course->course_price,2) }}</span></td>
-                                        <td class="text-center">
-                                            @php $noteCount = $course->notes()->count(); @endphp
-                                            @if($noteCount > 0)
-                                                <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
-                                                    <span class="badge {{ $noteCount > 0 ? 'bg-magenta' : 'bg-danger' }}">
-                                                        View {{ $noteCount }} Course Notes
-                                                    </span>
-                                                </a>
-                                                @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor'])) <br>
-                                                    <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
-                                                        <span class="badge bg-purple">
-                                                            Create a Note
-                                                        </span>
-                                                    </a>
-                                                @endif
-                                            @else
-                                                @if($course->allocation)
-                                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
-                                                        <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
-                                                            <span class="badge bg-success">
-                                                                Create a Note
-                                                            </span>
-                                                        </a>
-                                                    @endif
+    {{-- Show row if allocated to current instructor OR user is Admin --}}
+    @if(
+        ($course->allocation && $course->allocation->user->slug == Auth::user()->slug) 
+        || Auth::user()->hasAnyRole(['Administrator','Admin'])
+    )
+        <tr>
+            <td>{{ $num++ }}</td>
+            <td>{{ $course->course_name }}</td>
 
-                                                @else
+            {{-- Course owner email --}}
+            <td>
+                <span class="badge {{ $course->user && $course->user->email ? 'bg-success' : 'bg-info' }}">
+                    {{ $course->user->email ?? 'NULL' }}
+                </span>
+            </td>
 
-                                                    <span class="badge bg-warning">
-                                                        No Notes Found
-                                                    </span>
+            {{-- Allocation --}}
+            <td>
+                @if($course->allocation)
+                    <span class="badge bg-primary text-white">
+                        Allocated To:<br>
+                        {{ optional($course->allocation->user)->first_name }} {{ optional($course->allocation->user)->last_name }}
+                    </span>
+                @else
+                    <span class="badge bg-danger text-white">Pending Allocation</span>
+                @endif
+            </td>
 
-                                                @endif
-                                            @endif
-                                        </td>
+            {{-- Program --}}
+            <td>
+                <span class="badge bg-dark text-white">{{ $program_name }}</span>
+            </td>
 
-                                        <td>
-                                            <a href="{{ route('course.show', $course->slug) }}" class="btn btn-sm btn-info text-white">View</a>
-                                            @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
-                                            <a href="{{ route('course.edit', $course->slug) }}" class="btn btn-sm btn-primary text-white">Edit</a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+            {{-- Price --}}
+            <td class="text-center">
+                <span class="badge bg-secondary">{{ number_format($course->course_price,2) }}</span>
+            </td>
+
+            {{-- Notes --}}
+            <td class="text-center">
+                @if($noteCount > 0)
+                    <a href="{{ route('course.note.index', ['courseSlug' => $course->slug]) }}">
+                        <span class="badge bg-primary">View {{ $noteCount }} Course Notes</span>
+                    </a>
+                    @if(Auth::user()->hasAnyRole(['Administrator','Instructor']))
+                        <br>
+                        <a href="{{ route('note.create', [$course->slug, optional($course->allocation)->slug]) }}">
+                            <span class="badge bg-success">Create a Note</span>
+                        </a>
+                    @endif
+                @else
+                    @if($course->allocation && Auth::user()->hasAnyRole(['Administrator','Instructor']))
+                        <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}">
+                            <span class="badge bg-success">Create a Note</span>
+                        </a>
+                    @else
+                        <span class="badge bg-warning">No Notes Found</span>
+                    @endif
+                @endif
+            </td>
+
+            {{-- Actions --}}
+            <td>
+                <a href="{{ route('course.show', $course->slug) }}" class="btn btn-sm btn-info text-white">View</a>
+                @if(Auth::user()->hasAnyRole(['Administrator','Admin']))
+                    <a href="{{ route('course.edit', $course->slug) }}" class="btn btn-sm btn-primary text-white">Edit</a>
+                @endif
+            </td>
+        </tr>
+    @endif
+@endforeach
                             </tbody>
                         </table>
                 

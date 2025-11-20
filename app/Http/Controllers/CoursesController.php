@@ -288,10 +288,19 @@ class CoursesController extends Controller
             }else{
                $history = collect();  
             }
-            $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
+           // $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
+            $notes = $course->notes()
+                ->with(['course','allocation','materials','instructor'])
+                ->withCount(['assignments', 'tasks'])
+                ->orderBy('created_at','desc')
+                ->paginate(20);
+            $assignmentProgress = $course->progressForAllStudents();
+            $taskProgress = $course->taskProgressForAllStudents();
+
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
-                'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes
+                'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes,
+                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

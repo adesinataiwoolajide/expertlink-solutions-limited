@@ -28,26 +28,51 @@ class CourseNotesController extends Controller
     public function index($courseSlug)
     {
         $user = Auth::user();
-        $course = Courses::where('slug', $courseSlug)->with('program', 'allocations', 'materials', 'notes')->first();
-        if(!$course){
-            return redirect()->back()->with("error", "Course details does not exists");
-        }
-        if ($user->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) {
-            $query = $course->notes()->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc');
-            if ($user->hasRole('Instructor')) {
-                $query->where(['instructorSlug'=> Auth::user()->slug]);
-            }
-            $filePath = 'course_videos/' . $course->course_introduction;
-            $notes = $query->paginate(50);
-            return view('home.notes.courseIndex')->with([
-                'course' => $course, 'notes' => $notes, 'filePath' => $filePath
-            ]);
-        
-        }else{
-            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
-            return view('errors.403')->with(['message' => $message]);
-        }
-      
+
+$course = Courses::where('slug', $courseSlug)
+    ->with(['program', 'allocations', 'materials', 'notes'])
+    ->first();
+
+if (!$course) {
+    return redirect()->back()->with("error", "Course details does not exist");
+}
+
+if ($user->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) {
+
+    // Build notes query with eager loading + counts
+    $query = $course->notes()
+        ->with(['course','allocation','materials','instructor'])
+        ->withCount([
+            'assignments as student_assignments_count' => fn($q) => $q->forStudent(),
+            'tasks as student_tasks_count' => fn($q) => $q->forStudent(),
+        ])
+        ->orderBy('created_at','desc');
+
+    // Restrict instructors to their own notes
+    if ($user->hasRole('Instructor')) {
+        $query->where('instructorSlug', $user->slug);
+    }
+
+    $notes = $query->paginate(20);
+
+    // Student progress (assignment + task)
+    $assignmentProgress = $course->progressForStudent();
+    $taskProgress = $course->taskProgressForStudent();
+
+    $filePath = 'course_videos/' . $course->course_introduction;
+
+    return view('home.notes.courseIndex')->with([
+        'course' => $course,
+        'notes' => $notes,
+        'filePath' => $filePath,
+        'assignmentProgress' => $assignmentProgress,
+        'taskProgress' => $taskProgress,
+    ]);
+
+} else {
+    $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+    return view('errors.403')->with(['message' => $message]);
+}
     }
 
     /**

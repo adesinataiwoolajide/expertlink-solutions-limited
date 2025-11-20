@@ -20,6 +20,13 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Please fill the below form to Update a Course Note for {{ $course->course_name ?? '' }}</h5>
+                @if (Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
+                <a href="{{ route('course.note.index', $course->slug) }}"
+                    class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                    View Course Note
+                </a>
+                
+                @endif
             </div>
             <div class="card-body">
                 <div class="row gx-3">

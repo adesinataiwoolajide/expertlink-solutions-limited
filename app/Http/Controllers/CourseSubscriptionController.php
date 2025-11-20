@@ -149,7 +149,7 @@ class CourseSubscriptionController extends Controller
         if (!$note || !$course) {
             return redirect()->back()->with("error", "Course note details do not exist");
         }
-        //$notes = $course->notes()->whereNotIn('slug', [$noteSlug]) ->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
+        
         $notes = $course->notes()->with(['course','allocation','materials','instructor'])
         ->withCount([
             'assignments as student_assignments_count' => fn($q) => $q->forStudent(),

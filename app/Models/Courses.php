@@ -110,9 +110,36 @@ class Courses extends Model
         return round(($completedTasks / $totalTasks) * 100, 2);
     }
 
+    public function progressForAllStudents()
+   {
+      $totalAssignments = Assignment::where('courseSlug', $this->slug)->count();
+      $completedAssignments = Assignment::where('courseSlug', $this->slug)
+         ->where(function($q) {
+               $q->where('status', 'completed')
+               ->orWhere('submission_status', 'graded');
+         })
+         ->count();
 
+      if ($totalAssignments === 0) {
+         return 0;
+      }
 
+      return round(($completedAssignments / $totalAssignments) * 100, 2);
+   }
 
+   public function taskProgressForAllStudents()
+   {
+      $totalTasks = Task::where('courseSlug', $this->slug)->count();
+      $completedTasks = Task::where('courseSlug', $this->slug)
+         ->where('status', 'completed')
+         ->count();
+
+      if ($totalTasks === 0) {
+         return 0;
+      }
+
+      return round(($completedTasks / $totalTasks) * 100, 2);
+   }
 }
 
 ?>

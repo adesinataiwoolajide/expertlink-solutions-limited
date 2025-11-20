@@ -75,8 +75,33 @@
 					</li>
 
 				@endif
+
+				@if (Auth::user()->hasAnyRole(['Instructor']))
+
+					<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
+						<a href="{{ route('course.index') }}">
+							<i class="ri-list-settings-line"></i>
+							<span class="menu-text">My Course Allocations</span>
+						</a>
+					</li>
+
+					<li class="">
+						<a href="">
+							 <i class="ri-pages-line"></i>
+							<span class="menu-text">Course Tasks</span>
+						</a>
+					</li>
+
+					<li class="">
+						<a href="">
+							<i class="ri-bar-chart-2-line"></i>
+							<span class="menu-text">Course Assignments</span>
+						</a>
+					</li>
+
+				@endif
 				
-				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 
 					<li class="{{ request()->routeIs('program.index') ? 'active current-page' : '' }}">
 						<a href="{{ route('program.index') }}">
