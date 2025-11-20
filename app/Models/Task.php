@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Task extends Model
 {
@@ -47,5 +48,11 @@ class Task extends Model
     {
         return $query->where('status', 'pending');
     }
+
+    public function scopeForStudent($query, $studentSlug = null)
+    {
+        return $query->where('studentSlug', $studentSlug ?? Auth::user()->slug);
+    }
+
 
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 
 class Courses extends Model
 {
@@ -64,6 +65,51 @@ class Courses extends Model
    {
       return $this->hasMany(Assignment::class, 'courseSlug', 'slug');
    }
+
+   public function progressForStudent($studentSlug = null)
+    {
+        $studentSlug = $studentSlug ?? Auth::user()->slug;
+
+        // Get all assignments tied to this course for the student
+        $totalAssignments = Assignment::where('courseSlug', $this->slug)
+            ->where('studentSlug', $studentSlug)
+            ->count();
+
+        $completedAssignments = Assignment::where('courseSlug', $this->slug)
+            ->where('studentSlug', $studentSlug)
+            ->where(function($q) {
+                $q->where('status', 'completed')
+                  ->orWhere('submission_status', 'graded');
+            })
+            ->count();
+
+        if ($totalAssignments === 0) {
+            return 0;
+        }
+
+        return round(($completedAssignments / $totalAssignments) * 100, 2);
+    }
+
+   public function taskProgressForStudent($studentSlug = null)
+    {
+        $studentSlug = $studentSlug ?? Auth::user()->slug;
+
+        $totalTasks = Task::where('courseSlug', $this->slug)
+            ->where('studentSlug', $studentSlug)
+            ->count();
+
+        $completedTasks = Task::where('courseSlug', $this->slug)
+            ->where('studentSlug', $studentSlug)
+            ->where('status', 'completed')
+            ->count();
+
+        if ($totalTasks === 0) {
+            return 0;
+        }
+
+        return round(($completedTasks / $totalTasks) * 100, 2);
+    }
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Assignment extends Model
 {
@@ -39,5 +40,11 @@ class Assignment extends Model
     {
         return $this->belongsTo(CourseNotes::class, 'noteSlug', 'slug');
     }
+
+    public function scopeForStudent($query, $studentSlug = null)
+    {
+        return $query->where('studentSlug', $studentSlug ?? Auth::user()->slug);
+    }
+
 
 }

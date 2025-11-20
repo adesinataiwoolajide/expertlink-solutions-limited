@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, CourseAllocationHistories, CourseSubscription,CourseNotes};
+use App\Models\{Task, Courses, Assignment, CourseSubscription,CourseNotes};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 use Illuminate\Support\Facades\{Auth};
@@ -20,6 +20,77 @@ class CourseSubscriptionController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function assignments($slug)
+    {
+        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+
+        $assignments = $note->assignments()
+            ->where('studentSlug', Auth::user()->slug)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('home.notes.assignments', compact('note', 'assignments'));
+    }
+
+
+    // public function progress($slug)
+    // {
+    //     $course = Courses::where('slug', $slug)->firstOrFail();
+
+    //     $assignmentProgress = $course->progressForStudent();
+    //     $taskProgress = $course->taskProgressForStudent();
+    //     $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
+
+    //     return view('courses.progress', compact('course', 'assignmentProgress', 'taskProgress', 'overallProgress'));
+    // }
+
+    // public function tasks($slug)
+    // {
+    //     $course = Courses::where('slug', $slug)->firstOrFail();
+
+    //     $tasks = Task::where('courseSlug', $course->slug)
+    //         ->where('studentSlug', Auth::user()->slug)
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(20);
+
+    //     return view('courses.tasks', compact('course', 'tasks'));
+    // }
+    public function tasks($slug)
+    {
+        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+
+        $tasks = $note->tasks()
+            ->where('studentSlug', Auth::user()->slug)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('home.notes.tasks', compact('note', 'tasks'));
+    }
+
+    public function progress($slug)
+    {
+        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+
+        $assignmentProgress = $note->progressForStudent();
+        $taskProgress = $note->taskProgressForStudent();
+        $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
+
+        return view('home.notes.progress', compact('note', 'assignmentProgress', 'taskProgress', 'overallProgress'));
+    }
+
+
+    // public function assignments($slug)
+    // {
+    //     $course = Courses::where('slug', $slug)->firstOrFail();
+
+    //     $assignments = Assignment::where('courseSlug', $course->slug)
+    //         ->where('studentSlug', Auth::user()->slug)
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(20);
+
+    //     return view('courses.assignments', compact('course', 'assignments'));
+    // }
+
     public function index()
     {
         $user = Auth::user();
@@ -63,8 +134,15 @@ class CourseSubscriptionController extends Controller
         }
        
         $filePath = 'course_videos/' . $course->course_introduction;
-        $notes = $course->notes()->with('course', 'allocation', 'materials', 'instructor')->orderBy('created_at', 'desc')->paginate(100);
-        return view('home.notes.courseIndex', compact('course', 'notes','filePath'));
+        $notes = $course->notes()->with(['course','allocation','materials','instructor'])
+        ->withCount([
+            'assignments as student_assignments_count' => fn($q) => $q->forStudent(),
+            'tasks as student_tasks_count' => fn($q) => $q->forStudent(),
+        ])->orderBy('created_at','desc')->paginate(20);
+        // dd($notes);
+        $assignmentProgress = $course->progressForStudent();
+        $taskProgress = $course->taskProgressForStudent();
+        return view('home.notes.courseIndex', compact('course', 'notes','filePath', 'assignmentProgress', 'taskProgress'));
     }
     /**
      * Show the form for editing the specified resource.

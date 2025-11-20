@@ -42,7 +42,7 @@
         </div>
 
         <div class="row" id="course-grid">
-            @foreach ($courses as $course)
+           @foreach ($courses as $course)
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4 course-item cat--{{ $course->programSlug }}">
                     <div class="card h-100 border-0 shadow rounded-4 overflow-hidden">
                         <!-- Banner -->
@@ -70,6 +70,7 @@
                                 @endif
                             </p>
 
+                            <!-- Rating -->
                             <div class="d-flex align-items-center mb-3">
                                 @php $rating = $course->ratings; @endphp
                                 @for ($i = 1; $i <= 5; $i++)
@@ -78,9 +79,47 @@
                                 <span class="ms-2 text-muted small">{{ number_format($rating, 1) }}/5</span>
                             </div>
 
+                            <!-- Progress badges -->
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm">
+                                    📝 {{ $course->student_assignments_count ?? 0 }} Assignments
+                                </span>
+                                <span class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm">
+                                    ✅ {{ $course->student_tasks_count ?? 0 }} Tasks
+                                </span>
+                            </div>
+
+                            <!-- Progress bar with dynamic color + tooltip -->
+                            @php
+                                $assignmentProgress = $course->progressForStudent();
+                                $taskProgress = $course->taskProgressForStudent();
+                                $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
+
+                                if ($overallProgress < 40) {
+                                    $progressColor = 'bg-danger'; // red
+                                } elseif ($overallProgress < 70) {
+                                    $progressColor = 'bg-warning'; // yellow
+                                } else {
+                                    $progressColor = 'bg-success'; // green
+                                }
+
+                                $tooltipText = "{$course->student_assignments_count} assignments, {$course->student_tasks_count} tasks completed";
+                            @endphp
+
+                            <div class="mb-3">
+                                <span class="text-muted small">Overall Progress: {{ $overallProgress }}%</span>
+                                <div class="progress rounded-pill bg-light" style="height: 8px;">
+                                    <div class="progress-bar {{ $progressColor }}" role="progressbar"
+                                        style="width: {{ $overallProgress }}%; min-width: 5px;"
+                                        aria-valuenow="{{ $overallProgress }}" aria-valuemin="0" aria-valuemax="100"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tooltipText }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                 <a href="{{ route('mycourse.note.index',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
-                                {{-- <a href="{{ route('startLearning',$course->slug) }}" class="btn btn-sm btn-outline-info px-3">OldStart Learning</a> --}}
                                 <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}" class="text-decoration-none text-muted small">
                                     Read More →
                                 </a>

@@ -45,8 +45,29 @@ class CoursesController extends Controller
 
     public function myCourses()
     {
-        $subList = CourseSubscription::with(['course' => fn($q) => $q->with(['program', 'allocations', 'allocation.user', 'materials', 'notes', 'user']), 'program', 'user'])
-        ->where(['userSlug' => Auth::user()->slug])->latest()->get();
+        // $subList = CourseSubscription::with(['course' => fn($q) => $q->with(['program', 'allocations', 'allocation.user', 'materials', 'notes', 'user']), 'program', 'user'])
+        // ->where(['userSlug' => Auth::user()->slug])->latest()->get();
+        
+        $subList = CourseSubscription::with([
+            'course' => fn($q) => $q->with([
+                'program',
+                'allocations',
+                'allocation.user',
+                'materials',
+                'notes',
+                'user'
+            ])
+            ->withCount([
+                'assignments as student_assignments_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+                'tasks as student_tasks_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+            ]),
+            'program',
+            'user'
+        ])
+        ->where('userSlug', Auth::user()->slug)
+        ->latest()
+        ->get();
+
         $programSlugs = CourseSubscription::where('userSlug', Auth::user()->slug)->pluck('programSlug')->unique();
         $myProgram = Programs::whereIn('slug', $programSlugs)->get();
         $courses = $subList->pluck('course')->sortBy('course_name')->values();

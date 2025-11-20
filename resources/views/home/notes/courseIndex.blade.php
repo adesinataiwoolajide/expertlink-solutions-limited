@@ -24,6 +24,30 @@
                 <h4 class="text-primary fw-bold mb-0">
                     {{ $course->course_name }} Notes
                 </h4>
+                <div class="mb-2">
+                    <span class="text-muted">Overall Assignments Progress: {{ $assignmentProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-info" role="progressbar"
+                            style="width: {{ $assignmentProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_assignments_count ?? 0 }} assignments completed">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                            style="width: {{ $taskProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
+                        </div>
+                    </div>
+                </div>
+
                
                 @if (Auth::user()->hasAnyRole(['Student'])) 
                     <a href="{{ route('myCourses') }}" class="btn btn-outline-primary rounded-pill px-4">
@@ -48,6 +72,7 @@
                     </div>
                 </div>
                 @foreach ($notes as $note)
+                    
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden note-card">
                             <div class="card-body d-flex flex-column p-4">
@@ -82,13 +107,29 @@
                                 </p>
 
                                 <div class="mt-auto d-flex flex-wrap gap-2">
-                                    <span class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm">
-                                        📝 5 Assignments
-                                    </span>
-                                    <span class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm">
-                                        ✅ 10 Tasks
-                                    </span>
-                                    
+                                    <!-- Assignments badge -->
+                                    <a href="{{ route('course.assignments', $note->slug) }}"
+                                    class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="View your {{ $note->student_assignments_count }} submitted assignments">
+                                        📝 {{ $note->student_assignments_count }} Assignments
+                                    </a>
+
+                                    <!-- Tasks badge -->
+                                    <a href="{{ route('course.tasks', $note->slug) }}"
+                                    class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="View your {{ $note->student_tasks_count }} completed tasks">
+                                        ✅ {{ $note->student_tasks_count }} Tasks
+                                    </a>
+
+                                    <!-- Progress badge -->
+                                    <a href="{{ route('course.progress', $note->slug) }}"
+                                    class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
+                                        📊 {{ $note->progressForStudent() }}% Progress
+                                    </a>
                                 </div>
 
                             </div>
