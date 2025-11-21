@@ -19,10 +19,10 @@ class Task extends Model
 
     // Relationships
 
-    public function student()
-    {
-        return $this->belongsTo(User::class, 'studentSlug', 'slug');
-    }
+    // public function student()
+    // {
+    //     return $this->belongsTo(User::class, 'studentSlug', 'slug');
+    // }
 
     public function instructor()
     {
@@ -48,6 +48,12 @@ class Task extends Model
     {
         return $query->where('status', 'pending');
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(TaskSubmission::class, 'task_id');
+    }
+
 
     public function scopeForStudent($query, $studentSlug = null)
     {

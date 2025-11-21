@@ -12,14 +12,17 @@ class Assignment extends Model
     protected $table = 'assignments';
     protected $primaryKey = 'id';
     
+    // protected $fillable = [
+    //     'slug',
+    //     'studentSlug', 'instructorSlug', 'noteSlug', 'courseSlug',
+    //     'title', 'description', 'due_date', 'max_score', 'score',
+    //     'status', 'remark', 'answer_text', 'file_path',
+    //     'student_score', 'submission_status', 'submission_remark'
+    // ];
     protected $fillable = [
-        'slug',
-        'studentSlug', 'instructorSlug', 'noteSlug', 'courseSlug',
-        'title', 'description', 'due_date', 'max_score', 'score',
-        'status', 'remark', 'answer_text', 'file_path',
-        'student_score', 'submission_status', 'submission_remark'
+        'slug', 'instructorSlug', 'noteSlug', 'courseSlug',
+        'title', 'description', 'due_date', 'max_score', 'status', 'remark'
     ];
-
 
     public function student()
     {
@@ -39,6 +42,10 @@ class Assignment extends Model
     public function note()
     {
         return $this->belongsTo(CourseNotes::class, 'noteSlug', 'slug');
+    }
+    public function submissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'assignment_id');
     }
 
     public function scopeForStudent($query, $studentSlug = null)

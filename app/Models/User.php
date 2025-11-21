@@ -62,6 +62,7 @@ class User extends Authenticatable
         return $this->hasMany(CourseNotes::class);
     }
 
+    
     public function courseAllocations()
     {
         return $this->hasMany(CourseAllocation::class);

@@ -134,7 +134,8 @@ class CoursesController extends Controller
         if (!$program && !$course) {
             return redirect()->back()->with('error', 'course details do not exist');
         }
-        $courses = $program->courses()->with('allocation')->orderBy('course_name', 'desc')->paginate(15);
+        $courses = $program->courses()->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->orderBy('course_name', 'desc')->paginate(15);
+        
         return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses'));
 
     }
@@ -271,11 +272,10 @@ class CoursesController extends Controller
      */
     public function show($slug)
     {
-        $course = Courses::where('slug', $slug)->with('program', 'allocations', 'materials', 'notes')->first();
+        $course = Courses::where('slug', $slug)->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
-        
         if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"])){
             $program = Programs::orderBy('program_name', 'asc')->get();
             $selectedTypes = is_array($course->training_type) ? $course->training_type : json_decode($course->training_type, true);
@@ -288,19 +288,21 @@ class CoursesController extends Controller
             }else{
                $history = collect();  
             }
-           // $notes = $course->notes()->with('materials', 'allocation', 'instructor')->orderBy('created_at', 'desc')->paginate(10);
-            $notes = $course->notes()
-                ->with(['course','allocation','materials','instructor'])
-                ->withCount(['assignments', 'tasks'])
-                ->orderBy('created_at','desc')
-                ->paginate(20);
+            $notes = $course->notes()->with(['course','allocation','materials','instructor']) ->withCount(['assignments', 'tasks'])->orderBy('created_at','desc')->paginate(20);
             $assignmentProgress = $course->progressForAllStudents();
             $taskProgress = $course->taskProgressForAllStudents();
-
+            $revenue = $course->revenue;
+            $totalStudent = $course->total_student;
+            $totalNotes = $course->total_notes;
+            $totalAssignment = $course->total_assignment;
+            $students = $course->students()->distinct()->orderBy('created_at', 'desc')->paginate(100);
+           
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
                 'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes,
-                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress
+                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress, 'revenue' => $revenue, 
+                'totalStudent' => $totalStudent, 'totalNotes' => $totalNotes, 'totalAssignment' => $totalAssignment,
+                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress, 'students' => $students
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

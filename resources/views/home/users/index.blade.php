@@ -60,16 +60,19 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($user->status == 1)
-                                            <a href="{{  route('user.suspend',$user->slug) }}" class="dropdown-item text-danger">
-                                                <i class="ph-lock-key me-2"></i>
-                                                Suspend 
+                                            <a href="{{  route('user.suspend',$user->slug) }}" class="">
+                                                <span class="badge bg-danger"> Suspend </span>
                                             </a>
                                         @else 
-                                            <a href="{{  route('user.unsuspend',$user->slug) }}" class="dropdown-item text-success">
-                                                <i class="ph-checks me-2"></i>
-                                                Activate
+                                            <a href="{{  route('user.unsuspend',$user->slug) }}" class="">
+                                                <span class="badge bg-success"> Activate </span>
                                             </a>
                                         @endif
+                                       
+                                        <a href="{{  route('user.show',$user->slug) }}" class="">
+                                            <span class="badge bg-primary"> View </span>
+                                        </a>
+                                  
                                     </td>
                                 </tr>
                                 @php $num++; @endphp

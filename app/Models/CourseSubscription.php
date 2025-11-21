@@ -38,5 +38,5 @@ class CourseSubscription extends Model
         return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
     }
 
-
+   
 }

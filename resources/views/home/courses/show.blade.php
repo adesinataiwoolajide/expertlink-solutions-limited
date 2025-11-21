@@ -19,28 +19,57 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{$course->course_name}} Details</h5>
+                <div class="mb-2">
+                    <span class="text-muted">Overall Assignments Progress: {{ $assignmentProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-info" role="progressbar"
+                            style="width: {{ $assignmentProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_assignments_count ?? 0 }} assignments completed">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                            style="width: {{ $taskProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
+                        </div>
+                    </div>
+                </div>
+                @if(Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']) && $totalNotes > 0)
+                    <a href="{{ route('mycourse.note.index', $course->slug) }}" class="btn btn-sm btn-info text-white">
+                        Read Notes
+                    </a>
+                @endif
             </div>
             <div class="card-body">
                 
                 <div class="row gx-3">
 
-                    <!-- Card 1: Total Sales -->
-                    <div class="col-xxl-3 col-sm-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="icon-box md bg-primary-subtle rounded-circle me-3">
-                                        <i class="ri-line-chart-line text-primary fs-4"></i>
+                    @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-box md bg-primary-subtle rounded-circle me-3">
+                                            <i class="ri-line-chart-line text-primary fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted">Total Revenue</h6>
+                                            <h3 class="mb-0">₦{{number_format($revenue,2) ?? 0.00}}</h3>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h6 class="text-muted">Total Revenue</h6>
-                                        <h3 class="mb-0">₦0.00</h3>
-                                    </div>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- Card 2: Conversion Rate -->
                     <div class="col-xxl-3 col-sm-6">
@@ -52,7 +81,7 @@
                                     </div>
                                     <div>
                                         <h6 class="text-muted">Total Course Notes</h6>
-                                        <h3 class="mb-0">0</h3>
+                                        <h3 class="mb-0">{{ $totalNotes ?? 0 }}</h3>
                                     </div>
                                 </div>
 
@@ -60,7 +89,6 @@
                         </div>
                     </div>
 
-                    <!-- Card 3: Average Order Value -->
                     <div class="col-xxl-3 col-sm-6">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -69,8 +97,8 @@
                                         <i class="ri-exchange-dollar-line text-primary fs-4"></i>
                                     </div>
                                     <div>
-                                        <h6 class="text-muted">Average Order Value</h6>
-                                        <h3 class="mb-0">₦0.00</h3>
+                                        <h6 class="text-muted">Total Assignments</h6>
+                                        <h3 class="mb-0">{{ $totalAssignment ?? 0 }}</h3>
                                     </div>
                                 </div>
 
@@ -78,7 +106,6 @@
                         </div>
                     </div>
 
-                    <!-- Card 4: Active Customers -->
                     <div class="col-xxl-3 col-sm-6">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -87,8 +114,8 @@
                                         <i class="ri-user-heart-line text-primary fs-4"></i>
                                     </div>
                                     <div>
-                                        <h6 class="text-muted">Active Learners</h6>
-                                        <h3 class="mb-0">0</h3>
+                                        <h6 class="text-muted">Total Students</h6>
+                                        <h3 class="mb-0">{{ $totalStudent ?? 0 }} Students</h3>
                                     </div>
                                 </div>
 
@@ -342,44 +369,50 @@
 
                             <!-- Step 2 Content -->
                             <div class="tab-pane fade" id="vStep2" role="tabpanel" aria-labelledby="vStep2-tab">
-                                <form>
-                                    <div class="mb-3">
-                                    <label for="teamLead" class="form-label">Team Lead</label>
-                                    <select class="form-select" id="teamLead">
-                                        <option selected disabled>Select team lead</option>
-                                        <option>John Smith</option>
-                                        <option>Sarah Johnson</option>
-                                        <option>Michael Brown</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3">
-                                    <label class="form-label">Team Members</label>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="member1">
-                                        <label class="form-check-label" for="member1">
-                                        David Wilson (UX Designer)
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="member2">
-                                        <label class="form-check-label" for="member2">
-                                        Emily Davis (Developer)
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="member3">
-                                        <label class="form-check-label" for="member3">
-                                        James Martin (QA Engineer)
-                                        </label>
-                                    </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                        onclick="document.getElementById('vStep1-tab').click()">Previous</button>
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="document.getElementById('vStep3-tab').click()">Next Step</button>
-                                    </div>
-                                </form>
+                                 <div class="table-responsive">
+                                    <table id="basicExample" class="table custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th>S/N</th>
+                                                <th>Full Name</th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                                @if(Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                    <th>Phone Number</th>
+                                                    <th class="text-center">Actions</th>
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            @php $num =1; @endphp
+                                            @foreach ($students as $user)
+                                                <tr>
+                                                    <td>{{ $num }}</td>
+                                                    <td>{{$user->first_name . " ".$user->last_name}}</td>
+                                                    <td>{{$user->email}}</td>
+                                                    <td>
+                                                        @if ($user->status == 1)
+                                                            <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                                        @else
+                                                            <span class="badge bg-danger bg-opacity-10 text-danger">Suspended</span>
+                                                        @endif
+                                                    </td>
+                                                    @if(Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                        <td>{{$user->phone_number}}</td>
+                                                        <td class="text-center">
+                                                            <a href="{{  route('user.show',$user->slug) }}" class="dropdown-item text-success">
+                                                                <span class="badge bg-info"> View </span>
+                                                            </a>
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                @php $num++; @endphp
+                                            @endforeach
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- Step 3 Content -->
@@ -507,7 +540,7 @@
                                         <div class="card-body p-4">
                                             <h6 class="card-title fw-bold text-primary mb-3">List Course Allocation Histories</h6>
                                             <div class="table-responsive">
-                                                <table id="basicExample" class="table custom-table">
+                                                <table id="highlightRowColumn" class="table custom-table">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
@@ -603,12 +636,12 @@
                                                         <div class="d-flex flex-column gap-2 mt-3">
                                                             <!-- View Note Details -->
                                                             
-                                                            @if ($user->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) 
+                                                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) 
 
-                                                            <a href="{{ route('course.note.show', $voll->slug) }}"
-                                                            class="btn btn-primary w-100 rounded-pill fw-semibold shadow-sm d-flex align-items-center justify-content-center">
-                                                                <i class="bi bi-file-text me-2"></i> View Note Details
-                                                            </a>
+                                                                <a href="{{ route('course.note.show', $voll->slug) }}"
+                                                                class="btn btn-primary w-100 rounded-pill fw-semibold shadow-sm d-flex align-items-center justify-content-center">
+                                                                    <i class="bi bi-file-text me-2"></i> View Note Details
+                                                                </a>
                                                             @endif
 
                                                             <!-- Read Note Details -->

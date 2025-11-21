@@ -150,12 +150,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
 
     Route::prefix('payments')->group(function () {
         Route::get('/checkout', [PaymentController::class, 'showCheckout'])->name('payment.checkout');
-    
         Route::get('/monnify/verify', [PaymentController::class, 'verifyMonnify'])->name('monnify.verify');
         Route::get('/paystack/verify', [PaymentController::class, 'paystackVerify'])->name('payment.verify');
-
         Route::get('/opay/verify', [PaymentController::class, 'verifyOPay'])->name('opay.verify');
-
     });
         
 

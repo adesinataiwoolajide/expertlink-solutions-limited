@@ -46,43 +46,38 @@ class CourseNotes extends Model
         return $this->hasMany(Assignment::class, 'noteSlug', 'slug');
     }
 
+     public function sumissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'noteSlug', 'slug');
+    }
+
+    public function tasksubmission()
+    {
+        return $this->hasMany(TaskSubmission::class, 'noteSlug', 'slug');
+    }
+
     public function progressForStudent($studentSlug = null)
     {
         $studentSlug = $studentSlug ?? Auth::user()->slug;
-
-        $totalAssignments = $this->assignments()->where('studentSlug', $studentSlug)->count();
-        $completedAssignments = $this->assignments()
-            ->where('studentSlug', $studentSlug)
-            ->where(function($q) {
-                $q->where('status', 'completed')
-                  ->orWhere('submission_status', 'graded');
-            })
-            ->count();
-
+        $totalAssignments = $this->sumissions()->where('studentSlug', $studentSlug)->count();
+        $completedAssignments = $this->sumissions()->where('studentSlug', $studentSlug)
+        ->where(function($q) {
+            $q->where('status', 'completed')->orWhere('submission_status', 'graded');
+        })->count();
         if ($totalAssignments === 0) {
             return 0;
         }
-
         return round(($completedAssignments / $totalAssignments) * 100, 2);
     }
 
     public function taskProgressForStudent($studentSlug = null)
     {
         $studentSlug = $studentSlug ?? Auth::user()->slug;
-
-        $totalTasks = $this->tasks()
-            ->where('studentSlug', $studentSlug)
-            ->count();
-
-        $completedTasks = $this->tasks()
-            ->where('studentSlug', $studentSlug)
-            ->where('status', 'completed') // or whatever field marks tasks done
-            ->count();
-
+        $totalTasks = $this->tasksubmission()->where('studentSlug', $studentSlug)->count();
+        $completedTasks = $this->tasksubmission()->where('studentSlug', $studentSlug)->where('status', 'completed')->count();
         if ($totalTasks === 0) {
             return 0;
         }
-
         return round(($completedTasks / $totalTasks) * 100, 2);
     }
 

@@ -48,6 +48,10 @@
                     </div>
                 </div>
 
+                @if(Auth::user()->hasAnyRole(['Administrator',"Admin", "Instructor"]))
+                    <a href="{{  route('course.show',$course->slug) }}" class="btn btn-sm btn-info text-white">Course Details</a>
+                @endif
+
                
                 @if (Auth::user()->hasAnyRole(['Student'])) 
                     <a href="{{ route('myCourses') }}" class="btn btn-outline-primary rounded-pill px-4">

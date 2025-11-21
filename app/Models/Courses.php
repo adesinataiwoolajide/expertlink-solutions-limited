@@ -37,6 +37,29 @@ class Courses extends Model
       return $this->hasMany(CourseSubscription::class, 'courseSlug', 'slug');
    }
 
+   public function students()
+{
+    return $this->belongsToMany(
+        User::class,
+        'course_subscriptions',   // pivot table
+        'courseSlug',             // foreign key on pivot to Course
+        'userSlug',               // foreign key on pivot to User
+        'slug',                   // local key on Course
+        'slug'                    // local key on User
+    );
+}
+
+
+    public function getRevenueAttribute()
+   {
+      return $this->courseSubscriptions()->sum('course_amount');
+   }
+
+   public function getTotalStudentAttribute()
+   {
+      return $this->courseSubscriptions()->count();
+   }
+
    public function allocation()
    {
       return $this->hasOne(CourseAllocation::class, 'courseSlug', 'slug');
@@ -47,10 +70,21 @@ class Courses extends Model
       return $this->hasMany(CourseMaterials::class, 'courseSlug', 'slug');
    }
 
+   public function getTotalMaterialAttribute()
+   {
+      return $this->materials()->count();
+   }
+
    public function notes()
    {
       return $this->hasMany(CourseNotes::class, 'courseSlug', 'slug');
    }
+
+   public function getTotalNotesAttribute()
+   {
+      return $this->notes()->count();
+   }
+
    public function user()
    {
       return $this->belongsTo(User::class, 'user_id', 'id');
@@ -59,6 +93,10 @@ class Courses extends Model
    public function tasks()
    {
       return $this->hasMany(Task::class, 'courseSlug', 'slug');
+   }  
+    public function getTotalTasksAttribute()
+   {
+      return $this->tasks()->count();
    }
 
    public function assignments()
@@ -66,78 +104,81 @@ class Courses extends Model
       return $this->hasMany(Assignment::class, 'courseSlug', 'slug');
    }
 
+   public function getTotalAssignmentAttribute()
+   {
+      return $this->assignments()->count();
+   }
+
+   public function tasksubmission()
+   {
+      return $this->hasMany(TaskSubmission::class, 'courseSlug', 'slug');
+   }
+    public function getTotalTaskSubmissionAttribute()
+   {
+      return $this->tasksubmission()->count();
+   }
+
+   public function submissions()
+   {
+      return $this->hasMany(AssignmentSubmission::class, 'courseSlug', 'slug');
+   }  
+   public function getTotalAssignmentSubmissionAttribute()
+   {
+      return $this->submissions()->count();
+   }
+
+
+
    public function progressForStudent($studentSlug = null)
     {
         $studentSlug = $studentSlug ?? Auth::user()->slug;
-
-        // Get all assignments tied to this course for the student
-        $totalAssignments = Assignment::where('courseSlug', $this->slug)
-            ->where('studentSlug', $studentSlug)
-            ->count();
-
-        $completedAssignments = Assignment::where('courseSlug', $this->slug)
-            ->where('studentSlug', $studentSlug)
-            ->where(function($q) {
-                $q->where('status', 'completed')
-                  ->orWhere('submission_status', 'graded');
-            })
-            ->count();
-
+        $totalAssignments =  $this->submissions()->where('courseSlug', $this->slug)->where('studentSlug', $studentSlug)->count();
+        $completedAssignments =  $this->submissions()->where('studentSlug', $studentSlug)
+         ->where(function($q) {
+               $q->where('status', 'completed')
+               ->orWhere('submission_status', 'graded');
+         })->count();
         if ($totalAssignments === 0) {
             return 0;
         }
-
         return round(($completedAssignments / $totalAssignments) * 100, 2);
     }
 
-   public function taskProgressForStudent($studentSlug = null)
-    {
+      public function taskProgressForStudent($studentSlug = null)
+      {
         $studentSlug = $studentSlug ?? Auth::user()->slug;
-
-        $totalTasks = Task::where('courseSlug', $this->slug)
-            ->where('studentSlug', $studentSlug)
-            ->count();
-
-        $completedTasks = Task::where('courseSlug', $this->slug)
-            ->where('studentSlug', $studentSlug)
-            ->where('status', 'completed')
-            ->count();
+        $totalTasks = $this->tasksubmission()->where('courseSlug', $this->slug)->where('studentSlug', $studentSlug)->count();
+        $completedTasks =  $this->tasksubmission()->where('courseSlug', $this->slug)->where('studentSlug', $studentSlug)
+         ->where('status', 'completed')->count();
 
         if ($totalTasks === 0) {
             return 0;
         }
 
         return round(($completedTasks / $totalTasks) * 100, 2);
-    }
+      }
 
     public function progressForAllStudents()
    {
-      $totalAssignments = Assignment::where('courseSlug', $this->slug)->count();
-      $completedAssignments = Assignment::where('courseSlug', $this->slug)
-         ->where(function($q) {
-               $q->where('status', 'completed')
-               ->orWhere('submission_status', 'graded');
-         })
-         ->count();
-
+      $totalAssignments = $this->submissions()->where('courseSlug', $this->slug)->count();
+      $completedAssignments = $this->submissions()->where('courseSlug', $this->slug)
+      ->where(function($q) {
+            $q->where('status', 'completed')
+            ->orWhere('submission_status', 'graded');
+      })->count();
       if ($totalAssignments === 0) {
          return 0;
       }
-
       return round(($completedAssignments / $totalAssignments) * 100, 2);
    }
 
    public function taskProgressForAllStudents()
    {
-      $totalTasks = Task::where('courseSlug', $this->slug)->count();
-      $completedTasks = Task::where('courseSlug', $this->slug)
-         ->where('status', 'completed')
-         ->count();
-
+      $totalTasks =  $this->tasksubmission()->where('courseSlug', $this->slug)->count();
+      $completedTasks =  $this->tasksubmission()->where('courseSlug', $this->slug)->where('status', 'completed')->count();
       if ($totalTasks === 0) {
          return 0;
       }
-
       return round(($completedTasks / $totalTasks) * 100, 2);
    }
 }
