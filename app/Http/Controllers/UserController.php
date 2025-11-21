@@ -16,7 +16,7 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->middleware('auth');
-        $this->middleware('role:Administrator|Admin');
+        $this->middleware('role:Administrator|Admin|Student');
         $this->model = new GeneralRepository($user);
     }
     /**
@@ -27,13 +27,28 @@ class UserController extends Controller
         if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
 
             return view('home.users.index')->with([
-                'users' => User::where('role', '!=', 'Student')->orderBy('first_name', 'asc')->get()
+                'users' => User::where('role', '!=', 'Student')->orderBy('created_at', 'desc')->paginate(500)
             ]);
             
         }else{
             return view('home.users.index')->with([
-                'users' => User::where('id', Auth::id())->orderBy('first_name', 'asc')->get()
+                'users' => User::where('id', Auth::id())->get()
             ]);
+        }
+    }
+
+    public function student()
+    {
+        
+        if(Auth::user()->hasAnyRole(['Administrator',"Admin"])){
+
+            return view('home.users.view-students')->with([
+                'users' => User::where('role', 'Student')->orderBy('created_at', 'desc')->paginate(500)
+            ]);
+            
+        }else{
+            $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';
+            return view('errors.403')->with(['message' => $message]);
         }
     }
 
@@ -70,7 +85,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if(Auth::user()->hasAnyRole(['Administrator'])){
+        if(Auth::user()->hasAnyRole(['Administrator', 'Admin'])){
             $request->user()->fill($request->validated());
             $email = strtolower($request->input("email"));
             $role = $request->input("role");
@@ -118,14 +133,12 @@ class UserController extends Controller
     public function show(string $slug)
     {
         if(User::where(['slug' => $slug])->exists()){
-            if(Auth::user()->hasAnyRole(['Administrator'])){
-                $user = User::where(["slug" => $slug,])->first();
-                $roles = Role::orderBy('name', 'asc')->get();
-            }else{
-                $user = User::where(["slug" => Auth::user()->slug])->first();
-                $roles = Role::where('name', Auth::user()->role)->get();
-            }
-            $role = Role::where('name', $user->role)->first();
+            
+            $userSlug = Auth::user()->hasAnyRole(['Administrator']) ? $slug : Auth::user()->slug;
+            $user     = User::where('slug', $userSlug)->with(['courseSubscriptions', 'studentTasks', 'assignmentsAsStudent', 'courses'])
+            ->firstOrFail();
+            $roles = Auth::user()->hasAnyRole(['Administrator']) ? Role::orderBy('name', 'asc')->get() : Role::where('name', $user->role)->get();
+            $role = $roles->firstWhere('name', $user->role) ?? Role::where('name', $user->role)->first();
          
             return view('home.users.show')->with([
                 'roles' => $roles,

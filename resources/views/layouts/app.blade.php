@@ -1,4 +1,8 @@
 <?php ini_set('max_execution_time', 12000); ?>
+@php
+    $cartCount = count(session()->get('cart', []));
+    $user = Auth::user();
+@endphp
 <!DOCTYPE html>
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -67,6 +71,8 @@
             }
 
         </style>
+
+        <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     </head>
     <body {{ Auth::user()->email == 'tolajide74@gmail.com' ? '' : 'oncontextmenu="return false"' }}>
       <div id="rightClickError" class="alert alert-danger text-center" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
@@ -133,12 +139,31 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-md shadow-lg">
                   <div class="header-action-links mx-3 gap-2">
-                    <a class="dropdown-item py-2" href="profile.html"><i
-                        class="ri-user-line text-primary"></i>Profile</a>
-                    <a class="dropdown-item py-2" href="settings.html"><i
-                        class="ri-settings-3-line text-primary"></i>Settings</a>
-                    <a class="dropdown-item py-2" href="widgets.html"><i
-                        class="ri-apps-2-line text-primary"></i>Widgets</a>
+                    
+                    @if($cartCount > 0)
+                      <a class="dropdown-item py-2 position-relative" href="{{ route('cart.view') }}">
+                        <i class="ri-shopping-cart-2-line text-primary"></i>My Cart
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $cartCount }}
+                        </span>
+                    </a>
+                    @else
+                      <a class="dropdown-item py-2" href="widgets.html"><i class="ri-shopping-cart-2-line text-primary"></i>Cart</a>
+                    @endif
+                    <a class="dropdown-item py-2" href="{{ route('user.show', Auth::user()->slug) }}"><i class="ri-user-line text-primary"></i>Profile</a>
+                    
+                    @if ($user->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+                        <a class="dropdown-item py-2" href="{{ route('course.index') }}">
+                            <i class="ri-book-2-line text-primary"></i>
+                            <span>Courses</span>
+                        </a>
+                    @elseif ($user->hasRole('Student'))
+                        <a class="dropdown-item py-2" href="{{ route('myCourses') }}">
+                            <i class="ri-graduation-cap-line text-primary"></i>
+                            <span>My Courses</span>
+                        </a>
+                    @endif
+
                   </div>
                   <div class="mx-3 my-2 d-grid">
                     <a href="{{ route('signout')}}" class="btn btn-primary">Logout</a>

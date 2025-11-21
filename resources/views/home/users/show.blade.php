@@ -36,7 +36,7 @@
                     <h4 class="fw-bold mb-1">{{ $user->first_name . ' '. $user->last_name  ?? ''}}</h4>
                     <p class="text-muted mb-3"><i class="ri-award-fill text-warning me-1"></i>{{ $user->role ?? ''}}  </p>
                     
-                    <div class="d-flex justify-content-center gap-3 mb-4">
+                    {{-- <div class="d-flex justify-content-center gap-3 mb-4">
                         <a href="#" class="icon-box sm bg-primary-subtle text-primary rounded-circle"><i
                             class="ri-linkedin-fill"></i></a>
                         <a href="#" class="icon-box sm bg-info-subtle text-info rounded-circle"><i
@@ -45,9 +45,9 @@
                             class="ri-instagram-line"></i></a>
                         <a href="#" class="icon-box sm bg-success-subtle text-success rounded-circle"><i
                             class="ri-whatsapp-line"></i></a>
-                    </div>
+                    </div> --}}
                     
-                    <div class="border-top pt-4">
+                    {{-- <div class="border-top pt-4">
                         <div class="row text-center g-0">
                             <div class="col-4">
                                 <h5 class="fw-bold mb-1">245</h5>
@@ -62,7 +62,7 @@
                                 <p class="small text-muted mb-0">Activities</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="d-grid gap-3 m-4">
                     <div class="d-flex align-items-center">
@@ -109,24 +109,26 @@
                 </div>
                 <div class="card-footer bg-transparent py-3">
                     <div class="d-flex justify-content-around">
-                        <a href="#" class="text-primary text-center small d-flex flex-column align-items-center">
+                        {{-- <a href="#" class="text-primary text-center small d-flex flex-column align-items-center">
                             <i class="ri-edit-line d-block mb-1 fs-5"></i>
                             Edit
                         </a>
                         <a href="#" class="text-primary text-center small d-flex flex-column align-items-center">
                             <i class="ri-settings-4-line d-block mb-1 fs-5"></i>
                             Course Alocation
-                        </a>
-                        @if ($user->status == 1)
-                            <a href="{{ route('user.suspend', $user->slug) }}" class="text-danger text-center small d-flex flex-column align-items-center">
-                                <i class="ri-lock-line d-block mb-1 fs-5"></i>
-                                Suspend
-                            </a>
-                        @else
-                            <a href="{{ route('user.unsuspend', $user->slug) }}" class="text-success text-center small d-flex flex-column align-items-center">
-                                <i class="ri-check-line d-block mb-1 fs-5"></i>
-                                Activate
-                            </a>
+                        </a> --}}
+                        @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                            @if ($user->status == 1)
+                                <a href="{{ route('user.suspend', $user->slug) }}" class="text-danger text-center small d-flex flex-column align-items-center">
+                                    <i class="ri-lock-line d-block mb-1 fs-5"></i>
+                                    Suspend
+                                </a>
+                            @else
+                                <a href="{{ route('user.unsuspend', $user->slug) }}" class="text-success text-center small d-flex flex-column align-items-center">
+                                    <i class="ri-check-line d-block mb-1 fs-5"></i>
+                                    Activate
+                                </a>
+                            @endif
                         @endif
 
                     </div>

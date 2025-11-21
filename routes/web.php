@@ -72,6 +72,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
             Route::get("/un-suspend/{slug}",[UserController::class, "unsuspend"])->name("user.unsuspend");
         });
     });
+    Route::group(["prefix" => "students"], function () {
+        Route::get("/", [UserController::class, 'student'])->name("user.students.index");
+    });
 
     Route::prefix('blogs')->group(function () {
         Route::get('/', [BlogController::class, 'index'])->name('blog.index');

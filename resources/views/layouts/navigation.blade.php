@@ -19,20 +19,32 @@
 			</li>
 			@if(Auth::user()->email_verified_at != "")
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
-				<li class="treeview {{ request()->routeIs('user.*') ? 'active current-page' : '' }}">
-					<a href="#!">
-						<i class="ri-user-line"></i>
-						<span class="menu-text">Users</span>
-					</a>
-					<ul class="treeview-menu">
-						<li class="{{ request()->routeIs('user.create') ? 'active' : '' }}">
-							<a href="{{ route('user.create') }}">Create a User</a>
-						</li>
-						<li class="{{ request()->routeIs('user.index') ? 'active' : '' }}">
-							<a href="{{ route('user.index') }}">View All Users</a>
-						</li>
-					</ul>
-				</li>
+					<li class="treeview {{ request()->routeIs('user.*') ? 'active current-page' : '' }}">
+						<a href="#!">
+							<i class="ri-user-line"></i>
+							<span class="menu-text">Users</span>
+						</a>
+						<ul class="treeview-menu">
+							<li class="{{ request()->routeIs('user.create') ? 'active' : '' }}">
+								<a href="{{ route('user.create') }}">
+									<i class="ri-user-add-line"></i>
+									<span>Create a User</span>
+								</a>
+							</li>
+							<li class="{{ request()->routeIs('user.index') ? 'active' : '' }}">
+								<a href="{{ route('user.index') }}">
+									<i class="ri-team-line"></i>
+									<span>View All Users</span>
+								</a>
+							</li>
+							<li class="{{ request()->routeIs('user.students.index') ? 'active' : '' }}">
+								<a href="{{ route('user.students.index') }}">
+									<i class="ri-graduation-cap-line"></i>
+									<span>View All Students</span>
+								</a>
+							</li>
+						</ul>
+					</li>
 				@endif
 
 				@if (Auth::user()->hasAnyRole(['Student']))
@@ -149,7 +161,13 @@
 
 				@endif
 			@endif
-
+			
+			<li class="{{ request()->routeIs('user.show') ? 'active current-page' : '' }}">
+				<a href="{{ route('user.show', Auth::user()->slug) }}">
+					<i class="ri-user-line"></i>
+					<span class="menu-text">My Profile</span>
+				</a>
+			</li>
 			<li class="{{ request()->routeIs('signout') ? 'active current-page' : '' }}">
 				<a href="{{ route('signout') }}">
 					<i class="ri-logout-box-line"></i>
