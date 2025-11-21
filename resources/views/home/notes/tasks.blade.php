@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="card">
         <div class="card-body bg-light">
-            <h4>{{ $note->topic }} - Your Tasks</h4>
+            <h4>{{ $note->topic }} - Your Tasks SS</h4>
             <ul class="list-group">
                 @forelse($tasks as $task)
                     <li class="list-group-item">

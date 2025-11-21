@@ -23,9 +23,13 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">{{ $notes->topic }}</h5>
                         <div class="d-flex gap-2">
-                            @if(Auth::user()->hasAnyRole(['Instructor', 'Administrator']))
+                            @if(Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
                                 <a href="{{ route('course.note.edit', ['slug' => $notes->slug]) }}" class="btn btn-sm btn-outline-primary">
                                     Edit Course Note
+                                </a>
+
+                                <a href="{{ route('mycourse.note.read', [$notes->slug, $course->slug]) }}" class="btn btn-sm btn-outline-info">
+                                    Read Course Note
                                 </a>
                             @endif
 

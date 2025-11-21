@@ -27,9 +27,9 @@ class CourseSubscriptionController extends Controller
         $assignments = $note->assignments()
             ->where('studentSlug', Auth::user()->slug)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
-
-        return view('home.notes.assignments', compact('note', 'assignments'));
+            ->paginate(100);
+        
+        return view('home.assignments.create', compact('note', 'assignments'));
     }
 
      public function courseassignments($slug)
@@ -82,7 +82,7 @@ class CourseSubscriptionController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('home.notes.tasks', compact('note', 'tasks'));
+        return view('home.assignments.tasks', compact('note', 'tasks'));
     }
 
 

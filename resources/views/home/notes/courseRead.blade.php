@@ -24,12 +24,46 @@
                 <h4 class="text-primary fw-bold mb-0">
                     {{ $note->topic }} Notes
                 </h4>
+                <div class="mb-2">
+                    <span class="text-muted">Overall Assignments Progress: {{ $assignmentProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-info" role="progressbar"
+                            style="width: {{ $assignmentProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_assignments_count ?? 0 }} assignments completed">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
+                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                            style="width: {{ $taskProgress }}%; min-width: 5px;"
+                            aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
+                        </div>
+                    </div>
+                </div>
             
-                @if (Auth::user()->hasAnyRole(['Student'])) 
-                    <a href="{{ route('mycourse.note.index',$course->slug) }}" class="btn btn-outline-primary rounded-pill px-4">
-                        <i class="bi bi-pencil-square me-2"></i> My Courses
-                    </a>
-                @endif
+                <div class="d-flex gap-2">
+                    @if (Auth::user()->hasAnyRole(['Student']))
+                        <a href="{{ route('mycourse.note.index',$course->slug) }}" 
+                        class="btn btn-outline-primary rounded-pill px-4">
+                            <i class="bi bi-pencil-square me-2"></i> My Courses
+                        </a>
+                    @endif
+
+                    @if(Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
+                        <a href="{{ route('course.note.edit', ['slug' => $note->slug]) }}" 
+                        class="btn btn-sm btn-outline-primary">
+                            Edit Course Note
+                        </a>
+
+                    @endif
+                </div>
             </div>
 
             <div class="row g-4">

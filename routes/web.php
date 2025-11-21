@@ -145,10 +145,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
         Route::get('/view/{slug}', [CourseSubscriptionController::class, 'show'])->name('mycourse.note.index');
         Route::get('read/{noteSlug}/{courseSlug}', action: [CourseSubscriptionController::class, 'viewLearning'])->name('mycourse.note.read');
-
+        // old
         Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
         Route::get('{noteSlug}/{courseSlug}', action: [CoursesController::class, 'viewLearning'])->name('note.viewLearning');
-
+        // https://drive.google.com/file/d/1tRL7yQLvzg9B7QkLKYEi41FDbMi-cIti/preview
     });
 
     Route::prefix('payments')->group(function () {

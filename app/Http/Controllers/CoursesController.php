@@ -228,12 +228,10 @@ class CoursesController extends Controller
         
         $slug = RandomString(10);
         $data = new Courses([
-            'slug' =>$slug,
-            'course_name' => $course_name,
+            'slug' =>$slug, 'course_name' => $course_name,
             'course_price' => $course_price,
             'programSlug' => $program_name,
-            'user_id' => $user_id,
-            'banner' => "els.png", 
+            'user_id' => $user_id,'banner' => "els.png", 
             'basic_requirements' => $basic_requirements,
             'course_outline' => $course_outline,
             'learning_module' => $learning_module,
