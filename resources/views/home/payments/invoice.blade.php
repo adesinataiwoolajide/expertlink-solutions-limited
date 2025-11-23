@@ -28,18 +28,24 @@
         </div>
     </div>
 
-    <!-- Invoice Card -->
     <div class="row gx-3 mt-2">
         <div class="col-lg-12 col-ms-12">
-            <div class="card shadow-sm mb-4">
+            <div id="invoiceDiv" class="card shadow-sm mb-4">
+                
+                <!-- Invoice Header with Logo -->
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Invoice #{{ $payment->paymentReference }}</h5>
-                    <small class="text-muted">Issued on {{ $payment->created_at->format('d M, Y') }}</small>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset('elsAdmin/images/els.png')}}" alt="Company Logo" height="100" width="100" class="me-3">
+                        <div>
+                            <h5 class="card-title mb-0">Invoice #{{ $payment->paymentReference }}</h5>
+                            <small class="text-muted">Issued on {{ $payment->created_at->format('d M, Y') }}</small>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card-body">
+                    <!-- Payment & User Details -->
                     <div class="row mb-4">
-                        <!-- Payment Details -->
                         <div class="col-md-6">
                             <h6 class="fw-bold border-bottom pb-2 mb-3">Payment Details</h6>
                             <dl class="row mb-0">
@@ -98,7 +104,6 @@
                             </dl>
                         </div>
 
-                        <!-- User Details -->
                         <div class="col-md-6">
                             <h6 class="fw-bold border-bottom pb-2 mb-3">User Details</h6>
                             <dl class="row mb-0">
@@ -132,7 +137,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $subscription->course?->course_name ?? 'N/A' }}</td>
-                                        <td>{{ $subscription->program?->name ?? 'N/A' }}</td>
+                                        <td>{{ $subscription->program?->program_name ?? 'N/A' }}</td>
                                         <td>{{ $payment->currencyCode }} {{ number_format($subscription->course_amount, 2) }}</td>
                                         <td>{{ $subscription->created_at->format('d M, Y') }}</td>
                                     </tr>
@@ -155,13 +160,40 @@
                         </div>
                     </div>
 
+                    <!-- Invoice Footer -->
+                    <div class="border-top pt-3 mt-4 text-center">
+                        <p class="mb-1 fw-bold">Expert Link Solutions Limited</p>
+                        <small class="text-muted">
+                            123 Business Street, Lagos, Nigeria<br>
+                            Phone: +234 8138 139 333 | Email: support@expertlinksolutions.com
+                        </small>
+                    </div>
+
                     <!-- Actions -->
                     <div class="mt-4 text-end">
                         <a href="{{ route('payment.index') }}" class="btn btn-secondary">Back to Payments</a>
                         <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
+                        <button id="downloadInvoice" class="btn btn-success">Download Invoice</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('downloadInvoice').addEventListener('click', function () {
+            const element = document.getElementById('invoiceDiv');
+            const opt = {
+                margin:       0.5,
+                filename:     'invoice-{{ $payment->paymentReference }}.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    </script>
+    @endpush
+
 </x-app-layout>
