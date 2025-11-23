@@ -199,7 +199,7 @@
         ])->orderBy('created_at', 'desc')->$opt();
     }
 
-     function getDoubleInformation($table_name, $column_name, $val, $column_two, $val_two, $opt)
+     function getDoubleInformation($table_name, $column_name, $val, $column_two, $val_two, $opt): mixed
     {
         return \DB::table($table_name)->where([
             "$column_name" => $val,

@@ -43,6 +43,7 @@
 
         <div class="row" id="course-grid">
            @foreach ($courses as $course)
+                
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4 course-item cat--{{ $course->programSlug }}">
                     <div class="card h-100 border-0 shadow rounded-4 overflow-hidden">
                         <!-- Banner -->
@@ -59,6 +60,7 @@
                         <div class="card-body d-flex flex-column p-4">
                             <!-- Title -->
                             <h5 class="fw-bold text-dark mb-1">{{ $course->course_name }}</h5>
+                            
                             <p class="text-muted mb-2">{{ count($course->notes) }} Notes</p>
 
                             <!-- Instructor -->
@@ -120,9 +122,10 @@
                                         📊 {{ $course->progressForStudent() }}% Progress
                                 </a>
                             </div>
-                            
                             <div class="mt-auto d-flex justify-content-between align-items-center">
+                                
                                 <a href="{{ route('mycourse.note.index',$course->slug) }}" class="btn btn-sm btn-outline-primary px-3">Start Learning</a>
+                               
                                 <a href="{{ route('course.viewLearning', [$course->slug, $course->programSlug]) }}" class="text-decoration-none text-muted small">
                                     Read More →
                                 </a>

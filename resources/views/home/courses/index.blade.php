@@ -41,7 +41,9 @@
                                     <th>👤 Created By</th>
                                     <th>👤 Instructor Name</th>
                                     <th>🎓 Program Name</th>
-                                    <th class="text-center">💰 Course Price (₦)</th>
+                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                        <th class="text-center">💰 Course Price (₦)</th>
+                                    @endif
                                     <th class="text-center">📘 Course Notes</th>
                                     <th>⚙️ Action</th>
                                 </tr>
@@ -89,9 +91,11 @@
                                             </td>
 
                                             {{-- Price --}}
-                                            <td class="text-center">
-                                                <span class="badge bg-secondary">{{ number_format($course->course_price,2) }}</span>
-                                            </td>
+                                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                <td class="text-center">
+                                                    <span class="badge bg-secondary">{{ number_format($course->course_price,2) }}</span>
+                                                </td>
+                                            @endif
 
                                             {{-- Notes --}}
                                             <td class="text-center">

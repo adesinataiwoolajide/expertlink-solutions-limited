@@ -130,10 +130,11 @@ class CourseSubscriptionController extends Controller
         $filePath = 'course_videos/' . $course->course_introduction;
         $notes = $course->notes()->with(['course','allocation','materials','instructor'])
         ->withCount([
-            'assignments as student_assignments_count' => fn($q) => $q->forStudent(),
-            'tasks as student_tasks_count' => fn($q) => $q->forStudent(),
-        ])->orderBy('created_at','desc')->paginate(20);
-        // dd($notes);
+            'submissions as student_assignments_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+            'tasksubmission as student_tasks_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+        ])
+        ->where('status', 1)
+        ->orderBy('created_at','desc')->paginate(20);
         $assignmentProgress = $course->progressForStudent();
         $taskProgress = $course->taskProgressForStudent();
         return view('home.notes.courseIndex', compact('course', 'notes','filePath', 'assignmentProgress', 'taskProgress'));

@@ -45,8 +45,6 @@ class CoursesController extends Controller
 
     public function myCourses()
     {
-        // $subList = CourseSubscription::with(['course' => fn($q) => $q->with(['program', 'allocations', 'allocation.user', 'materials', 'notes', 'user']), 'program', 'user'])
-        // ->where(['userSlug' => Auth::user()->slug])->latest()->get();
         
         $subList = CourseSubscription::with([
             'course' => fn($q) => $q->with([
@@ -58,8 +56,8 @@ class CoursesController extends Controller
                 'user'
             ])
             ->withCount([
-                'assignments as student_assignments_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
-                'tasks as student_tasks_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+                'submissions as student_assignments_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
+                'tasksubmission as student_tasks_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
             ]),
             'program',
             'user'

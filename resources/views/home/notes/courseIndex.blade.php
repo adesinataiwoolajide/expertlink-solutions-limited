@@ -60,9 +60,9 @@
                 @endif
             </div>
             <div class="row">
-                <div class="col-md-12 mb-4">
-                    <div class="video-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
-                        @if(!empty($course->course_introduction))
+                @if(!empty($course->course_introduction))
+                    <div class="col-md-12 mb-4">
+                        <div class="video-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
                             <label style="font-weight:bold;">Introduction Video:</label>
                             @if(Storage::disk('public')->exists($filePath))
                                 <video style="width:100%; height:500px; border:1px solid #ddd; border-radius:6px;" controls controlsList="nodownload">
@@ -72,80 +72,94 @@
                             @else
                                 <p style="color:red; font-weight:bold;">Introduction video not available.</p>
                             @endif
-                        @endif
+                        </div>
                     </div>
-                </div>
-                @foreach ($notes as $note)
-                    
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden note-card">
-                            <div class="card-body d-flex flex-column p-4">
-                                <a href="{{ route('mycourse.note.read', [$note->slug, $note->courseSlug]) }}" class="text-decoration-none">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center flex-shrink-0" style="width:52px; height:52px;">
-                                            <i class="ri-play-fill text-white fs-4"></i>
+                @endif
+                @if(count($notes) > 0)
+                    @foreach ($notes as $note)
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden note-card">
+                                <div class="card-body d-flex flex-column p-4">
+                                    <a href="{{ route('mycourse.note.read', [$note->slug, $note->courseSlug]) }}" class="text-decoration-none">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center flex-shrink-0" style="width:52px; height:52px;">
+                                                <i class="ri-play-fill text-white fs-4"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h6 class="fw-semibold text-dark mb-1">{{ $note->topic }}</h6>
+                                                <small class="text-muted">
+                                                    {{ $note->materials->count() ?? 0 }} Reference Materials
+                                                </small>
+                                            </div>
                                         </div>
-                                        <div class="ms-3">
-                                            <h6 class="fw-semibold text-dark mb-1">{{ $note->topic }}</h6>
-                                            <small class="text-muted">
-                                                {{ $note->materials->count() ?? 0 }} Reference Materials
-                                            </small>
+                                    </a>
+                                    <p class="mb-3 text-muted small">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <strong>Author:</strong>
+                                            @if($note->allocation)
+                                                {{ $note->allocation->user->first_name . ' ' . $note->allocation->user->last_name. '  ' ?? 'ELS-ADMIN  ' }}
+                                            @else
+                                                {{'ELS Tutor '}}
+                                            @endif
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="ri-star-fill" style="color:{{ $i <= 5 ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
+                                            @endfor
+                                            <span class="ms-2 text-muted small">
+                                                {{ number_format(5, 1) }} ({{ 5 }} reviews)
+                                            </span>
                                         </div>
-                                    </div>
-                                </a>
-                                <p class="mb-3 text-muted small">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <strong>Author:</strong>
-                                        @if($note->allocation)
-                                            {{ $note->allocation->user->first_name . ' ' . $note->allocation->user->last_name. '  ' ?? 'ELS-ADMIN  ' }}
-                                        @else
-                                            {{'ELS Tutor '}}
+                                    </p>
+
+                                    <div class="mt-auto d-flex flex-wrap gap-2">
+                                        <!-- Assignments badge -->
+                                        <a href="{{ route('note.course.assignments', $note->slug) }}"
+                                            class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="View your {{ $note->student_assignments_count }} submitted assignments">
+                                                📝 {{ $note->student_assignments_count }} Assignments
+                                        </a>
+
+                                        <!-- Tasks badge -->
+                                        <a href="{{ route('note.course.tasks', $note->slug) }}"
+                                            class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="View your {{ $note->student_tasks_count }} completed tasks">
+                                                ✅ {{ $note->student_tasks_count }} Tasks
+                                        </a>
+
+                                        <!-- Progress badge -->
+                                        <a href="{{ route('note.course.progress', $note->slug) }}"
+                                            class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
+                                                📊 {{ $note->progressForStudent() }}% Progress
+                                        </a>
+                                        @if (Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
+                                        <a href="{{ route('course.note.edit', $note->slug) }}"
+                                            class="badge bg-dark text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                                            Edit Note
+                                        </a>
                                         @endif
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <i class="ri-star-fill" style="color:{{ $i <= 5 ? '#ffc107' : '#e4e5e9' }}; font-size:16px;"></i>
-                                        @endfor
-                                        <span class="ms-2 text-muted small">
-                                            {{ number_format(5, 1) }} ({{ 5 }} reviews)
-                                        </span>
                                     </div>
-                                </p>
 
-                                <div class="mt-auto d-flex flex-wrap gap-2">
-                                    <!-- Assignments badge -->
-                                    <a href="{{ route('note.course.assignments', $note->slug) }}"
-                                        class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="View your {{ $note->student_assignments_count }} submitted assignments">
-                                            📝 {{ $note->student_assignments_count }} Assignments
-                                    </a>
-
-                                    <!-- Tasks badge -->
-                                    <a href="{{ route('note.course.tasks', $note->slug) }}"
-                                        class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="View your {{ $note->student_tasks_count }} completed tasks">
-                                            ✅ {{ $note->student_tasks_count }} Tasks
-                                    </a>
-
-                                    <!-- Progress badge -->
-                                    <a href="{{ route('note.course.progress', $note->slug) }}"
-                                        class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="Your overall progress on this note is {{ $note->progressForStudent() }}%">
-                                            📊 {{ $note->progressForStudent() }}% Progress
-                                    </a>
-                                    @if (Auth::user()->hasAnyRole(['Instructor', 'Administrator', 'Admin']))
-                                    <a href="{{ route('course.note.edit', $note->slug) }}"
-                                        class="badge bg-dark text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
-                                        Edit Note
-                                    </a>
-                                    @endif
                                 </div>
-
+                            </div>
+                        </div>
+                        
+                    @endforeach
+                @else
+                    <div class="col-12">
+                        <div class="card border-danger text-center">
+                            <div class="card-body">
+                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                <h5 class="card-title text-danger">No course note was Found</h5>
+                                <p class="card-text text-muted">There are currently no course notes available for this view.</p>
+                                
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @endif
             </div>
         </div>
     </div>

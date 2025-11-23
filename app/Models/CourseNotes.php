@@ -16,7 +16,7 @@ class CourseNotes extends Model
     ];
     protected $dates = ['deleted_at'];
 
-        public function course()
+    public function course()
     {
         return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
     }
@@ -46,7 +46,7 @@ class CourseNotes extends Model
         return $this->hasMany(Assignment::class, 'noteSlug', 'slug');
     }
 
-     public function sumissions()
+     public function submissions()
     {
         return $this->hasMany(AssignmentSubmission::class, 'noteSlug', 'slug');
     }
@@ -59,8 +59,8 @@ class CourseNotes extends Model
     public function progressForStudent($studentSlug = null)
     {
         $studentSlug = $studentSlug ?? Auth::user()->slug;
-        $totalAssignments = $this->sumissions()->where('studentSlug', $studentSlug)->count();
-        $completedAssignments = $this->sumissions()->where('studentSlug', $studentSlug)
+        $totalAssignments = $this->submissions()->where('studentSlug', $studentSlug)->count();
+        $completedAssignments = $this->submissions()->where('studentSlug', $studentSlug)
         ->where(function($q) {
             $q->where('status', 'completed')->orWhere('submission_status', 'graded');
         })->count();
