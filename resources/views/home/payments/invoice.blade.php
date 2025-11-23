@@ -171,29 +171,11 @@
 
                     <!-- Actions -->
                     <div class="mt-4 text-end">
-                        <a href="{{ route('payment.index') }}" class="btn btn-secondary">Back to Payments</a>
-                        <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
-                        <button id="downloadInvoice" class="btn btn-success">Download Invoice</button>
+                        <a href="{{ route('payment.index') }}" class="btn btn-info">Back to Payments</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        document.getElementById('downloadInvoice').addEventListener('click', function () {
-            const element = document.getElementById('invoiceDiv');
-            const opt = {
-                margin:       0.5,
-                filename:     'invoice-{{ $payment->paymentReference }}.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
-        });
-    </script>
-    @endpush
-
+    
 </x-app-layout>
