@@ -31,12 +31,27 @@ class PaymentController extends Controller
                 'message' => 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal'
             ]);
         }
-        $payments = $query->with('user', 'courseSubscriptions')->orderBy('created_at', 'desc')->get();
+        $payments = $query->with('user', 'courseSubscriptions')->orderBy('created_at', 'desc')->paginate();
         return view('home.payments.index', compact('payments', ));
     }
 
-    public function show($slug){
+    public function show($slug)
+    {
+        $user = Auth::user();
+        $payment = Payment::where('slug', $slug)->with('user', 'courseSubscriptions')->first();
+        if (!$payment) {
+            return redirect()->back()->with('error', 'Payment record does not exist');
+        }
+        $isAdmin   = $user->hasAnyRole(['Administrator', 'Admin']);
+        $isStudent = $user->hasAnyRole(['Student']) && $payment->userSlug === $user->slug;
 
+        if (!($isAdmin || $isStudent)) {
+            return view('errors.403')->with([
+                'message' => 'Access Denied. You Do Not Have The Permission To Access This Payment'
+            ]);
+        }
+        // Return single payment to invoice view
+        return view('home.payments.invoice', compact('payment'));
     }
     public function initializeMonnify(Request $request)
     {
