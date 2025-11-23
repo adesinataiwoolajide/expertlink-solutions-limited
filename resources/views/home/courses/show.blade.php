@@ -369,50 +369,63 @@
 
                             <!-- Step 2 Content -->
                             <div class="tab-pane fade" id="vStep2" role="tabpanel" aria-labelledby="vStep2-tab">
-                                 <div class="table-responsive">
-                                    <table id="basicExample" class="table custom-table">
-                                        <thead>
-                                            <tr>
-                                                <th>S/N</th>
-                                                <th>Full Name</th>
-                                                <th>Email</th>
-                                                <th>Status</th>
-                                                @if(Auth::user()->hasAnyRole(['Administrator', 'Admin']))
-                                                    <th>Phone Number</th>
-                                                    <th class="text-center">Actions</th>
-                                                @endif
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                            @php $num =1; @endphp
-                                            @foreach ($students as $user)
+                                @if(count($students) > 0)
+                                    <div class="table-responsive">
+                                        <table id="basicExample" class="table custom-table">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $num }}</td>
-                                                    <td>{{$user->first_name . " ".$user->last_name}}</td>
-                                                    <td>{{$user->email}}</td>
-                                                    <td>
-                                                        @if ($user->status == 1)
-                                                            <span class="badge bg-success bg-opacity-10 text-success">Active</span>
-                                                        @else
-                                                            <span class="badge bg-danger bg-opacity-10 text-danger">Suspended</span>
-                                                        @endif
-                                                    </td>
+                                                    <th>S/N</th>
+                                                    <th>Full Name</th>
+                                                    <th>Email</th>
+                                                    <th>Status</th>
                                                     @if(Auth::user()->hasAnyRole(['Administrator', 'Admin']))
-                                                        <td>{{$user->phone_number}}</td>
-                                                        <td class="text-center">
-                                                            <a href="{{  route('user.show',$user->slug) }}" class="dropdown-item text-success">
-                                                                <span class="badge bg-info"> View </span>
-                                                            </a>
-                                                        </td>
+                                                        <th>Phone Number</th>
+                                                        <th class="text-center">Actions</th>
                                                     @endif
                                                 </tr>
-                                                @php $num++; @endphp
-                                            @endforeach
-                                        </tbody>
-                                        
-                                    </table>
-                                </div>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                @php $num =1; @endphp
+                                                @foreach ($students as $user)
+                                                    <tr>
+                                                        <td>{{ $num }}</td>
+                                                        <td>{{$user->first_name . " ".$user->last_name}}</td>
+                                                        <td>{{$user->email}}</td>
+                                                        <td>
+                                                            @if ($user->status == 1)
+                                                                <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                                            @else
+                                                                <span class="badge bg-danger bg-opacity-10 text-danger">Suspended</span>
+                                                            @endif
+                                                        </td>
+                                                        @if(Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                                            <td>{{$user->phone_number}}</td>
+                                                            <td class="text-center">
+                                                                <a href="{{  route('user.show',$user->slug) }}" class="dropdown-item text-success">
+                                                                    <span class="badge bg-info"> View </span>
+                                                                </a>
+                                                            </td>
+                                                        @endif
+                                                    </tr>
+                                                    @php $num++; @endphp
+                                                @endforeach
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                @else
+                                
+                                    <div class="col-12">
+                                        <div class="card border-danger text-center">
+                                            <div class="card-body">
+                                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                                <h5 class="card-title text-danger">No Student has bought or registered for this course</h5>
+                                                <p class="card-text text-muted">There are currently no registrations or purchases for this course.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Step 3 Content -->

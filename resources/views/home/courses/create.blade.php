@@ -19,6 +19,11 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Please fill the below form to Create a Course</h5>
+                @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                    <a href="{{ route('course.index') }}" class="btn btn-primary">
+                        View All Courses
+                    </a>
+                @endif
             </div>
             <div class="card-body">
                 <div class="row gx-3">
@@ -28,7 +33,7 @@
                             @csrf
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label fw-bold text-primary">Course Name:</label>
+                                    <label class="form-label fw-bold text-dark">Course Name:</label>
                                     <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Intro to Web Development" value="{{ old('course_name') }}" required>
                                     <x-input-error :messages="$errors->get('course_name')" class="mt-2 text-danger" />
                                     <div id="course-name-feedback" class="mt-2 text-danger"></div>
@@ -39,7 +44,7 @@
                                 @endphp
                                 <input type="hidden" class="form-control" id="ratings" name="ratings" value="5">
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label fw-bold text-primary">Select Program:</label>
+                                    <label class="form-label fw-bold text-dark">Select Program:</label>
                                     <select name="program_name" class="form-control select2" id="searchableSelect" required>
                                         <option value="{{  old('program_name') }}">{{ old('program_name')  ?? "-- Choose a Program --"}}</option>
                                         @foreach ($programs as $program)
@@ -52,13 +57,13 @@
                                 </div>
                                 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Course Price (₦):</label>
+                                    <label class="form-label fw-bold text-dark">Course Price (₦):</label>
                                     <input type="number" class="form-control" placeholder="50000" name="course_price" value="{{ old('course_price') }}" required>
                                     <x-input-error :messages="$errors->get('course_price')" class="mt-2 text-danger" />
                                 </div>
                                
                                 <div class="mb-3 col-md-4">
-                                    <label for="rangeWithValue" class="form-label fw-bold text-primary">Course Discount(%): <span id="rangeValue">0</span></label>
+                                    <label for="rangeWithValue" class="form-label fw-bold text-dark">Course Discount(%): <span id="rangeValue">0</span></label>
                                     <input type="range" class="form-range" id="rangeWithValue" min="0" max="50" value="{{ old('course_discount') ?? 0 }}" oninput="document.getElementById('rangeValue').textContent = this.value"
                                     name="course_discount"> <x-input-error :messages="$errors->get('course_discount')" class="mt-2 text-danger" />
                                 </div>
@@ -71,7 +76,7 @@
 
                                
                                 <div class="mb-4 col-md-6">
-                                    <label for="multiSelect" class="form-label fw-bold text-primary">
+                                    <label for="multiSelect" class="form-label fw-bold text-dark">
                                         <i class="bi bi-journal-text me-1"></i> Training Type
                                     </label>
                                     <select name="training_type[]" id="multiSelect" class="form-select select2-multi border-primary shadow-sm" multiple required>
@@ -85,7 +90,7 @@
                                 </div>
 
                                 <div class="mb-4 col-md-6">
-                                    <label for="courseTechSelect" class="form-label fw-bold text-primary">
+                                    <label for="courseTechSelect" class="form-label fw-bold text-dark">
                                         <i class="bi bi-journal-text me-1"></i> Course Technologies
                                     </label>
                                     <select name="course_technologies[]" id="courseTechSelect" class="form-select select2-multi border-info shadow-sm" multiple required>
@@ -99,37 +104,37 @@
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Basic Requirements:</label>
+                                    <label class="form-label fw-bold text-dark">Basic Requirements:</label>
                                     <textarea class="form-control summernote" name="basic_requirements" required>{{ old('basic_requirements') ?? 'Enter basic requirements here...' }}</textarea>
                                     <x-input-error :messages="$errors->get('basic_requirements')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Course Outline:</label>
+                                    <label class="form-label fw-bold text-dark">Course Outline:</label>
                                     <textarea class="form-control summernote" name="course_outline" required>{{ old('course_outline') ?? 'Provide a detailed course outline...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_outline')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Learning Module:</label>
+                                    <label class="form-label fw-bold text-dark">Learning Module:</label>
                                     <textarea class="form-control summernote" name="learning_module" required>{{ old('learning_module') ?? 'Describe the learning modules...' }}</textarea>
                                     <x-input-error :messages="$errors->get('learning_module')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Course Schedule:</label>
+                                    <label class="form-label fw-bold text-dark">Course Schedule:</label>
                                     <textarea class="form-control summernote" name="course_schedule" required>{{ old('course_schedule') ?? 'Outline the course schedule...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_schedule')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Course Overview:</label>
+                                    <label class="form-label fw-bold text-dark">Course Overview:</label>
                                     <textarea class="form-control summernote" name="course_overview" required>{{ old('course_overview') ?? 'Summarize the course overview...' }}</textarea>
                                     <x-input-error :messages="$errors->get('course_overview')" class="mt-2 text-danger" />
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label fw-bold text-primary">Benefits:</label>
+                                    <label class="form-label fw-bold text-dark">Benefits:</label>
                                     <textarea class="form-control summernote" name="benefits" required>{{ old('benefits') ?? 'List the benefits of this course...' }}</textarea>
                                     <x-input-error :messages="$errors->get('benefits')" class="mt-2 text-danger" />
                                 </div>

@@ -26,7 +26,7 @@
                 </h4>
                 <div class="mb-2">
                     <span class="text-muted">Overall Assignments Progress: {{ $assignmentProgress }}%</span>
-                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                    <div class="progress rounded-pill bg-light mb-2" style="height: 8px;">
                         <div class="progress-bar bg-info" role="progressbar"
                             style="width: {{ $assignmentProgress }}%; min-width: 5px;"
                             aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
@@ -34,11 +34,15 @@
                             title="{{ $course->student_assignments_count ?? 0 }} assignments completed">
                         </div>
                     </div>
+                    <a href="{{ route('note.course.assignments', $note->slug) }}"
+                        class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                        View Assignments
+                    </a>
                 </div>
 
                 <div>
                     <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
-                    <div class="progress rounded-pill bg-light" style="height: 8px;">
+                    <div class="progress rounded-pill bg-light mb-2" style="height: 8px;">
                         <div class="progress-bar bg-success" role="progressbar"
                             style="width: {{ $taskProgress }}%; min-width: 5px;"
                             aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
@@ -46,6 +50,10 @@
                             title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
                         </div>
                     </div>
+                    <a href="{{ route('note.course.tasks', $note->slug) }}"
+                        class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
+                        View Tasks
+                    </a>
                 </div>
             
                 <div class="d-flex gap-2">

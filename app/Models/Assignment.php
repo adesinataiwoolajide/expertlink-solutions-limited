@@ -11,17 +11,9 @@ class Assignment extends Model
     use SoftDeletes;
     protected $table = 'assignments';
     protected $primaryKey = 'id';
-    
-    // protected $fillable = [
-    //     'slug',
-    //     'studentSlug', 'instructorSlug', 'noteSlug', 'courseSlug',
-    //     'title', 'description', 'due_date', 'max_score', 'score',
-    //     'status', 'remark', 'answer_text', 'file_path',
-    //     'student_score', 'submission_status', 'submission_remark'
-    // ];
+   
     protected $fillable = [
-        'slug', 'instructorSlug', 'noteSlug', 'courseSlug',
-        'title', 'description', 'due_date', 'max_score', 'status', 'remark'
+        'slug', 'instructorSlug', 'noteSlug', 'courseSlug', 'title', 'description', 'due_date', 'max_score', 'status', 'remark'
     ];
 
     public function student()

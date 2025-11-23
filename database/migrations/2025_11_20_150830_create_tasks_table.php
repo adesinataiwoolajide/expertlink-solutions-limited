@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('studentSlug')->nullable();
+            $table->string('slug')->nullable();
             $table->string('instructorSlug')->nullable();
             $table->string('noteSlug')->nullable();
             $table->string('courseSlug')->nullable();
             $table->string('status')->default('pending'); // e.g. pending, completed
             $table->integer('score')->nullable();
-            $table->text('response')->nullable();
             $table->text('question')->nullable();
-            $table->string('result')->nullable(); // pass/fail or similar
             $table->text('remark')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assignment;
+use App\Models\{Task, Courses, Assignment, CourseSubscription,CourseNotes};
 use Illuminate\Http\Request;
+use App\Repositories\GeneralRepository;
+use Illuminate\Support\Facades\{Auth};
 
 class AssignmentController extends Controller
 {
+    protected $model;
+    public function __construct(Assignment $assignment)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor|Student');
+
+        $this->model = new GeneralRepository($assignment);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,9 +36,9 @@ class AssignmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $noteSlug)
     {
-        //
+        dd($request);
     }
 
     /**

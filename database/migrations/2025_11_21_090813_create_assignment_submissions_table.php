@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('assignment_submissions', function (Blueprint $table) {
             $table->id();
            // Core identifiers
+            $table->string('slug');           
             $table->string('assignmentSlug');              // link to assignment
             $table->string('studentSlug');                 // link to student
             $table->string('courseSlug')->nullable();      // link to course
@@ -22,14 +23,10 @@ return new class extends Migration
 
             // Submission details
             $table->text('answer_text')->nullable();
-            $table->string('file_path')->nullable();
-            // Grading details
-            $table->integer('student_score')->nullable();
+            $table->integer('student_score')->default(0);
             $table->enum('submission_status', ['pending', 'submitted', 'graded'])->default('pending');
             $table->text('submission_remark')->nullable();
-            // General status (optional, if you want to track lifecycle separately)
             $table->string('status')->default('active');
-
             $table->timestamps();
             $table->softDeletes();
 

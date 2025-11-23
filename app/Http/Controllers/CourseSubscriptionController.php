@@ -20,9 +20,9 @@ class CourseSubscriptionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function assignments($slug)
+    public function assignments($noteSlug)
     {
-        $note = CourseNotes::where('slug', $slug)->firstOrFail();
+        $note = CourseNotes::where('slug', $noteSlug)->firstOrFail();
 
         $assignments = $note->assignments()
             ->where('studentSlug', Auth::user()->slug)
@@ -61,7 +61,6 @@ class CourseSubscriptionController extends Controller
         $assignmentProgress = $course->progressForStudent();
         $taskProgress = $course->taskProgressForStudent();
         $overallProgress = round(($assignmentProgress + $taskProgress) / 2, 2);
-
         return view('home.courses.progress', compact('course', 'assignmentProgress', 'taskProgress', 'overallProgress'));
     }
 

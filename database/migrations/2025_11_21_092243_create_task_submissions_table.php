@@ -15,16 +15,15 @@ return new class extends Migration
             $table->id();
 
             // Core identifiers
+            $table->string('slug');           
             $table->string('taskSlug');                   // link to task
             $table->string('studentSlug');                // link to student
             $table->string('courseSlug')->nullable();     // link to course
             $table->string('noteSlug')->nullable();       // link to note
             $table->string('instructorSlug')->nullable(); // link to instructor
-
             // Submission details
             $table->text('response')->nullable();
             $table->integer('score')->nullable();
-
             // Status & remarks
             $table->string('status')->default('pending'); // lifecycle status
             $table->text('remark')->nullable();

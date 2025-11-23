@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function studentTasks()
     {
-        return $this->hasMany(Task::class, 'studentSlug', 'slug');
+        return $this->hasMany(TaskSubmission::class, 'studentSlug', 'slug');
     }
 
     // Tasks where this user is the instructor
@@ -87,7 +87,7 @@ class User extends Authenticatable
 
     public function assignmentsAsStudent()
     {
-        return $this->hasMany(Assignment::class, 'studentSlug', 'slug');
+        return $this->hasMany(AssignmentSubmission::class, 'studentSlug', 'slug');
     }
 
     // Inverse of Assignment::instructor()

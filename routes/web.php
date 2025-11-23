@@ -114,7 +114,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
            
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
-           
+        
+        });
+         Route::prefix('performance')->group(callback: function () {
+            Route::prefix('assignments')->group(callback: function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'courseassignments'])->name('student.course.assignments');
+                Route::post('/store', [AssignmentController::class, 'store'])->name('assignments.store');
+            });
+            Route::prefix('tasks')->group(function () {
+                Route::get('/{slug}', [CourseSubscriptionController::class, 'coursetasks'])->name('student.course.tasks');
+                Route::post('/store', [TaskController::class, 'store'])->name('tasks.store');
+            });
+            Route::prefix('overall')->group(function () {
+                Route::get('/progress/{slug}', [CourseSubscriptionController::class, 'courseprogress'])->name('student.course.progress');
+            });
+
         });
         Route::prefix('cart')->group(function () {
             Route::get('/view', [CoursesController::class, 'viewCart'])->name('cart.view');
@@ -122,22 +136,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
             Route::get('/remove/{id}', [CoursesController::class, 'removeFromCart'])->name('cart.remove');
             Route::get('/clear', [PaymentController::class, 'clear'])->name('cart.clear');
         });
-
-        Route::prefix('performance')->group(callback: function () {
-
-            Route::prefix('assignments')->group(callback: function () {
-                Route::get('/{slug}', [CourseSubscriptionController::class, 'courseassignments'])->name('student.course.assignments');
-            });
-            Route::prefix('tasks')->group(function () {
-                Route::get('/{slug}', [CourseSubscriptionController::class, 'coursetasks'])->name('student.course.tasks');
-            });
-            Route::prefix('overall')->group(function () {
-                Route::get('/progress/{slug}', [CourseSubscriptionController::class, 'courseprogress'])->name('student.course.progress');
-            });
-        
-        });
-
-        
     });
 
    
@@ -145,6 +143,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::get('/', [CoursesController::class, 'myCourses'])->name('myCourses');
         Route::get('/view/{slug}', [CourseSubscriptionController::class, 'show'])->name('mycourse.note.index');
         Route::get('read/{noteSlug}/{courseSlug}', action: [CourseSubscriptionController::class, 'viewLearning'])->name('mycourse.note.read');
+       
         // old
         Route::get('/{slug}', [CoursesController::class, 'startLearning'])->name('startLearning');
         Route::get('{noteSlug}/{courseSlug}', action: [CoursesController::class, 'viewLearning'])->name('note.viewLearning');
@@ -178,7 +177,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::prefix('performance')->group(callback: function () {
 
             Route::prefix('assignments')->group(callback: function () {
-                Route::get('/{slug}', [CourseSubscriptionController::class, 'assignments'])->name('note.course.assignments');
+                Route::get('/{noteSlug}', [CourseSubscriptionController::class, 'assignments'])->name('note.course.assignments');
+                Route::post('/store/{noteSlug}', [AssignmentController::class, 'store'])->name('store.course.assignments');
             });
             Route::prefix('tasks')->group(function () {
                 Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('note.course.tasks');

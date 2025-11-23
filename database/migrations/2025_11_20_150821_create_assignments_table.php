@@ -13,26 +13,17 @@ return new class extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->string('studentSlug')->nullable();
+            $table->string('slug');
             $table->string('instructorSlug')->nullable();
             $table->string('noteSlug')->nullable();
             $table->string('courseSlug')->nullable();
 
-            // Assignment details
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->date('due_date')->nullable();
-            $table->integer('max_score')->nullable();
-            $table->integer('score')->nullable();
-            $table->string('status')->default('pending'); // pending, submitted, graded
+            $table->text('description');
+            $table->date('due_date');
+            $table->integer('max_score');
             $table->text('remark')->nullable();
-
-            $table->text('answer_text')->nullable();   // written response
-            $table->string('file_path')->nullable();   // uploaded file reference
-            $table->integer('student)score')->nullable();      // graded score
             $table->string('submission_status')->default('submitted'); // submitted, graded, returned
-            $table->text('submission_remark')->nullable();
-
+            
             // Timestamps + soft deletes
             $table->timestamps();
             $table->softDeletes();

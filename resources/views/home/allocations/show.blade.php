@@ -175,10 +175,116 @@
                                 @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <h4 class="text-primary">Create Course Note</h4>
-                                        <a href="{{ route('note.create', [$course->slug, $allocation->slug]) }}" class="btn btn-primary">
-                                            <i class="bi bi-pencil-square me-1"></i> Create New Note
-                                        </a>
+                                        @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+                                            <a href="{{ route('note.create', [$course->slug, $allocation->slug]) }}" class="btn btn-primary">
+                                                <i class="bi bi-pencil-square me-1"></i> Create New Note
+                                            </a>
+                                        @endif
                                     </div>
+                                @endif
+                                                                @if(count($notes) > 0)
+                                   <div class="row g-4">
+                                        @foreach ($notes as $voll)
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                                                    <!-- Header -->
+                                                    <div class="card-header bg-gradient bg-primary text-white d-flex justify-content-between align-items-center">
+                                                        <h6 class="mb-0 fw-bold">
+                                                            <i class="bi bi-journal-text me-2"></i> {{ $voll->topic }}
+                                                        </h6>
+                                                        <span class="badge bg-light text-dark">
+                                                            {{ $voll->created_at->format('d M Y') }}
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Body -->
+                                                    <div class="card-body p-4">
+                                                        <!-- Info list -->
+                                                        <ul class="list-group list-group-flush mb-4">
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <span><i class="bi bi-person-badge me-2 text-primary"></i><strong>Instructor</strong></span>
+                                                                <span>{{ $voll->instructor->first_name . ' ' . $voll->instructor->last_name ?: "NULL" }}</span>
+                                                            </li>
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <span><i class="bi bi-folder-check me-2 text-success"></i><strong>Materials</strong></span>
+                                                                <span class="badge bg-success rounded-pill">{{ $voll->materials->count() ?? '0' }}</span>
+                                                            </li>
+                                                        </ul>
+
+                                                        <!-- Progress bars -->
+                                                        <div class="mb-3">
+                                                            <span class="text-muted small">Assignments Progress (All Students)</span>
+                                                            <div class="progress rounded-pill bg-light" style="height: 8px;">
+                                                                <div class="progress-bar bg-info" role="progressbar"
+                                                                    style="width: {{ $assignmentProgress }}%; min-width: 5px;"
+                                                                    aria-valuenow="{{ $assignmentProgress }}" aria-valuemin="0" aria-valuemax="100"
+                                                                    data-bs-toggle="tooltip" title="{{ $assignmentProgress }}% of assignments completed">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <span class="text-muted small">Tasks Progress (All Students)</span>
+                                                            <div class="progress rounded-pill bg-light" style="height: 8px;">
+                                                                <div class="progress-bar bg-success" role="progressbar"
+                                                                    style="width: {{ $taskProgress }}%; min-width: 5px;"
+                                                                    aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
+                                                                    data-bs-toggle="tooltip" title="{{ $taskProgress }}% of tasks completed">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Action button -->
+                                                        <div class="d-flex flex-column gap-2 mt-3">
+                                                            <!-- View Note Details -->
+                                                            
+                                                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor'])) 
+
+                                                                <a href="{{ route('course.note.show', $voll->slug) }}"
+                                                                class="btn btn-primary w-100 rounded-pill fw-semibold shadow-sm d-flex align-items-center justify-content-center">
+                                                                    <i class="bi bi-file-text me-2"></i> View Note Details
+                                                                </a>
+                                                            @endif
+
+                                                            <!-- Read Note Details -->
+                                                            <a href="{{ route('course.note.index', $course->slug) }}"
+                                                            class="btn btn-info w-100 rounded-pill fw-semibold shadow-sm d-flex align-items-center justify-content-center text-white">
+                                                                <i class="bi bi-book me-2"></i> Read Note Details
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+
+                                        @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']))
+                                            <div class="col-12">
+                                                <a href="{{ route('mycourse.note.index', $course->slug) }}"
+                                                class="btn btn-info text-white w-100 rounded-pill fw-bold shadow-sm">
+                                                    <i class="bi bi-pencil-square me-2"></i> View All Course Notes
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @else
+
+                                    <div class="col-12">
+                                        <div class="card border-danger text-center">
+                                            <div class="card-body">
+                                                <i class="ri-error-warning-fill fs-3 text-danger mb-2"></i>
+                                                <h5 class="card-title text-danger">No course note was Found</h5>
+                                                <p class="card-text text-muted">There are currently no course notes available for this view.</p>
+                                                @if($course->allocation)
+                                                    @if (Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
+                                                        <a href="{{ route('note.create', [$course->slug, $course->allocation->slug]) }}" class="btn btn-primary">
+                                                            <i class="bi bi-pencil-square me-1"></i> Create New Course Note
+                                                        </a>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 @endif
                             </div>
                             <div class="tab-pane fade" id="vStep3" role="tabpanel" aria-labelledby="vStep3-tab">
