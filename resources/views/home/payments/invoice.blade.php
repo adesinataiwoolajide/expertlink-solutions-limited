@@ -58,9 +58,6 @@
                                 <dt class="col-sm-5">Transaction Ref:</dt>
                                 <dd class="col-sm-7">{{ $payment->transactionReference }}</dd>
 
-                                <dt class="col-sm-5">Payment Ref:</dt>
-                                <dd class="col-sm-7">{{ $payment->paymentReference }}</dd>
-
                                 <dt class="col-sm-5">Method:</dt>
                                 <dd class="col-sm-7">
                                     @php $method = strtolower($payment->paymentMethod); @endphp
@@ -171,7 +168,7 @@
 
                     <!-- Actions -->
                     <div class="mt-4 text-end">
-                        <a href="{{ route('payment.index') }}" class="btn btn-info">Back to Payments</a>
+                        <a href="{{ route('payment.index') }}" class="btn btn-info text-white">Back to Payments</a>
                     </div>
                 </div>
             </div>
