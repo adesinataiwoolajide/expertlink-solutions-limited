@@ -77,10 +77,8 @@
 						</a>
 					</li>
 
-
-
-					<li class="">
-						<a href="">
+					<li class="{{ request()->routeIs('payment.index') ? 'active current-page' : '' }}">
+						<a href="{{ route('payment.index') }}">
 							<i class="ri-wallet-line"></i>
 							<span class="menu-text">My Payment History</span>
 						</a>
@@ -141,9 +139,13 @@
 							<span class="menu-text">Course Allocations</span>
 						</a>
 					</li>
-				@endif
-
-				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+					<li class="{{ request()->routeIs('payment.index') ? 'active current-page' : '' }}">
+						<a href="{{ route('payment.index') }}">
+							<i class="ri-wallet-line"></i>
+							<span class="menu-text">Payment History</span>
+						</a>
+					</li>
+				
 
 					<li class="{{ request()->routeIs('faq.index') ? 'active current-page' : '' }}">
 						<a href="{{ route('faq.index') }}">

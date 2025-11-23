@@ -46,6 +46,7 @@
                 <div class="tab-content border border-danger rounded p-4" id="tabs-with-badges-content">
                     <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
                         <div class="row gx-3">
+                            @if(Auth::user()->hasAnyRole(['Administrator','Instructortasks']))
                             <form action="{{ route('store.course.assignments',$note->slug)}}" method="POST" enctype="multipart/form-data">@csrf
 
                                 <input type="hidden" name="courseSlug" value="{{ $note->courseSlug }}">
@@ -76,6 +77,7 @@
                                     </div>
                                 </div>
                             </form>
+                            @endif
                         </div>
                         
                     </div>

@@ -22,13 +22,22 @@ class CourseSubscriptionController extends Controller
      */
     public function assignments($noteSlug)
     {
-        $note = CourseNotes::where('slug', $noteSlug)->firstOrFail();
+        $note = CourseNotes::where('slug', $noteSlug)->first();
+        if (!$note) {
+            return redirect()->back()->with("error", "Course details do not exist");
+        }
+        $user = Auth::user();
+        $query = null;
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = $note->assignments();
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $query = $note->assignments()->where('instructorSlug', $user->slug);
+        } else {
+            $query = $note->submissions()->where('studentSlug', $user->slug);
+        }
 
-        $assignments = $note->assignments()
-            ->where('studentSlug', Auth::user()->slug)
-            ->orderBy('created_at', 'desc')
-            ->paginate(100);
-        
+        $assignments = $query->orderBy('created_at', 'desc')->paginate(100);
+
         return view('home.assignments.create', compact('note', 'assignments'));
     }
 
@@ -64,24 +73,54 @@ class CourseSubscriptionController extends Controller
         return view('home.courses.progress', compact('course', 'assignmentProgress', 'taskProgress', 'overallProgress'));
     }
 
-      public function coursetasks($slug)
+      public function coursetasks($noteSlug)
     {
-        $course = Courses::where('slug', $slug)->firstOrFail();
-        $tasks = Task::where('courseSlug', $course->slug)
-            ->where('studentSlug', Auth::user()->slug)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        // $course = Courses::where('slug', $slug)->firstOrFail();
+        // $tasks = Task::where('courseSlug', $course->slug)
+        //     ->where('studentSlug', Auth::user()->slug)
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(20);
 
-        return view('home.courses.tasks', compact('course', 'tasks'));
+        // return view('home.courses.tasks', compact('course', 'tasks'));
+        // $note = CourseNotes::where('slug', $noteSlug)->first();
+        // if (!$note) {
+        //     return redirect()->back()->with("error", "Course details do not exist");
+        // }
+        // $user = Auth::user();
+        // $query = null;
+        // if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+        //     $query = $note->tasks();
+        // } elseif ($user->hasAnyRole(['Instructor'])) {
+        //     $query = $note->tasks()->where('instructorSlug', $user->slug);
+        // } else {
+        //     $query = $note->tasksubmissions()->where('studentSlug', $user->slug);
+        // }
+
+        // $assignments = $query->orderBy('created_at', 'desc')->paginate(100);
+
+        // return view('home.assignments.tasks', compact('note', 'assignments'));
     }
-    public function tasks($slug)
+    public function tasks($noteSlug)
     {
-        $note = CourseNotes::where('slug', $slug)->firstOrFail();
-        $tasks = $note->tasks()->where('studentSlug', Auth::user()->slug)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $note = CourseNotes::where('slug', $noteSlug)->first();
+        if (!$note) {
+            return redirect()->back()->with("error", "Course details do not exist");
+        }
+        $user = Auth::user();
+        $query = null;
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = $note->tasks();
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $query = $note->tasks()->where('instructorSlug', $user->slug);
+        } else {
+            $query = $note->tasksubmissions()->where('studentSlug', $user->slug);
+        }
+
+        $assignments = $query->orderBy('created_at', 'desc')->paginate(100);
 
         return view('home.assignments.tasks', compact('note', 'tasks'));
+
+        // return view('home.assignments.tasks', compact('note', 'tasks'));
     }
 
 

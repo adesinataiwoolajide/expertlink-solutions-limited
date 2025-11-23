@@ -18,6 +18,26 @@ class PaymentController extends Controller
         $this->model = new GeneralRepository($courseSubscription, $payment);
     }
 
+    public function index()
+    {
+        $user = Auth::user();
+
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = Payment::query();
+        } elseif ($user->hasAnyRole(['Student'])) {
+            $query = Payment::where('userSlug', $user->slug);
+        } else {
+            return view('errors.403')->with([
+                'message' => 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal'
+            ]);
+        }
+        $payments = $query->with('user', 'courseSubscriptions')->orderBy('created_at', 'desc')->get();
+        return view('home.payments.index', compact('payments', ));
+    }
+
+    public function show($slug){
+
+    }
     public function initializeMonnify(Request $request)
     {
         $auth = base64_encode(env('MONNIFY_API_KEY') . ':' . env('MONNIFY_SECRET_KEY'));
