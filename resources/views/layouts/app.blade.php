@@ -112,7 +112,7 @@
 
               <div class="app-brand-sm d-flex align-items-center">
                 <a href="index.html" class="d-lg-none d-md-block">
-                  <img src="{{ asset('elsAdmin/images/els.png')}}" class="logo" alt="" style="width: 100px; height: 100px;" />
+                  <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" class="logo" alt="" style="width: 150px; height: 100px;" />
                 </a>
               </div>
              

@@ -4,9 +4,10 @@
 		@csrf
 		<div class="auth-box border border-dark" style="width: ;">
 			
-            <a class="mb-4 d-flex">
+            {{-- <a class="mb-4 d-flex">
                 <img src="{{ asset('elsAdmin/images/els.png')}}" class="img-fluid login-logo" style="width: 40%; float: center;" />
-            </a>
+            </a> --}}
+			@include('layouts.logo')
 			<h4 class="my-4">Create an Account</h4>
 			@include('layouts.alert')
             <div class="mb-3">

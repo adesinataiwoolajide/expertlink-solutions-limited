@@ -3,7 +3,7 @@
     <!-- App brand starts -->
     <div class="app-brand">
 		<a href="{{ route('dashboard')}}">
-			<img src="{{ asset('elsAdmin/images/els.png')}}" class="logo" alt="" style="width: ; height:;">
+			<img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" class="logo" alt="" style="width: 200px ; height:;">
 		</a>
     </div>
     <!-- App brand ends -->

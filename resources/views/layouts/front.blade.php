@@ -21,7 +21,7 @@
                             <!-- brand logo -->
                             <div class="header__logo top-logo">
                                 <a href="./">
-                                    <img src="{{ asset('elsFront/images/logo/logo-dark.webp')}}" width="160" height="48" aria-label="Mitech Logo" class="img-fluid" alt="">
+                                    <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" width="100" height="48" aria-label="Expert Link Logo" class="img-fluid" alt="">
                                 </a>
                             </div>
 
@@ -216,7 +216,7 @@
                         <div class="row footer-widget-wrapper">
                             <div class="col-lg-4 col-md-6 col-sm-6 footer-widget">
                                 <div class="footer-widget__logo mb-30">
-                                    <img src="{{ asset('elsFront/images/logo/dark-logo-160x48.webp')}}" width="160" height="48" class="img-fluid" alt="">
+                                    <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" width="160" height="48" class="img-fluid" alt="">
                                 </div>
                                 <ul class="footer-widget__list">
                                     <li>58 Howard Street #2 San Francisco, CA 941</li>
@@ -313,7 +313,7 @@
                                 <!-- logo -->
                                 <div class="logo">
                                     <a href="./">
-                                        <img src="{{ asset('elsFront/images/logo/logo-dark.webp')}}" class="img-fluid" alt="">
+                                        <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" class="img-fluid" alt="">
                                     </a>
                                 </div>
                             </div>
