@@ -43,13 +43,20 @@ class CourseSubscriptionController extends Controller
 
      public function courseassignments($slug)
     {
-        $course = Courses::where('slug', $slug)->firstOrFail();
-
-        $assignments = Assignment::where('courseSlug', $course->slug)
-            ->where('studentSlug', Auth::user()->slug)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
-
+       $course = Courses::where('slug', $slug)->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->first();
+        if(!$course){
+            return redirect()->back()->with("error", "Course details does not exists");
+        }
+        $user = Auth::user();
+        $query = null;
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = $course->assignments();
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $query = $course->assignments()->where('instructorSlug', $user->slug);
+        } else {
+            $query = $course->submissions()->where('studentSlug', $user->slug);
+        }
+        $assignments = $query->with(['instructor', 'course', 'submissions'])->orderBy('created_at', 'desc')->paginate(100);
         return view('home.courses.assignments', compact('course', 'assignments'));
     }
 
