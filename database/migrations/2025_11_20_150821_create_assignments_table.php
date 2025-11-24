@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('courseSlug')->nullable();
 
             $table->text('description');
-            $table->date('due_date');
+            $table->text('due_date');
             $table->integer('max_score');
             $table->text('remark')->nullable();
             $table->string('submission_status')->default('submitted'); // submitted, graded, returned

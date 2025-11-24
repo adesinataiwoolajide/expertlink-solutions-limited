@@ -85,7 +85,6 @@ class CoursesController extends Controller
         return view('home.notes.reading', compact('course', 'myProgram', 'filePath'));
     }
 
-
     public function viewLearning($noteSlug, $courseSlug)
     {
         $notes = CourseNotes::where(['slug' => $noteSlug, 'courseSlug' => $courseSlug])->with('materials', 'allocation', 'instructor', 'course')->first();

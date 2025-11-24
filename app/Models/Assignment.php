@@ -13,14 +13,10 @@ class Assignment extends Model
     protected $primaryKey = 'id';
    
     protected $fillable = [
-        'slug', 'instructorSlug', 'noteSlug', 'courseSlug', 'title', 'description', 'due_date', 'max_score', 'status', 'remark'
+        'slug', 'instructorSlug', 'noteSlug', 'courseSlug', 'description', 'due_date', 'max_score', 'remark', 'submission_status'
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(User::class, 'studentSlug', 'slug');
-    }
-
+   
     public function instructor()
     {
         return $this->belongsTo(User::class, 'instructorSlug', 'slug');
@@ -37,7 +33,7 @@ class Assignment extends Model
     }
     public function submissions()
     {
-        return $this->hasMany(AssignmentSubmission::class, 'assignment_id');
+        return $this->hasMany(AssignmentSubmission::class, 'assignmentSlug');
     }
 
     public function scopeForStudent($query, $studentSlug = null)

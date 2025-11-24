@@ -27,6 +27,14 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-four"
+                            data-bs-toggle="tab" data-bs-target="#badge-content-four" type="button" role="tab"
+                            aria-controls="badge-content-four" aria-selected="false">
+                            <i class="ri-award-line me-2"></i> List of Assignments
+                            <span class="badge bg-info ms-2 rounded-pill">!</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-two"
                             data-bs-toggle="tab" data-bs-target="#badge-content-two" type="button" role="tab"
                             aria-controls="badge-content-two" aria-selected="false">
@@ -43,49 +51,140 @@
                         </button>
                     </li>
                 </ul>
+                @include('layouts.alert')
                 <div class="tab-content border border-danger rounded p-4" id="tabs-with-badges-content">
                     <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
                         <div class="row gx-3">
-                            @if(Auth::user()->hasAnyRole(['Administrator','Instructortasks']))
-                            <form action="{{ route('store.course.assignments',$note->slug)}}" method="POST" enctype="multipart/form-data">@csrf
+                            @if(Auth::user()->hasAnyRole(['Administrator','Instructor']))
+                                <form action="{{ route('store.course.assignments',$note->slug)}}" method="POST" enctype="multipart/form-data">@csrf
 
-                                <input type="hidden" name="courseSlug" value="{{ $note->courseSlug }}">
-                                <input type="hidden" name="noteSlug" value="{{ $note->slug }}">
-                                <div class="row">
-                                    <div class="mb-3 col-md-6">
-                                        <label class="form-label">Submission Due Date:</label>
-                                        <input type="text" class="form-control datepicker-time" name="due_date" placeholder="Enter the Topic" value="{{ old('due_date') }}" required>
-                                        <x-input-error :messages="$errors->get('due_date')" class="mt-2 text-danger" />
+                                    <input type="hidden" name="courseSlug" value="{{ $note->courseSlug }}">
+                                    <input type="hidden" name="noteSlug" value="{{ $note->slug }}">
+                                    <div class="row">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Submission Due Date:</label>
+                                            <input type="text" class="form-control datepicker-time" name="due_date" placeholder="Enter the Topic" value="{{ old('due_date') }}" required>
+                                            <x-input-error :messages="$errors->get('due_date')" class="mt-2 text-danger" />
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label">Assignment Score:</label>
+                                            <select data-placeholder="Select a score..." class="form-control select-icons" name="max_score" required>
+                                                <option value="{{ old('max_score') }}"> {{ old('max_score') ?? ' -- Select a score --'}}</option>
+                                                @for ($i = 1; $i <= 10; $i++)
+                                                    <option value="{{ $i }}"> {{ $i }} </option>
+                                                @endfor
+                                            </select>
+                                            <x-input-error :messages="$errors->get('max_score')" class="mt-2 text-danger" />
+                                        </div>
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Question:</label>
+                                            <textarea class="form-control summernote" name="description" id="content" required>{!! old('description') ?? "<p> Please enter the assignment contents here</p>" !!}</textarea>
+                                            <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
+                                        </div>
+                                        <div class="col-12 text-end mt-4">
+                                            <button type="submit" class="btn btn-primary">Save The Assignment</button>
+                                        </div>
                                     </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label class="form-label">Assignment Score:</label>
-                                        <select data-placeholder="Select a score..." class="form-control select-icons" name="score" required>
-                                            <option value="{{ old('score') }}"> {{ old('score') ?? ' -- Select a score --'}}</option>
-                                            @for ($i = 1; $i <= 10; $i++)
-                                                <option value="{{ $i }}"> {{ $i }} </option>
-                                            @endfor
-                                        </select>
-                                        <x-input-error :messages="$errors->get('score')" class="mt-2 text-danger" />
-                                    </div>
-                                    <div class="mb-3 col-md-12">
-                                        <label class="form-label">Question:</label>
-                                        <textarea class="form-control summernote" name="description" id="content" required>{!! old('description') ?? "<p> Please enter the assignment contents here</p>" !!}</textarea>
-                                        <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
-                                    </div>
-                                    <div class="col-12 text-end mt-4">
-                                        <button type="submit" class="btn btn-primary">Save The Assignment</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
                             @endif
                         </div>
                         
                     </div>
+                    <div class="tab-pane fade" id="badge-content-four" role="tabpanel" aria-labelledby="badge-tab-four">
+                         <div class="table-responsive">
+                            <table id="basicExample" class="table custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Question</th>
+                                        <th>Due Date</th>
+                                        <th>Total Grade</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($assignments as $index => $assignment)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td> <div class="text-dark">{!! $assignment->description !!}</div></td>
+                                        
+                                        <td>{{ $assignment->due_date }}</td>
+                                        <td>{{ $assignment->max_score }}</td>
+                                        <td>{{ $assignment->created_at }}
+                                            <br> By: {{ $assignment->instructor ? $assignment->instructor->first_name . ' ' . $assignment->instructor->last_name : 'NIL' }}
+                                        </td>
+                                        <td>
+                                           
+                                            @if(Auth::user()->hasAnyRole(['Administrator','Instructor']))
+                                                <a href="" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $assignment->slug }}">Edit</a>
+                                                <a href="" class="btn btn-outline-primary">Grade</a>
+                                                <div class="modal fade" id="basicModal-{{ $assignment->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="basicModalLabel">Edit Assignment {{ $assignment->slug }}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form action="{{ route('update.course.assignments',$assignment->slug)}}" method="POST" enctype="multipart/form-data">@csrf
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" name="courseSlug" value="{{ $note->courseSlug }}">
+                                                                    <input type="hidden" name="noteSlug" value="{{ $note->slug }}">
+                                                                    <div class="row">
+                                                                        <div class="mb-3 col-md-6">
+                                                                            <label class="form-label">Submission Due Date:</label>
+                                                                            <input type="text" class="form-control datepicker-time" name="due_date" placeholder="Enter the Topic" value="{{ old('due_date') ?? $assignment->due_date }}" required>
+                                                                            <x-input-error :messages="$errors->get('due_date')" class="mt-2 text-danger" />
+                                                                        </div>
+                                                                        <div class="mb-3 col-md-6">
+                                                                            <label class="form-label">Assignment Score:</label>
+                                                                            <select data-placeholder="Select a score..." class="form-control select-icons" name="max_score" required>
+                                                                                <option value="{{ old('max_score') ?? $assignment->max_score  }}"> {{ old('max_score') ?? $assignment->max_score  }}</option>
+                                                                                @for ($i = 1; $i <= 10; $i++)
+                                                                                    <option value="{{ $i }}"> {{ $i }} </option>
+                                                                                @endfor
+                                                                            </select>
+                                                                            <x-input-error :messages="$errors->get('max_score')" class="mt-2 text-danger" />
+                                                                        </div>
+                                                                        <div class="mb-3 col-md-12">
+                                                                            <label class="form-label">Question:</label>
+                                                                            <textarea class="form-control summernote" name="description" id="content" required>{!! old('description') ?? $assignment->description  !!}</textarea>
+                                                                            <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if(Auth::user()->hasAnyRole(['Administrator','Student']))
+                                                <a href="" class="btn btn-outline-primary">Submit Answer</a>
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-danger">No Assignment was found.</td>
+                                    </tr>
+                                @endforelse
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
                         <ul class="list-group">
                             @forelse($assignments as $assignment)
                                 <li class="list-group-item">
-                                    {{ $assignment->title }} - {{ $assignment->status }}
+                                    {{ $assignment->title }} - {{ $assignment->submission_status }}
                                 </li>
                             @empty
                                 <li class="list-group-item text-muted">No assignments submitted yet.</li>

@@ -182,6 +182,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
             Route::prefix('assignments')->group(callback: function () {
                 Route::get('/{noteSlug}', [CourseSubscriptionController::class, 'assignments'])->name('note.course.assignments');
                 Route::post('/store/{noteSlug}', [AssignmentController::class, 'store'])->name('store.course.assignments');
+                Route::post('/update/{slug}', [AssignmentController::class, 'update'])->name('update.course.assignments');
             });
             Route::prefix('tasks')->group(function () {
                 Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('note.course.tasks');

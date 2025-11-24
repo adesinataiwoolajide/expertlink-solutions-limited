@@ -36,7 +36,7 @@ class CourseSubscriptionController extends Controller
             $query = $note->submissions()->where('studentSlug', $user->slug);
         }
 
-        $assignments = $query->orderBy('created_at', 'desc')->paginate(100);
+        $assignments = $query->with(['instructor', 'course', 'submissions'])->orderBy('created_at', 'desc')->paginate(100);
 
         return view('home.assignments.create', compact('note', 'assignments'));
     }
