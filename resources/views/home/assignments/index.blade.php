@@ -39,6 +39,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('note.course.assignments',$assignment->noteSlug) }}" class="btn btn-info text-white">View</a>
+                                    <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-primary text-white">Submission</a>
                                 </td>
                             </tr>
 
