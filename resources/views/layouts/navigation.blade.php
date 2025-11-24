@@ -82,21 +82,27 @@
 						</a>
 					</li>
 
-					
-
 				@endif
+
+				<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
+					<a href="#!">
+						<i class="ri-file-list-3-line"></i>
+						<span class="menu-text">Course Assignments</span>
+					</a>
+					<ul class="treeview-menu">
+						<li class="{{ request()->routeIs('assignment.course.index') ? 'active' : '' }}">
+							<a href="{{ route('assignment.course.index') }}">View assignments</a>
+						</li>
+						<li class="{{ request()->routeIs('submission.course.index') ? 'active' : '' }}">
+							<a href="{{ route('submission.course.index') }}">View submissions</a>
+						</li>
+					</ul>
+				</li>
 
 				<li class="">
 					<a href="">
 							<i class="ri-pages-line"></i>
 						<span class="menu-text">Course Tasks</span>
-					</a>
-				</li>
-
-				<li class="{{ request()->routeIs('assignment.course.index') ? 'active current-page' : '' }}">
-					<a href="{{ route('assignment.course.index') }}">
-						<i class="ri-bar-chart-2-line"></i>
-						<span class="menu-text">Course Assignments</span>
 					</a>
 				</li>
 				

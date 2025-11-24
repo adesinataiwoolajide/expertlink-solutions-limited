@@ -185,13 +185,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
                 Route::post('/store/{noteSlug}', [AssignmentController::class, 'store'])->name('store.course.assignments');
                 Route::post('/update/{slug}', [AssignmentController::class, 'update'])->name('update.course.assignments');
 
-                Route::prefix('submissions')->group(callback: function () {
-                    Route::get('/', [AssignmentSubmissionController::class, 'index'])->name('submission.course.index');
-                    Route::get('/create/{slug}', [AssignmentSubmissionController::class, 'create'])->name('submission.course.create');
-                    Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'store'])->name('submission.course.store');
-                });
-
             });
+            
+            Route::prefix('submissions')->group(callback: function () {
+                Route::get('/', [AssignmentSubmissionController::class, 'index'])->name('submission.course.index');
+                Route::get('/create/{slug}', [AssignmentSubmissionController::class, 'create'])->name('submission.course.create');
+                Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'store'])->name('submission.course.store');
+            });
+
             Route::prefix('tasks')->group(function () {
                 Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('note.course.tasks');
             });

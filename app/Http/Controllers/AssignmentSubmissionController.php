@@ -21,15 +21,39 @@ class AssignmentSubmissionController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $query = null;
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = AssignmentSubmission::orderBy('created_at', 'desc')->paginate(400);
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $query =AssignmentSubmission::where('instructorSlug', $user->slug);
+        } else {
+            $query = AssignmentSubmission::where('studentSlug', $user->slug);
+        }
+        $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
+        return view('home.submissions.index', compact( 'assignments'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($slug)
     {
-        //
+        $user = Auth::user();
+        $query = Assignment::with(['instructor', 'course', 'submissions'])->where('slug', $slug);
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $assignment = $query->first();
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $assignment = $query->where('instructorSlug', $user->slug)->first();
+        } else {
+            $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
+            $assignment = $query->whereIn('courseSlug', $mySubs)->first();
+        }
+
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'No assignment was found.');
+        }
+        return view('home.submissions.create', compact( 'assignment'));
     }
 
     /**
@@ -43,9 +67,14 @@ class AssignmentSubmissionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AssignmentSubmission $assignmentSubmission)
+    public function show($slug)
     {
-        //
+        $assignment = AssignmentSubmission::where('slug', $slug)->with(['instructor', 'course', 'note', 'assignment', 'student'])->first();
+        if(!$assignment){
+            return redirect()->back()->with('error', 'No assignment was found.');
+        }
+        dd($assignment);
+
     }
 
     /**

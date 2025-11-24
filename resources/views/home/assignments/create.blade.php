@@ -168,7 +168,7 @@
                                                 @endif
 
                                                 @if(Auth::user()->hasAnyRole(['Administrator','Student']))
-                                                    <a href="" class="btn btn-outline-primary">Submit Answer</a>
+                                                    <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-outline-primary">Submit Answer</a>
                                                 @endif
                                             </td>
                                         </tr>
