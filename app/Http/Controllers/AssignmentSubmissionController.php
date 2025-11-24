@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssignmentSubmission;
+use App\Models\{Courses, Assignment, CourseSubscription,CourseNotes, AssignmentSubmission};
 use Illuminate\Http\Request;
-
+use App\Repositories\GeneralRepository;
+use Illuminate\Support\Facades\{Auth};
 class AssignmentSubmissionController extends Controller
 {
+    protected $model;
+    public function __construct(AssignmentSubmission $assignment)
+    {
+        $this->middleware('auth');
+        $this->middleware('role:Administrator|Admin|Instructor|Student');
+
+        $this->model = new GeneralRepository($assignment);
+    }
     /**
      * Display a listing of the resource.
      */

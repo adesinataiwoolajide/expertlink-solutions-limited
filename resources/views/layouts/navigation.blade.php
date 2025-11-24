@@ -63,20 +63,7 @@
 						</a>
 					</li>
 
-					<li class="">
-						<a href="">
-							 <i class="ri-pages-line"></i>
-							<span class="menu-text">My Tasks</span>
-						</a>
-					</li>
-
-					<li class="">
-						<a href="">
-							<i class="ri-bar-chart-2-line"></i>
-							<span class="menu-text">My Assignments</span>
-						</a>
-					</li>
-
+					
 					<li class="{{ request()->routeIs('payment.index') ? 'active current-page' : '' }}">
 						<a href="{{ route('payment.index') }}">
 							<i class="ri-wallet-line"></i>
@@ -95,21 +82,23 @@
 						</a>
 					</li>
 
-					<li class="">
-						<a href="">
-							 <i class="ri-pages-line"></i>
-							<span class="menu-text">Course Tasks</span>
-						</a>
-					</li>
-
-					<li class="">
-						<a href="">
-							<i class="ri-bar-chart-2-line"></i>
-							<span class="menu-text">Course Assignments</span>
-						</a>
-					</li>
+					
 
 				@endif
+
+				<li class="">
+					<a href="">
+							<i class="ri-pages-line"></i>
+						<span class="menu-text">Course Tasks</span>
+					</a>
+				</li>
+
+				<li class="{{ request()->routeIs('assignment.course.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('assignment.course.index') }}">
+						<i class="ri-bar-chart-2-line"></i>
+						<span class="menu-text">Course Assignments</span>
+					</a>
+				</li>
 				
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 

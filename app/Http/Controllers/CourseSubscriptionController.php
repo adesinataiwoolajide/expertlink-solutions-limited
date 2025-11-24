@@ -28,16 +28,20 @@ class CourseSubscriptionController extends Controller
         }
         $user = Auth::user();
         $query = null;
+        $course = Courses::where('slug', $note->courseSlug)->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->first();
+        
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
             $query = $note->assignments();
+            $submission = $note->submissions()->orderBy('created_at', 'desc')->paginate(100);
         } elseif ($user->hasAnyRole(['Instructor'])) {
             $query = $note->assignments()->where('instructorSlug', $user->slug);
+            $submission = $note->submissions()->where('instructorSlug', $user->slug)->orderBy('created_at', 'desc')->paginate(100);
         } else {
-            $query = $note->submissions()->where('studentSlug', $user->slug);
+            $mySubs = $course->courseSubscriptions()->where(['userSlug' => $user->slug, 'courseSlug' => $note->courseSlug])->first();
+            $query = $note->assignments()->where('courseSlug', $mySubs->courseSlug);
+            $submission = $note->submissions()->where('studentSlug', $user->slug)->paginate(100);
         }
-
         $assignments = $query->with(['instructor', 'course', 'submissions'])->orderBy('created_at', 'desc')->paginate(100);
-
         return view('home.assignments.create', compact('note', 'assignments'));
     }
 

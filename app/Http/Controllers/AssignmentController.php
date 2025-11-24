@@ -23,7 +23,19 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        //
+        
+        $user = Auth::user();
+        $query = null;
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            $query = Assignment::orderBy('created_at', 'desc')->paginate(400);
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            $query =Assignment::where('instructorSlug', $user->slug);;
+        } else {
+            $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
+            $query = Assignment::whereIn('courseSlug', $mySubs);
+        }
+        $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
+        return view('home.assignments.index', compact( 'assignments'));
     }
 
     /**

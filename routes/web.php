@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
-    FaqController, VerificationController, CourseSubscriptionController, TaskController, AssignmentController};
+    FaqController, VerificationController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear-cache', function () {
@@ -180,9 +180,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
         Route::prefix('performance')->group(callback: function () {
 
             Route::prefix('assignments')->group(callback: function () {
+                Route::get('/', [AssignmentController::class, 'index'])->name('assignment.course.index');
                 Route::get('/{noteSlug}', [CourseSubscriptionController::class, 'assignments'])->name('note.course.assignments');
                 Route::post('/store/{noteSlug}', [AssignmentController::class, 'store'])->name('store.course.assignments');
                 Route::post('/update/{slug}', [AssignmentController::class, 'update'])->name('update.course.assignments');
+
+                Route::prefix('submissions')->group(callback: function () {
+                    Route::get('/', [AssignmentSubmissionController::class, 'index'])->name('submission.course.index');
+                    Route::get('/create/{slug}', [AssignmentSubmissionController::class, 'create'])->name('submission.course.create');
+                    Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'store'])->name('submission.course.store');
+                });
+
             });
             Route::prefix('tasks')->group(function () {
                 Route::get('/{slug}', [CourseSubscriptionController::class, 'tasks'])->name('note.course.tasks');

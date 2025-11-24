@@ -57,7 +57,6 @@
                         <div class="row gx-3">
                             @if(Auth::user()->hasAnyRole(['Administrator','Instructor']))
                                 <form action="{{ route('store.course.assignments',$note->slug)}}" method="POST" enctype="multipart/form-data">@csrf
-
                                     <input type="hidden" name="courseSlug" value="{{ $note->courseSlug }}">
                                     <input type="hidden" name="noteSlug" value="{{ $note->slug }}">
                                     <div class="row">
