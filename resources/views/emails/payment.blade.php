@@ -14,11 +14,11 @@
                     
                     <!-- Header -->
                     <tr>
-                        <td style="padding:20px; background-color:#203864; color:#ffffff;">
+                        <td style="padding:20px; background-color:; color:#ffffff;">
                             <table width="100%">
                                 <tr>
                                     <td align="left" style="vertical-align:middle;">
-                                        <img src="{{ asset('elsAdmin/images/els.png')}}" alt="Company Logo" width="80" height="80" style="display:block; border:0; outline:none; text-decoration:none;">
+                                        <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" alt="Company Logo" width="" height="80" style="display:block; border:0; outline:none; text-decoration:none;">
                                     </td>
                                     <td align="right" style="vertical-align:middle; text-align:right;">
                                         <h2 style="margin:0; font-size:18px; color:#ffffff;">Invoice #{{ $payment->paymentReference }}</h2>
@@ -29,12 +29,11 @@
                         </td>
                     </tr>
 
-                    <!-- Payment & User Details -->
                     <tr>
                         <td style="padding:20px;">
                             <table width="100%" cellspacing="0" cellpadding="0" border="0">
                                 <tr>
-                                    <!-- Payment Details -->
+                                    
                                     <td width="50%" style="vertical-align:top; padding-right:10px;">
                                         <h3 style="margin:0 0 10px; font-size:14px; border-bottom:1px solid #ddd; padding-bottom:5px;">Payment Details</h3>
                                         <p style="margin:4px 0; font-size:13px;"><strong>Total Amount:</strong> {{ $payment->currencyCode }} {{ number_format($payment->totalAmount, 2) }}</p>
@@ -45,7 +44,6 @@
                                         <p style="margin:4px 0; font-size:13px;"><strong>Status:</strong> {{ ucfirst($payment->paymentStatus) }}</p>
                                     </td>
 
-                                    <!-- User Details -->
                                     <td width="50%" style="vertical-align:top; padding-left:10px;">
                                         <h3 style="margin:0 0 10px; font-size:14px; border-bottom:1px solid #ddd; padding-bottom:5px;">User Details</h3>
                                         <p style="margin:4px 0; font-size:13px;"><strong>Name:</strong> {{ $payment->user?->first_name }} {{ $payment->user?->last_name }}</p>

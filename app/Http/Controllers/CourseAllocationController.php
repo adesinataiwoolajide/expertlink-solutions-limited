@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\{Programs, Courses, CourseAllocation, CourseAllocationHistories, User, CourseNotes};
 use App\Http\Requests\{StoreCourseAllocationRequest, UpdateCourseAllocationRequest};
-use Illuminate\Support\Facades\{Auth};
+use Illuminate\Support\Facades\{Auth, Mail};
 use App\Repositories\GeneralRepository;
 use Illuminate\Http\Request;
+use App\Mail\{CourseAllocationNotification};
 
 class CourseAllocationController extends Controller
 {
@@ -68,6 +69,10 @@ class CourseAllocationController extends Controller
         ]);
         createCourseAllocationHistory($slug, $userSlug, $userSlug);
         createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
+        $details = ["allocation" => CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $slug)->first()];
+        $receive = User::where('slug', $userSlug)->first();
+        $email = $receive->email;
+        Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new CourseAllocationNotification ($details));
         return redirect()->route('allocation.view',$slug)->with('success', 'Course successfully allocated.');
 
     }
@@ -112,7 +117,7 @@ class CourseAllocationController extends Controller
     public function update(UpdateCourseAllocationRequest $request, $slug)
     {
         $request->user()->fill($request->validated());
-        $course = CourseAllocation::where(['slug' => $slug])->first();
+        $course = CourseAllocation::where(['slug' => $slug])->with(['user', 'course', 'program', 'allocationHistory'])->first();
         if (!$course) {
             return redirect()->back()->with('error', 'No record was found for this course allocation.');
         }
@@ -122,6 +127,10 @@ class CourseAllocationController extends Controller
         CourseAllocation::where(['slug' => $slug])->update(['userSlug' => $userSlug,]);
         createLog("Updated Course Allocation with: $slug for $courseSlug to $userSlug Successfully");
         createCourseAllocationHistory($slug, $oldUserSlug, $userSlug);
+        $details = ["allocation" => $course];
+        $receive = User::where('slug', $userSlug)->first();
+        $email = $receive->email;
+        Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new CourseAllocationNotification ($details));
         return redirect()->route('allocation.view',$slug)->with('success', 'You have updated the Course Allocation successfully.');
     }
 
