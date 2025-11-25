@@ -17,11 +17,11 @@
                             <table width="100%">
                                 <tr>
                                     <td align="left" style="vertical-align:middle;">
-                                        <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" alt="Company Logo" width="" height="80" style="display:block; border:0; outline:none; text-decoration:none;">
+                                        <img src="<?php echo e(asset('elsAdmin/auth-access/els-logo.png')); ?>" alt="Company Logo" width="" height="80" style="display:block; border:0; outline:none; text-decoration:none;">
                                     </td>
                                     <td align="right" style="vertical-align:middle; text-align:right;">
                                         <h2 style="margin:0; font-size:18px; color:#ffffff;">Course Allocation</h2>
-                                        <p style="margin:0; font-size:12px; color:#dbe5ea;">{{ now()->format('d M, Y') }}</p>
+                                        <p style="margin:0; font-size:12px; color:#dbe5ea;"><?php echo e(now()->format('d M, Y')); ?></p>
                                     </td>
                                 </tr>
                             </table>
@@ -31,7 +31,7 @@
                     <!-- Greeting -->
                     <tr>
                         <td style="padding:20px; font-size:14px; color:#333;">
-                            <p style="margin:0 0 15px;">Dear <strong>{{ $allocation->user?->first_name }} {{ $allocation->user?->last_name }}</strong>,</p>
+                            <p style="margin:0 0 15px;">Dear <strong><?php echo e($allocation->user?->first_name); ?> <?php echo e($allocation->user?->last_name); ?></strong>,</p>
                             <p style="margin:0 0 15px;">
                                 We are pleased to inform you that a new course has been allocated to you. 
                                 Below are the details of your allocation:
@@ -46,15 +46,15 @@
                                 <tbody>
                                     <tr>
                                         <td style="font-weight:bold; width:30%;">Course Title:</td>
-                                        <td>{{ $allocation->course?->course_name ?? 'N/A' }}</td>
+                                        <td><?php echo e($allocation->course?->course_name ?? 'N/A'); ?></td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight:bold;">Program:</td>
-                                        <td>{{ $allocation->program?->program_name ?? 'N/A' }}</td>
+                                        <td><?php echo e($allocation->program?->program_name ?? 'N/A'); ?></td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight:bold;">Allocation Date:</td>
-                                        <td>{{ $allocation->created_at->format('d M, Y') }}</td>
+                                        <td><?php echo e($allocation->created_at->format('d M, Y')); ?></td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight:bold;">Allocated By:</td>
@@ -68,7 +68,7 @@
                     <!-- Footer -->
                     <tr>
                         <td style="padding:20px; text-align:center;">
-                            <a href="{{ route('login') }}" 
+                            <a href="<?php echo e(route('login')); ?>" 
                             style="display:inline-block; background-color:#203864; color:#ffffff; 
                                     padding:12px 24px; font-size:14px; font-weight:bold; 
                                     text-decoration:none; border-radius:4px;">
@@ -91,4 +91,4 @@
     </table>
 
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\expertlink_solutions\resources\views/emails/allocations.blade.php ENDPATH**/ ?>
