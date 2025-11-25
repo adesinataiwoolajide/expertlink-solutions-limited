@@ -191,6 +191,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']],
                 Route::get('/', [AssignmentSubmissionController::class, 'index'])->name('submission.course.index');
                 Route::get('/create/{slug}', [AssignmentSubmissionController::class, 'create'])->name('submission.course.create');
                 Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'store'])->name('submission.course.store');
+                Route::post('/updating/{submissionSlug}', [AssignmentSubmissionController::class, 'update'])->name('submission.course.update');
             });
 
             Route::prefix('tasks')->group(function () {

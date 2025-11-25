@@ -11,7 +11,7 @@ class AssignmentSubmission extends Model
     protected $table = 'assignment_submissions';
     protected $fillable = [
         'assignmentSlug', 'studentSlug','answer_text', 'file_path','student_score', 'submission_status', 'submission_remark',
-        'noteSlug', 'instructorSlug', 'courseSlug', 'status'
+        'noteSlug', 'instructorSlug', 'courseSlug', 'status', 'slug'
     ];
 
     public function instructor()

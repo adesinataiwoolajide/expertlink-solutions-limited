@@ -6,6 +6,8 @@ use App\Models\{Courses, Assignment, CourseSubscription,CourseNotes, AssignmentS
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 use Illuminate\Support\Facades\{Auth};
+use App\Http\Requests\{StoreAssignmentSubmissionRequest, UpdateAssignmentSubmissionRequest};
+
 class AssignmentSubmissionController extends Controller
 {
     protected $model;
@@ -53,15 +55,29 @@ class AssignmentSubmissionController extends Controller
         if (!$assignment) {
             return redirect()->back()->with('error', 'No assignment was found.');
         }
-        return view('home.submissions.create', compact( 'assignment'));
+
+        $submitted = $assignment->submissions()->where('studentSlug', Auth::user()->slug)->get();
+        
+        return view('home.submissions.create', compact( 'assignment', 'submitted'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAssignmentSubmissionRequest $request, $slug)
     {
-        //
+        $request->user()->fill($request->validated());
+        $courseSlug = $request->input('courseSlug');
+        $noteSlug = $request->input('noteSlug');
+        $instructorSlug = $request->input('instructorSlug');
+        $answer_text = $request->input('answer_text');
+        $submission = AssignmentSubmission::create([
+            'slug' => RandomString(9),'assignmentSlug' => $slug,'studentSlug' => $request->user()->slug, // current user
+            'answer_text' => $answer_text, 'student_score' => 0,  'submission_status'=> 'submitted',
+            'submission_remark'=> 'Pending', 'noteSlug' => $noteSlug, 
+            'instructorSlug' => $instructorSlug, 'courseSlug' => $courseSlug, 'status' => 'submitted',
+        ]);
+        return redirect() ->back()->with('success', 'Assignment submitted successfully!');
     }
 
     /**
@@ -88,9 +104,19 @@ class AssignmentSubmissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AssignmentSubmission $assignmentSubmission)
+    public function update(UpdateAssignmentSubmissionRequest $request, $submissionSlug)
     {
-        //
+        $request->user()->fill($request->validated());
+        $submission = AssignmentSubmission::where('slug', $submissionSlug)->first();
+        if(!$submission){
+            return redirect()->back()->with('error', 'No assignment submission was found.');
+        }
+        $answer_text = $request->input('answer_text');
+        if($submission->update(['answer_text' => $answer_text])){
+            return redirect() ->back()->with('success', 'Assignment updated successfully!');
+        }else{
+            return redirect()->back()->with("error", "Network Failure, Please try again later");
+        }
     }
 
     /**

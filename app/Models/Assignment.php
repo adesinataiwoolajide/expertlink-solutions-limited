@@ -33,7 +33,7 @@ class Assignment extends Model
     }
     public function submissions()
     {
-        return $this->hasMany(AssignmentSubmission::class, 'assignmentSlug');
+        return $this->hasMany(AssignmentSubmission::class, 'assignmentSlug', 'slug');
     }
 
     public function scopeForStudent($query, $studentSlug = null)
