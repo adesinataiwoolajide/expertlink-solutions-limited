@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
 use Illuminate\Support\Facades\{Redirect, Auth, Gate, Mail, Hash};
 use Illuminate\Validation\Rules;
-use App\Mail\{UserRegistrationNotification};
+use App\Mail\{UserRegistrationNotification, ContactUs};
 
 class WebsiteController extends Controller
 {
@@ -79,6 +79,29 @@ class WebsiteController extends Controller
     {
         
         return view('website.contact');
+    }
+
+    public function sendContactUs(Request $request)
+    {
+        $name = $request->input("full_name");
+        $email = $request->input("email");
+        $message = $request->input("message");
+        $phone_number = $request->input("phone_number");
+        $subject = $request->input("subject");
+
+        $receiver = 'info@expertlinksolutions.org';
+        $details = ['full_name' => $name, 'email' => $email, 'message' => $message, 'subject' => $subject, 'phone_number' => $phone_number];
+        try{
+            Mail::to($receiver)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new ContactUs ($details));
+            return redirect()->route('website.contactus')->with(
+                ["success" => " We have received your message Successfully"
+            ]);
+        }catch(PDOException $e){
+
+            return redirect()->route('website.contact')->with(
+                ["error" => " Network Failure, Please try again later "
+            ]);
+        }
     }
 
     public function teams()

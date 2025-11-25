@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
-    FaqController, VerificationController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController};
+    FaqController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController};
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\VerificationController;
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
@@ -29,6 +29,7 @@ Route::post('/Check-Phone', [WebsiteController::class, 'checkPhone'])->name('Che
 Route::get('/', [WebsiteController::class, 'index'])->name('website');
 Route::get('/aboutus', [WebsiteController::class, 'about'])->name('website.aboutus');
 Route::get('/contactus', [WebsiteController::class, 'contact'])->name('website.contactus');
+Route::post('/sendContactUs', [WebsiteController::class, 'sendContactUs'])->name(name: 'website.sendContactUs');
 Route::get('/faq', [WebsiteController::class, 'faq'])->name('website.faq');
 Route::get('/blogs', [WebsiteController::class, 'blog'])->name('website.blog');
 Route::get('/partners', [WebsiteController::class, 'partners'])->name('website.partner');

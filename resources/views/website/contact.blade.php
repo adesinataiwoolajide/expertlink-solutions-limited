@@ -33,22 +33,42 @@
                         <div class="col-lg-6 col-lg-6">
                             <div class="contact-form-wrap">
 
-                                
-                                <form id="contact-form" action="" method="post">
+                                @include('layouts.alert')
+                                <form id="" method="POST" action="{{ route('website.sendContactUs') }}">
+                                    @csrf
                                     <div class="contact-form">
                                         <div class="contact-input">
                                             <div class="contact-inner">
-                                                <input name="con_name" type="text" placeholder="Name *" required>
+                                                <input name="full_name" type="text" placeholder="Your Full Name *" required value="{{ old('full_name') }}">
+                                                @if ($errors->has('full_name'))
+                                                    <span style="color:red">{{ $errors->first('full_name') }}</span>
+                                                @endif
                                             </div>
                                             <div class="contact-inner">
-                                                <input name="con_email" type="email" placeholder="Email *" required>
+                                                <input name="email" type="email" placeholder="Your Email *" required value="{{ old('email') }}">
+                                                @if ($errors->has('email'))
+                                                    <span style="color:red">{{ $errors->first('email') }}</span>
+                                                @endif
+                                            </div>
+                                       
+                                            <div class="contact-inner">
+                                                <input name="subject" type="text" placeholder="Subject *" required value="{{ old('subject') }}">
+                                                @if ($errors->has('subject'))
+                                                    <span style="color:red">{{ $errors->first('subject') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="contact-inner">
+                                                <input name="phone_number" type="number" placeholder="Phone Number *" required value="{{ old('phone_number') }}">
+                                                @if ($errors->has('phone_number'))
+                                                    <span style="color:red">{{ $errors->first('phone_number') }}</span>
+                                                @endif
                                             </div>
                                         </div>
-                                        <div class="contact-inner">
-                                            <input name="con_subject" type="text" placeholder="Subject *" required>
-                                        </div>
                                         <div class="contact-inner contact-message">
-                                            <textarea name="con_message" placeholder="Please describe what you need." required></textarea>
+                                            <textarea name="message" placeholder="Please describe what you need." required>{{ old('message') }}</textarea>
+                                            @if ($errors->has('message'))
+                                                <span style="color:red">{{ $errors->first('message') }}</span>
+                                            @endif
                                         </div>
                                         <div class="submit-btn mt-20">
                                             <button class="ht-btn ht-btn-md" type="submit">Send message</button>
@@ -62,7 +82,7 @@
                 </div>
             </div>
             
-            <div class="contact-us-info-wrappaer section-space--pb_100">
+            {{-- <div class="contact-us-info-wrappaer section-space--pb_100">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-md-6">
@@ -98,7 +118,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="cta-image-area_one section-space--ptb_80 cta-bg-image_two">
                 <div class="container">
                     <div class="row align-items-center">

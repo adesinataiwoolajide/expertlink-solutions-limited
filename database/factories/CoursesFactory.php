@@ -4683,7 +4683,7 @@ class CoursesFactory extends Factory
             $courseData = [
                 'slug' => RandomString(9),
                 'course_name' => $courseName,
-                'banner' => 'els.png',
+                'banner' => 'els-logo.png',
                 'user_id' => 1,
                 'programSlug' => $program->slug,
                 'basic_requirements' => $this->faker->paragraph(),
