@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\{CourseSubscription,Payment};
 use Illuminate\Http\Request;
 use Http;
-use Illuminate\Support\Facades\{Auth};
+use Illuminate\Support\Facades\{Auth, Mail};
 use App\Repositories\GeneralRepository;
+use App\Mail\{PaymentNotification};
 
 class PaymentController extends Controller
 {
@@ -125,6 +126,9 @@ class PaymentController extends Controller
                 }
                 $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
                 session()->forget('cart');
+                $details = ["payment" => Payment::where('transactionReference', $paymentSlug)->with('user', 'courseSubscriptions')->first()];
+                $email = Auth::user()->email;
+                Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new PaymentNotification ($details));
                 return redirect($redirectRoute)->with('success', 'Payment completed successfully.');
             }
             return redirect()->back()->with('error', 'Payment verification failed.');

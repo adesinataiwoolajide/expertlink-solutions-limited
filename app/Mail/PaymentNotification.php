@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ContactUs extends Mailable implements ShouldQueue
+class PaymentNotification extends Mailable implements ShouldQueue
 {
    
     use Queueable, SerializesModels;
@@ -22,15 +22,14 @@ class ContactUs extends Mailable implements ShouldQueue
     {
         $this->details = $details;
     }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Contact Us Notification',
-            from: new Address('info@expertlinksolutions.org', 'Contact Us')
+            subject: 'Payment Notification',
+            from: new Address('info@expertlinksolutions.org', 'Payment Team')
         );
     }
 
@@ -40,9 +39,9 @@ class ContactUs extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view:  'emails.contact-us',
+            view:  'emails.payment',
             with: [
-                'details' => $this->details,
+                'payment' => $this->details['payment']
             ]
         );
     }
