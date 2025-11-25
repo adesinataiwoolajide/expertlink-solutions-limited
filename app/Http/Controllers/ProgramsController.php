@@ -145,7 +145,7 @@ class ProgramsController extends Controller
             return redirect()->back()->with("error", "Program details do not exist");
         }
         $program->delete(); // This performs a soft delete
-        return redirect()->back()->with("success", "Program deleted successfully");
+        return redirect()->route('program.index')->with("success", "Program deleted successfully");
     }
 
     public function restore($slug)

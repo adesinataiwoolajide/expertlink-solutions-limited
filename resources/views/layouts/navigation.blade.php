@@ -47,32 +47,6 @@
 					</li>
 				@endif
 
-				@if (Auth::user()->hasAnyRole(['Student']))
-
-					<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
-						<a href="{{ route('course.index') }}">
-							<i class="ri-book-open-line"></i>
-							<span class="menu-text">Available Courses</span>
-						</a>
-					</li>
-
-					<li class="{{ request()->routeIs('myCourses') ? 'active current-page' : '' }}">
-						<a href="{{ route('myCourses') }}">
-							<i class="ri-file-list-3-line"></i>
-							<span class="menu-text">My Learnings</span>
-						</a>
-					</li>
-
-					
-					<li class="{{ request()->routeIs('payment.index') ? 'active current-page' : '' }}">
-						<a href="{{ route('payment.index') }}">
-							<i class="ri-wallet-line"></i>
-							<span class="menu-text">My Payment History</span>
-						</a>
-					</li>
-
-				@endif
-
 				@if (Auth::user()->hasAnyRole(['Instructor']))
 
 					<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
@@ -84,20 +58,7 @@
 
 				@endif
 
-				<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
-					<a href="#!">
-						<i class="ri-file-list-3-line"></i>
-						<span class="menu-text">Course Assignments</span>
-					</a>
-					<ul class="treeview-menu">
-						<li class="{{ request()->routeIs('assignment.course.index') ? 'active' : '' }}">
-							<a href="{{ route('assignment.course.index') }}">View assignments</a>
-						</li>
-						<li class="{{ request()->routeIs('submission.course.index') ? 'active' : '' }}">
-							<a href="{{ route('submission.course.index') }}">View submissions</a>
-						</li>
-					</ul>
-				</li>
+				
 				
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 
@@ -151,6 +112,7 @@
 
 				@endif
 			@endif
+
 			
 			<li class="{{ request()->routeIs('user.show') ? 'active current-page' : '' }}">
 				<a href="{{ route('user.show', Auth::user()->slug) }}">
@@ -158,6 +120,48 @@
 					<span class="menu-text">My Profile</span>
 				</a>
 			</li>
+
+			<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
+					<a href="#!">
+						<i class="ri-file-list-3-line"></i>
+						<span class="menu-text">Course Assignments</span>
+					</a>
+					<ul class="treeview-menu">
+						<li class="{{ request()->routeIs('assignment.course.index') ? 'active' : '' }}">
+							<a href="{{ route('assignment.course.index') }}">View assignments</a>
+						</li>
+						<li class="{{ request()->routeIs('submission.course.index') ? 'active' : '' }}">
+							<a href="{{ route('submission.course.index') }}">View submissions</a>
+						</li>
+					</ul>
+				</li>
+			
+			@if (Auth::user()->hasAnyRole(['Student']))
+
+				<li class="{{ request()->routeIs('course.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('course.index') }}">
+						<i class="ri-book-open-line"></i>
+						<span class="menu-text">Available Courses</span>
+					</a>
+				</li>
+
+				<li class="{{ request()->routeIs('myCourses') ? 'active current-page' : '' }}">
+					<a href="{{ route('myCourses') }}">
+						<i class="ri-file-list-3-line"></i>
+						<span class="menu-text">My Learnings</span>
+					</a>
+				</li>
+
+				
+				<li class="{{ request()->routeIs('payment.index') ? 'active current-page' : '' }}">
+					<a href="{{ route('payment.index') }}">
+						<i class="ri-wallet-line"></i>
+						<span class="menu-text">My Payment History</span>
+					</a>
+				</li>
+
+			@endif
+
 			<li class="{{ request()->routeIs('signout') ? 'active current-page' : '' }}">
 				<a href="{{ route('signout') }}">
 					<i class="ri-logout-box-line"></i>

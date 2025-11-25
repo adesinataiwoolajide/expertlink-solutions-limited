@@ -36,6 +36,18 @@
                             </button>
                         </li>
                         <li class="nav-item mb-3" role="presentation">
+                            <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
+                                data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">1</span>
+                                    <div class="ms-2">
+                                        <span class="step-title fw-semibold d-block">Edit Program Info</span>
+                                        <small>Update Program details</small>
+                                    </div>
+                                </div>
+                            </button>
+                        </li>
+                        <li class="nav-item mb-3" role="presentation">
                             <button type="button" class="nav-link w-100 text-start" id="vStep2-tab"
                                 data-bs-toggle="pill" data-bs-target="#vStep2" role="tab" aria-controls="vStep2"
                                 aria-selected="false">
@@ -51,31 +63,9 @@
                        
                     </ul>
                     <div class="mb-3 col-md-12">
-                        <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
-                        @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
-                            <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
-                                <span class="badge bg-danger"> Delete </span> 
-                            </a>
-                       
-                            <div class="modal fade" id="deleteModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $program->slug }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-danger">
-                                            <h5 class="modal-title" id="deleteModalLabel-{{ $program->slug }}">Confirm Deletion</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete <strong>{{ $program->program_name }}</strong>? This action cannot be undone.
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <a href="{{ route('program.delete', $program->slug) }}" class="btn btn-danger">Yes, Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-
-                        @endif
+                        <img src="{{ asset('program-banner/' . $program->banner) }}" 
+                            class="img-fluid login-logo" style="width: auto; height: 200px;" 
+                            alt="Program Banner" />
                     </div>
 
                 </div>
@@ -83,6 +73,51 @@
                     <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                         
                         <div class="tab-pane fade show active" id="vStep1" role="tabpanel" aria-labelledby="vStep1-tab">
+                           <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="text-primary">{{ $program->program_name ?? '' }} Details</h6>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label fw-bold">Program Name:</label>
+                                    <p class="form-control-plaintext">{{ $program->program_name }}</p>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label fw-bold">Program Description:</label>
+                                    <p class="form-control-plaintext">{!! $program->description ?? 'NULL' !!}</p>
+                                     @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                        <!-- Trigger button -->
+                                        <button type="button" 
+                                                class="btn btn-danger border-0" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal-{{ $program->slug }}">
+                                            Delete Program
+                                        </button>
+
+                                        <!-- Delete confirmation modal -->
+                                        <div class="modal fade" id="deleteModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $program->slug }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title" id="deleteModalLabel-{{ $program->slug }}">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete <strong>{{ $program->program_name }}</strong>? This action cannot be undone.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <a href="{{ route('program.delete', $program->slug) }}" class="btn btn-danger">Yes, Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>  
+                               
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="vStep3" role="tabpanel" aria-labelledby="vStep2-tab">
                             <form action="{{ route('program.update',$program->slug) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3 col-md-12">

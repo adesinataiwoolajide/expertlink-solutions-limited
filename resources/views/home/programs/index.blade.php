@@ -137,60 +137,9 @@
                                                     @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
                                                         <td>
                                                             <a href="{{ route('program.show',$program->slug) }}" class="text-white"><span class="badge bg-info">View Details </span></a>
-                                                            {{-- <a href="" data-bs-toggle="modal"data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $program->slug }}">
-                                                                <span class="badge bg-danger"> Delete </span> 
-                                                            </a> --}}
-
+                                                           
                                                         </td>
-                                                        <div class="modal fade" id="basicModal-{{ $program->slug }}" tabindex="-1" aria-labelledby="basicModalLabel"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-scrollable">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="basicModalLabel">Edit {{ $program->program_name }} Details</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <form action="{{ route('program.update',$program->slug) }}" method="POST" enctype="multipart/form-data">
-                                                                        @csrf
-                                                                        <div class="modal-body">
-                                                                            <div class="row">
-                                                                                <div class="mb-3 col-md-12">
-                                                                                    <label class="form-label">Program Name:</label>
-                                                                                    <input type="text" class="form-control" id="program_name" name="program_name" value="{{ old('program_name') ?? $program->program_name }}" required>
-                                                                                    <input type="hidden" name="previous_name" value="{{ $program->program_name }}">
-                                                                                    <x-input-error :messages="$errors->get('program_name')" class="mt-2 text-danger" />
-                                                                                    <div id="program-name-feedback" class="mt-2 text-danger"></div>
-                                                                                </div>
-
-                                                                                <div class="mb-3 col-md-12">
-                                                                                    <img src="{{ asset('program-banner/'. $program->banner )}}" class="img-fluid login-logo" style="width: auto; height: 200px;" alt="" />
-                                                                                </div>
-
-                                                                                <div class="mb-3 col-md-12">
-                                                                                    <label class="form-label">Change Program Banner:</label>
-                                                                                    <input type="file" class="form-control" id="imageUpload" name="banner" accept=".png,.jpg,.jpeg,.svg">
-                                                                                    <x-input-error :messages="$errors->get('banner')" class="mt-2 text-danger" />
-                                                                                    <div id="banner-feedback" class="mt-2 text-danger"></div>
-                                                                                </div>
-
-                                                                                <div class="mb-3 col-md-12">
-                                                                                    <label class="form-label">Program Description:</label>
-                                                                                    <textarea class="form-control summernote" name="description" required>{!!  old('description') ?? $program->description  !!}</textarea>
-                                                                                    <x-input-error :messages="$errors->get('description')" class="mt-2 text-danger" />
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        
+                                                       
                                                     @endif
 
                                                 </tr>
