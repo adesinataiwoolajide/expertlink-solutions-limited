@@ -31,17 +31,7 @@
                     </div>
                 </div>
 
-                <div>
-                    <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
-                    <div class="progress rounded-pill bg-light" style="height: 8px;">
-                        <div class="progress-bar bg-success" role="progressbar"
-                            style="width: {{ $taskProgress }}%; min-width: 5px;"
-                            aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
-                        </div>
-                    </div>
-                </div>
+               
                 @if(Auth::user()->hasAnyRole(['Administrator', 'Admin', 'Instructor']) && $totalNotes > 0)
                     <a href="{{ route('mycourse.note.index', $course->slug) }}" class="btn btn-sm btn-info text-white">
                         Read Notes
@@ -634,17 +624,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="mb-3">
-                                                            <span class="text-muted small">Tasks Progress (All Students)</span>
-                                                            <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                                                <div class="progress-bar bg-success" role="progressbar"
-                                                                    style="width: {{ $taskProgress }}%; min-width: 5px;"
-                                                                    aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
-                                                                    data-bs-toggle="tooltip" title="{{ $taskProgress }}% of tasks completed">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
+                                                      
                                                         <!-- Action button -->
                                                         <div class="d-flex flex-column gap-2 mt-3">
                                                             <!-- View Note Details -->

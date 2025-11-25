@@ -106,13 +106,13 @@
                                         📝 {{ $course->student_assignments_count }} Assignments
                                 </a>
 
-                                <!-- Tasks badge -->
+                                {{-- <!-- Tasks badge -->
                                 <a href="{{ route('student.course.tasks', $course->slug) }}"
                                     class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="View your {{ $course->student_tasks_count }} completed tasks">
                                         ✅ {{ $course->student_tasks_count }} Tasks
-                                </a>
+                                </a> --}}
 
                                 <!-- Progress badge -->
                                 <a href="{{ route('student.course.progress', $course->slug) }}"

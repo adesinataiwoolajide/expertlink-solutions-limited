@@ -98,13 +98,6 @@
 						</li>
 					</ul>
 				</li>
-
-				<li class="">
-					<a href="">
-							<i class="ri-pages-line"></i>
-						<span class="menu-text">Course Tasks</span>
-					</a>
-				</li>
 				
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 

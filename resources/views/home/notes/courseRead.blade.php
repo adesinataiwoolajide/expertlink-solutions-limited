@@ -40,22 +40,7 @@
                     </a>
                 </div>
 
-                <div>
-                    <span class="text-muted">Overall Tasks Progress: {{ $taskProgress }}%</span>
-                    <div class="progress rounded-pill bg-light mb-2" style="height: 8px;">
-                        <div class="progress-bar bg-success" role="progressbar"
-                            style="width: {{ $taskProgress }}%; min-width: 5px;"
-                            aria-valuenow="{{ $taskProgress }}" aria-valuemin="0" aria-valuemax="100"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="{{ $course->student_tasks_count ?? 0 }} tasks completed">
-                        </div>
-                    </div>
-                    <a href="{{ route('note.course.tasks', $note->slug) }}"
-                        class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none">
-                        View Tasks
-                    </a>
-                </div>
-            
+               
                 <div class="d-flex gap-2">
                     @if (Auth::user()->hasAnyRole(['Student']))
                         <a href="{{ route('mycourse.note.index',$course->slug) }}" 
@@ -154,15 +139,6 @@
                                             📝 {{ $note->student_assignments_count }} Assignments
                                     </a>
 
-                                    <!-- Tasks badge -->
-                                    <a href="{{ route('note.course.tasks', $note->slug) }}"
-                                        class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
-                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="View your {{ $note->student_tasks_count }} completed tasks">
-                                            ✅ {{ $note->student_tasks_count }} Tasks
-                                    </a>
-
-                                    <!-- Progress badge -->
                                     <a href="{{ route('note.course.progress', $note->slug) }}"
                                         class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
                                         data-bs-toggle="tooltip" data-bs-placement="top"

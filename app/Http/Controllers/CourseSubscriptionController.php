@@ -32,17 +32,21 @@ class CourseSubscriptionController extends Controller
         
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
             $query = $note->assignments();
-            $submission = $note->submissions()->orderBy('created_at', 'desc')->paginate(100);
+            $submissions = $note->submissions()->orderBy('created_at', 'desc');
         } elseif ($user->hasAnyRole(['Instructor'])) {
             $query = $note->assignments()->where('instructorSlug', $user->slug);
-            $submission = $note->submissions()->where('instructorSlug', $user->slug)->orderBy('created_at', 'desc')->paginate(100);
+            $submissions = $note->submissions()->where('instructorSlug', $user->slug);
         } else {
             $mySubs = $course->courseSubscriptions()->where(['userSlug' => $user->slug, 'courseSlug' => $note->courseSlug])->first();
             $query = $note->assignments()->where('courseSlug', $mySubs->courseSlug);
-            $submission = $note->submissions()->where('studentSlug', $user->slug)->paginate(100);
+            $submissions = $note->submissions()->where('studentSlug', $user->slug);
         }
+        $allSubmissions = $submissions->with(['student', 'instructor', 'course', 'note','assignment',])
+        ->where('noteSlug', $noteSlug)
+        ->orderBy('created_at', 'desc')->paginate(200);
+        
         $assignments = $query->with(['instructor', 'course', 'submissions'])->orderBy('created_at', 'desc')->paginate(100);
-        return view('home.assignments.create', compact('note', 'assignments'));
+        return view('home.assignments.create', compact('note', 'assignments', 'allSubmissions'));
     }
 
      public function courseassignments($slug)

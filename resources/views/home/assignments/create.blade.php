@@ -203,29 +203,46 @@
                     </div>
                     <div class="tab-pane fade" id="badge-content-three" role="tabpanel" aria-labelledby="badge-tab-three">
                         <div class="row gx-3">
-                            <div class="col-md-6 mb-3">
-                                <div class="card border border-danger">
-                                    <div class="card-body">
-                                        <h6 class="card-title text-danger mb-3">Security Settings</h6>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="twoFactorAuth"
-                                                checked>
-                                            <label class="form-check-label" for="twoFactorAuth">Two-factor
-                                                authentication</label>
+                          
+                            @foreach ($assignments as $assignment)
+                                <div class="card mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 p-3 border-bottom">
+                                        <h6 class="mb-0 fw-bold text-dark">Question: {!! $assignment->description !!}</h6><br>
+                                        <h6 class="mb-0 fw-bold text-dark">Due: {{ $assignment->due_date }}</h6>
+                                        <span class="badge bg-danger-subtle text-danger">Max Score: {{ $assignment->max_score }}</span>
+                                        <span class="small text-muted">
+                                            Created On: {{ $assignment->created_at->format('M d, Y') }}
+                                        </span>
+                                    </div>
+
+                                    <div class="row">
+                                        @forelse ($allSubmissions->where('assignmentSlug', $assignment->slug) as $submitted)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card-body d-flex align-items-start gap-3">
+                                                    <div class="icon-box sm bg-danger-subtle rounded-circle d-flex align-items-center justify-content-center" style="width:45px; height:45px;">
+                                                        <i class="ri-notification-2-line text-danger fs-5"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <p class="mb-2 small text-secondary">
+                                                            Submitted By: {{ $submitted->student->email ?? 'Unknown Student' }}
+                                                        </p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span class="small text-muted">
+                                                                Submitted On: {{ $submitted->created_at->format('M d, Y') }}
+                                                            </span>
+                                                            <span class="badge bg-success">{{ $submitted->status }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="loginAlerts"
-                                                checked>
-                                            <label class="form-check-label" for="loginAlerts">Login alerts</label>
+                                        @empty
+                                            <div class="p-3">
+                                                <span class="small text-muted">No submissions yet for this assignment.</span>
                                             </div>
-                                        </div>
+                                        @endforelse
                                     </div>
                                 </div>
-                           
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
