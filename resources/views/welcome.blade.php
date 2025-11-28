@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            <div class="brand-logo-slider-area section-space--ptb_60">
+            {{-- <div class="brand-logo-slider-area section-space--ptb_60">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="feature-large-images-wrapper section-space--ptb_100">
                 <div class="container">
@@ -169,7 +169,7 @@
 
                             <div class="col-lg-5 ms-auto">
                                 <div class="faq-wrapper">
-                                <div id="accordion">
+                                    <div id="accordion">
                                         <div class="card">
                                             <div class="card-header" id="headingOne">
                                                 <h5 class="mb-0">

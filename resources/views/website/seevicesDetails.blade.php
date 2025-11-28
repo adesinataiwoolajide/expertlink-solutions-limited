@@ -2,13 +2,65 @@
 @section('content')
     <style>
         .service-details ul {
-            list-style-type: disc;   /* or square, circle */
-            margin-left: 20px;       /* indentation */
+            list-style-type: disc;
+            margin-left: 20px;
             padding-left: 20px;
         }
 
         .service-details li {
-            margin-bottom: 8px;      /* spacing between items */
+            margin-bottom: 8px;
+            color: #333;
+            position: relative;
+        }
+
+        .service-details li::marker {
+            color: #ff5722; /* orange bullets */
+            font-size: 1.2em;
+        }
+        /* Service details paragraphs */
+        /* Service details paragraphs */
+        .service-details p {
+            text-align: justify;       /* neat alignment on both sides */
+            line-height: 1.6;          /* better readability */
+            margin-bottom: 15px;       /* spacing between paragraphs */
+            color: #333;               /* neutral text color */
+        }
+
+        /* List group styling */
+        .list-group {
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        /* Each list item */
+        .list-group-item {
+            text-align: justify;       
+            line-height: 1.6;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+            position: relative;
+            padding-left: 35px;        
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border-left: 5px solid #086AD8; /* primary color accent border */
+        }
+
+        /* Custom icon before each item */
+        .list-group-item::before {
+            content: "✔";              
+            position: absolute;
+            left: 10px;
+            color: #086AD8;            /* primary color for icon */
+            font-weight: bold;
+        }
+
+        /* Hover effect */
+        .list-group-item:hover {
+            background-color: rgba(8,106,216,0.1); /* subtle primary color tint */
+            transform: translateX(5px);
+            cursor: pointer;
+            text-shadow: 0 0 8px #086AD8; /* glowing effect in primary color */
         }
     </style>
     <div id="main-wrapper">
@@ -86,25 +138,12 @@
                         <div class="col-lg-8 order-lg-2 order-1">
                             <div class="main-blog-wrap">
                                 <div class="single-blog-item">
-
-                                    <!-- Service Image -->
                                     <div class="post-feature blog-thumbnail wow move-up mb-4">
                                         <img class="img-fluid rounded shadow" src="{{ $service['image'] }}" alt="{{ $service['title'] }}">
                                     </div>
-
-                                    <!-- Service Info -->
                                     <div class="post-info lg-blog-post-info wow move-up">
                                         <h3 class="post-title fw-bold">{{ $service['title'] }}</h3>
-                                        <p class="summary text-muted lead">{{ $service['summary'] }}</p>
-
-                                        <div class="post-meta mt-20">
-                                            <div class="post-author">
-                                                <span class="badge bg-primary">Service Detail</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Full Description -->
-                                        <div class="description mt-4">
+                                        <div class="description mt-4" style="text-align: justify">
                                             {!! $service['description'] !!}
                                         </div>
                                     </div>

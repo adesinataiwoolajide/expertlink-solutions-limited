@@ -60,10 +60,9 @@ class WebsiteController extends Controller
      */
     public function index()
     {
-        $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
+        //$program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
         $services = collect(ourServices())->shuffle()->take(4);
         return view('welcome')->with([
-            'program' => $program,
             'services' => $services
         ]);
 
@@ -74,7 +73,8 @@ class WebsiteController extends Controller
      */
     public function about()
     {
-        return view('website.about');
+        $services = collect(ourServices())->shuffle()->take(9);
+        return view('website.about')->with(['services' => $services]);
     }
 
     /**

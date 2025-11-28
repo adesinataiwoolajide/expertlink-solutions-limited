@@ -209,7 +209,23 @@
 
         <div id="main-wrapper">
             @yield('content')
-
+             <div class="cta-image-area_one section-space--ptb_80 cta-bg-image_two">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="cta-content md-text-center">
+                                <h3 class="heading">We run all kinds of IT services that vow your <span class="text-color-primary"> success</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="cta-button-group--two text-center">
+                                <a href="{{ route('website.contactus') }}" class="btn btn--white btn-one"><span class="btn-icon me-2"><i class="far fa-comment-alt"></i></span> Let us talk</a>
+                                <a href="{{ route('website.services') }}" class="btn btn--secondary btn-two "><span class="btn-icon me-2"><i class="fas fa-info-circle"></i></span> Get info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="footer-area-wrapper bg-gray">
                 <div class="footer-area section-space--ptb_80">
                     <div class="container">
@@ -220,38 +236,42 @@
                                 </div>
                                 <ul class="footer-widget__list">
                                     <li>58 Howard Street #2 San Francisco, CA 941</li>
-                                    <li><a href="mailto:contact@aeroland.com" class="hover-style-link">contact@aeroland.com</a></li>
+                                    <li><a href="mailto:contact@expertlinksolutions.com" class="hover-style-link">contact@expertlinksolutions.com</a></li>
                                     <li><a href="tel:123344556" class="hover-style-link text-black font-weight--bold">(+68)1221 09876</a></li>
-                                    <li><a href="https://hasthemes.com/" class="hover-style-link text-color-primary">www.mitech.xperts.com</a></li>
+                                    <li><a href="https://hasthemes.com/" class="hover-style-link text-color-primary">www.expertlinksolutions.com</a></li>
                                 </ul>
                             </div>
+                            
                             <div class="col-lg-2 col-md-4 col-sm-6 footer-widget">
-                                <h6 class="footer-widget__title mb-20">IT Services</h6>
+                                <h6 class="footer-widget__title mb-20">Our Services</h6>
                                 <ul class="footer-widget__list">
-                                    <li><a href="#" class="hover-style-link">Managed IT</a></li>
-                                    <li><a href="#" class="hover-style-link">IT Support</a></li>
-                                    <li><a href="#" class="hover-style-link">IT Consultancy</a></li>
-                                    <li><a href="#" class="hover-style-link">Cloud Computing</a></li>
-                                    <li><a href="#" class="hover-style-link">Cyber Security</a></li>
+                                    @foreach(collect(ourServices())->shuffle()->take(5) as $service)
+                                        <li>
+                                            <a href="{{ route('website.seeviceDetails', $service['link']) }}" class="hover-style-link">
+                                                {{ $service['title'] }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-6 footer-widget">
                                 <h6 class="footer-widget__title mb-20">Quick links</h6>
                                 <ul class="footer-widget__list">
-                                    <li><a href="#" class="hover-style-link">Pick up locations</a></li>
-                                    <li><a href="#" class="hover-style-link">Terms of Payment</a></li>
+                                    <li><a href="{{ route('website.programs') }}" class="hover-style-link">Our Programs</a></li>
+                                    <li><a href="{{ route('website.courses') }}" class="hover-style-link">Our Courses</a></li>
                                     <li><a href="#" class="hover-style-link">Privacy Policy</a></li>
-                                    <li><a href="#" class="hover-style-link">Where to Find Us</a></li>
+                                    <li><a href="/register" class="hover-style-link">Create account</a></li>
+                                    <li><a href="/login" class="hover-style-link">Login</a></li>
                                 </ul>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-6 footer-widget">
                                 <h6 class="footer-widget__title mb-20">Support</h6>
                                 <ul class="footer-widget__list">
-                                    <li><a href="#" class="hover-style-link">Forum Support</a></li>
-                                    <li><a href="#" class="hover-style-link">Help & FAQ</a></li>
-                                    <li><a href="#" class="hover-style-link">Contact Us</a></li>
-                                    <li><a href="#" class="hover-style-link">Pricing and plans</a></li>
-                                    <li><a href="#" class="hover-style-link">Cookies Policy</a></li>
+                                    <li><a href="{{ route('website.aboutus') }}" class="hover-style-link">About Us</a></li>
+                                    <li><a href="{{ route('website.faq') }}" class="hover-style-link">Help & FAQ</a></li>
+                                    <li><a href="{{ route('website.contactus') }}" class="hover-style-link">Contact Us</a></li>
+                                    <li><a href="{{ route('website.teams') }}" class="hover-style-link">Our Team</a></li>
+                                    <li><a href="{{ route('website.services') }}" class="hover-style-link">Our Services</a></li>
                                 </ul>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-6 footer-widget">

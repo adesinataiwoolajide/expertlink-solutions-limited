@@ -34,7 +34,7 @@
                             <div class="contact-form-wrap">
 
                                 @include('layouts.alert')
-                                <form id="" method="POST" action="{{ route('website.sendContactUs') }}">
+                                <form id="elsContactForm" method="POST" action="{{ route('website.sendContactUs') }}">
                                     @csrf
                                     <div class="contact-form">
                                         <div class="contact-input">
@@ -50,7 +50,6 @@
                                                     <span style="color:red">{{ $errors->first('email') }}</span>
                                                 @endif
                                             </div>
-                                       
                                             <div class="contact-inner">
                                                 <input name="subject" type="text" placeholder="Subject *" required value="{{ old('subject') }}">
                                                 @if ($errors->has('subject'))
@@ -58,11 +57,20 @@
                                                 @endif
                                             </div>
                                             <div class="contact-inner">
-                                                <input name="phone_number" type="number" placeholder="Phone Number *" required value="{{ old('phone_number') }}">
+                                                <input name="phone_number"
+                                                    type="text"
+                                                    placeholder="Phone Number *"
+                                                    required
+                                                    value="{{ old('phone_number') }}"
+                                                    pattern="[0-9]{10,11}"
+                                                    title="Phone number must be 10–11 digits"
+                                                    maxlength="11"
+                                                    minlength="10">
                                                 @if ($errors->has('phone_number'))
                                                     <span style="color:red">{{ $errors->first('phone_number') }}</span>
                                                 @endif
                                             </div>
+
                                         </div>
                                         <div class="contact-inner contact-message">
                                             <textarea name="message" placeholder="Please describe what you need." required>{{ old('message') }}</textarea>
@@ -72,10 +80,132 @@
                                         </div>
                                         <div class="submit-btn mt-20">
                                             <button class="ht-btn ht-btn-md" type="submit">Send message</button>
-                                            <p class="form-messege"></p>
+                                            
                                         </div>
                                     </div>
                                 </form>
+
+                                <style>
+                                    /* Styling for valid/invalid inputs */
+                                    .valid-input {
+                                        border: 2px solid green !important;
+                                    }
+                                    .invalid-input {
+                                        border: 2px solid red !important;
+                                    }
+                                </style>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const form = document.getElementById("elsContactForm");
+
+                                        // Helper function to show inline feedback + border styling
+                                        function showFeedback(input, message, isValid) {
+                                            // Remove old feedback
+                                            const oldFeedback = input.parentNode.querySelector(".js-feedback");
+                                            if (oldFeedback) oldFeedback.remove();
+
+                                            // Remove old border classes
+                                            input.classList.remove("valid-input", "invalid-input");
+
+                                            if (message) {
+                                                const feedback = document.createElement("span");
+                                                feedback.classList.add("js-feedback");
+                                                feedback.style.display = "block";
+                                                feedback.textContent = message;
+                                                feedback.style.color = isValid ? "green" : "red";
+                                                input.insertAdjacentElement("afterend", feedback);
+
+                                                // Apply border styling
+                                                if (isValid) {
+                                                    input.classList.add("valid-input");
+                                                } else {
+                                                    input.classList.add("invalid-input");
+                                                }
+                                            }
+                                        }
+
+                                        // Validation functions
+                                        function validateFullName() {
+                                            const input = form.querySelector("input[name='full_name']");
+                                            const value = input.value.trim();
+                                            if (!/^[A-Za-z]+ [A-Za-z]+/.test(value)) {
+                                                showFeedback(input, "Please enter both first name and last name.", false);
+                                                return false;
+                                            }
+                                            showFeedback(input, "✅ Looks good!", true);
+                                            return true;
+                                        }
+
+                                        function validateEmail() {
+                                            const input = form.querySelector("input[name='email']");
+                                            const value = input.value.trim();
+                                            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+                                            if (!emailPattern.test(value)) {
+                                                showFeedback(input, "Please enter a valid email address.", false);
+                                                return false;
+                                            }
+                                            showFeedback(input, "✅ Valid email!", true);
+                                            return true;
+                                        }
+
+                                        function validatePhone() {
+                                            const input = form.querySelector("input[name='phone_number']");
+                                            const value = input.value.trim();
+                                            const phonePattern = /^[0-9]{10,11}$/;
+                                            if (!phonePattern.test(value)) {
+                                                showFeedback(input, "Phone number must be 10–11 digits.", false);
+                                                return false;
+                                            }
+                                            showFeedback(input, "✅ Valid phone number!", true);
+                                            return true;
+                                        }
+
+                                        function validateSubject() {
+                                            const input = form.querySelector("input[name='subject']");
+                                            const value = input.value.trim();
+                                            if (value.length < 5) {
+                                                showFeedback(input, "Subject must be at least 5 characters long.", false);
+                                                return false;
+                                            }
+                                            showFeedback(input, "✅ Subject looks good!", true);
+                                            return true;
+                                        }
+
+                                        function validateMessage() {
+                                            const input = form.querySelector("textarea[name='message']");
+                                            const value = input.value.trim();
+                                            if (value.length < 20) {
+                                                showFeedback(input, "Message must be at least 20 characters long.", false);
+                                                return false;
+                                            }
+                                            showFeedback(input, "✅ Message looks good!", true);
+                                            return true;
+                                        }
+
+                                        // Attach real-time validation
+                                        form.querySelector("input[name='full_name']").addEventListener("input", validateFullName);
+                                        form.querySelector("input[name='email']").addEventListener("input", validateEmail);
+                                        form.querySelector("input[name='phone_number']").addEventListener("input", validatePhone);
+                                        form.querySelector("input[name='subject']").addEventListener("input", validateSubject);
+                                        form.querySelector("textarea[name='message']").addEventListener("input", validateMessage);
+
+                                        // Final check before submission
+                                        form.addEventListener("submit", function (e) {
+                                            const valid =
+                                                validateFullName() &&
+                                                validateEmail() &&
+                                                validatePhone() &&
+                                                validateSubject() &&
+                                                validateMessage();
+
+                                            if (!valid) {
+                                                e.preventDefault(); // stop submission
+                                                alert("Please fix the errors before submitting the form.");
+                                            }
+                                        });
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -119,23 +249,8 @@
                     </div>
                 </div>
             </div> --}}
-            <div class="cta-image-area_one section-space--ptb_80 cta-bg-image_two">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="cta-content md-text-center">
-                                <h3 class="heading">We run all kinds of IT services that vow your <span class="text-color-primary"> success</span></h3>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="cta-button-group--two text-center">
-                                <a href="#" class="btn btn--white btn-one"><span class="btn-icon me-2"><i class="far fa-comment-alt"></i></span> Let us talk</a>
-                                <a href="#" class="btn btn--secondary btn-two "><span class="btn-icon me-2"><i class="fas fa-info-circle"></i></span> Get info</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
+
 @endsection
