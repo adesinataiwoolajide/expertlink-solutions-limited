@@ -13,15 +13,15 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable; use HasRoles;
-
+    protected $table = 'users';
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'first_name', 'last_name', 'phone_number', 'slug',
-        'email','password', 'role', 'status', 'change_password', 'branchSlug', 'email_verified_at'
+        'first_name', 'last_name', 'phone_number', 'slug', 'email','password', 'role', 'status', 'change_password', 'branchSlug', 'email_verified_at'
     ];
 
     /**
@@ -42,10 +42,15 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime', 'password' => 'hashed',
         ];
     }
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'user_id', 'id');
+    }
+
 
     public function courseSubscriptions()
     {

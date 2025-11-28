@@ -5,131 +5,189 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{ config('app.name') }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       body {
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
-        font-family: 'Roboto', Arial, sans-serif;
+        background: #f9fafb;
+        font-family: 'Inter', Arial, sans-serif;
+        color: #374151;
       }
       .email-container {
-        max-width: 600px;
+        max-width: 640px;
         margin: 40px auto;
-        background-color: #ffffff;
-        padding: 40px 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        color: #333333;
-        text-align: left;
+        background: #ffffff;
+        padding: 48px 36px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       }
       .logo {
         display: block;
-        margin-bottom: 30px;
+        margin: 0 auto 32px;
       }
       h2 {
-        font-size: 26px;
-        color: #2c3e50;
-        margin-bottom: 20px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+        text-align: center;
+        margin-bottom: 24px;
       }
       .greeting {
         font-size: 18px;
-        margin-bottom: 10px;
+        font-weight: 600;
+        margin-bottom: 12px;
       }
       .message {
         font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 30px;
+        line-height: 1.7;
+        margin-bottom: 32px;
       }
       .cta-button {
-        background-color: #007BFF;
+        background: linear-gradient(90deg, #2563eb, #1d4ed8);
         color: #ffffff;
         text-decoration: none;
-        padding: 14px 28px;
-        border-radius: 6px;
-        font-weight: bold;
+        padding: 14px 32px;
+        border-radius: 8px;
+        font-weight: 600;
         display: inline-block;
-        margin-top: 10px;
+        transition: background 0.3s ease;
+      }
+      .cta-button:hover {
+        background: linear-gradient(90deg, #1d4ed8, #1e40af);
       }
       .support {
         font-size: 14px;
-        margin-top: 30px;
+        margin-top: 28px;
+        color: #6b7280;
       }
       .support a {
-        color: #007BFF;
+        color: #2563eb;
         text-decoration: none;
-        font-weight: bold;
+        font-weight: 600;
       }
       .social-icons {
-        margin-top: 20px;
+        margin-top: 24px;
+        text-align: center;
+      }
+      .social-icons a {
+        display: inline-block;
+        margin: 0 6px;
       }
       .social-icons img {
         width: 28px;
-        margin: 0 8px;
-        vertical-align: middle;
+        height: 28px;
+        filter: grayscale(100%);
+        transition: filter 0.3s ease;
+      }
+      .social-icons img:hover {
+        filter: none;
       }
       .footer {
-        font-size: 12px;
-        color: #999999;
+        font-size: 13px;
+        color: #9ca3af;
         margin-top: 40px;
+        text-align: center;
       }
       .footer a {
-        color: #666666;
-        font-weight: bold;
+        color: #374151;
+        font-weight: 600;
         text-decoration: none;
+      }
+      hr {
+        border: none;
+        height: 1px;
+        background: #e5e7eb;
+        margin: 32px 0;
+      }
+
+      /* 🌙 Dark Mode Support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #111827;
+          color: #e5e7eb;
+        }
+        .email-container {
+          background: #1f2937;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+        h2 {
+          color: #f9fafb;
+        }
+        .greeting {
+          color: #f3f4f6;
+        }
+        .message {
+          color: #d1d5db;
+        }
+        .cta-button {
+          background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+        .cta-button:hover {
+          background: linear-gradient(90deg, #2563eb, #1d4ed8);
+        }
+        .support {
+          color: #9ca3af;
+        }
+        .support a {
+          color: #3b82f6;
+        }
+        .footer {
+          color: #6b7280;
+        }
+        .footer a {
+          color: #f9fafb;
+        }
+        hr {
+          background: #374151;
+        }
       }
     </style>
   </head>
   <body>
 
-    <div style="display: none;">Invisible preheader text to improve open rates.</div>
+    <div style="display: none;">Welcome to {{ config('app.name') }} — your account is ready!</div>
 
     <div class="email-container">
 
       <a href="{{ route('login') }}">
-        <img src="{{ asset('elsAdmin/images/els.png') }}" width="150" height="100" alt="Logo" class="logo">
+        <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" height="80" alt="Logo" class="logo">
       </a>
 
-      <h2 style="text-align: center;">🎉 Welcome to {{ config('app.name') }} Portal</h2>
+      <h2>🎉 Welcome to {{ config('app.name') }} Portal</h2>
 
-      <p class="greeting">Dear {{ $user->first_name }} {{ $user->last_name }},</p>
+      <p class="greeting">Hi {{ $user->first_name }} {{ $user->last_name }},</p>
 
       <p class="message">
-        We are excited to have you join us!<br>
-        Your account has been successfully created as a <strong>{{ $user->role }}</strong>.<br>
-        Your login username is: <strong>{{ $user->email }}</strong><br>
-        To access your dashboard and begin your journey, click the button below to reset your password:
+        We’re thrilled to have you on board!<br>
+        Your account has been created as a <strong>{{ $user->role }}</strong>.<br>
+        Login username: <strong>{{ $user->email }}</strong><br><br>
+        To get started, please reset your password using the button below:
       </p>
 
-        <div style="text-align: center;">
-            <a href="{{ route('password.request') }}" target="_blank" class="cta-button">Password Reset</a>
-        
-            <div class="support">
-                <p>
-                Need help? Contact our support team at<br>
-                <a href="mailto:info@expertlinksolutions.org">info@expertlinksolutions.org</a> or call <strong>+234 813 813 9333</strong>.
-                </p>
-            </div>
+      <div style="text-align: center;">
+        <a href="{{ route('password.request') }}" target="_blank" class="cta-button">Reset Password</a>
+      </div>
 
-            <div class="social-icons">
-                <a href="https://facebook.com">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
-                </a>
-                <a href="https://twitter.com">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
-                </a>
-                <a href="https://linkedin.com">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn">
-                </a>
-                <a href="https://instagram.com">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram">
-                </a>
-            </div>
-        </div>
-        
-        <div class="footer" style="text-align: center;">
-            <hr style="border:none; height:1px; background:#dddddd; margin:30px 0;">
-            &copy; {{ date('Y') }} <a href="{{ route('login') }}">{{ config('app.name') }}</a> — All Rights Reserved.
-        </div>
+      <div class="support">
+        <p>
+          Need help? Reach out to our support team:<br>
+          <a href="mailto:info@expertlinksolutions.org">info@expertlinksolutions.org</a> or call <strong>+234 813 813 9333</strong>.
+        </p>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://facebook.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+        <a href="https://twitter.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+        <a href="https://linkedin.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn"></a>
+        <a href="https://instagram.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+      </div>
+
+      <div class="footer">
+        <hr>
+        &copy; {{ date('Y') }} <a href="{{ route('website') }}">{{ config('app.name') }}</a> — All Rights Reserved.
+      </div>
 
     </div>
+  </body>
+</html>

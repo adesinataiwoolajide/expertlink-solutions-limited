@@ -129,6 +129,10 @@
                         </div>
                         
                     @endforeach
+                    <div class="d-flex justify-content-center">
+                        {{ $notes->links() }}
+                    </div>
+
                 @else
                     <div class="col-12">
                         <div class="card border-danger text-center">

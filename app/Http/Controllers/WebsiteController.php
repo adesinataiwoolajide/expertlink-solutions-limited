@@ -61,7 +61,12 @@ class WebsiteController extends Controller
     public function index()
     {
         $program = Programs::orderBy('program_name', 'asc')->with('courses')->get();
-        return view('welcome');
+        $services = collect(ourServices())->shuffle()->take(4);
+        return view('welcome')->with([
+            'program' => $program,
+            'services' => $services
+        ]);
+
     }
 
     /**
@@ -177,7 +182,18 @@ class WebsiteController extends Controller
      */
     public function seevices()
     {
-        return view('website.seevices');
+        $services = ourServices();
+        return view('website.seevices')->with(['services' => $services]);
+    }
+
+    public function seeviceDetails($link)
+    {
+        $services = ourServices();
+        $service = collect($services)->firstWhere('link', $link);
+        if (!$service) {
+            return redirect()->back()->with("error", "Service not found");
+        }
+        return view('website.seevicesDetails')->with(['service' => $service, 'services' => $services]);
     }
 
     /**

@@ -51,7 +51,7 @@
                             <img src="{{ asset('course-banner/' . $course->banner) }}"
                                 alt="{{ $course->course_name }}"
                                 class="img-fluid w-100"
-                                style="height: 180px; object-fit: cover;">
+                                style="height: 180px; object-fit: center;">
                             <span class="badge bg-primary position-absolute top-0 end-0 m-2">
                                 {{ $course->program->program_name ?? 'New' }}
                             </span>
@@ -59,7 +59,7 @@
 
                         <div class="card-body d-flex flex-column p-4">
                             <!-- Title -->
-                            <h5 class="fw-bold text-dark mb-1">{{ $course->course_name }}</h5>
+                            <h5 class="fw-bold text-dark mb-1">{{ substr($course->course_name, 0,30) }}..</h5>
                             
                             <p class="text-muted mb-2">{{ count($course->notes) }} Notes</p>
 

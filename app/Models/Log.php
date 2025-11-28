@@ -15,4 +15,12 @@ class Log extends Model
     protected $fillable = [
         'user_id', 'activities', 'ip_address',
     ];
+
+    public function user()
+    {
+        // Each log belongs to one user
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+
 }

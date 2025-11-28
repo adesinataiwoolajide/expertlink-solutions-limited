@@ -264,8 +264,38 @@
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three-tab">
-                                <p class="mb-0">Content for Tab Three goes here.</p>
+                                <h5>User Activity Logs</h5>
+                                <div class="table-responsive">
+                                    <table id="basicExample" class="table custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                            
+                                                <th>Activity</th>
+                                                <th>IP Address</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($logs as $log)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $log->activities }}</td>
+                                                    <td>{{ $log->ip_address }}</td>
+                                                    <td>{{ $log->created_at->format('d M Y H:i') }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Pagination -->
+                                <div class="d-flex justify-content-center">
+                                    {{ $logs->links() }}
+                                </div>
+
+
                             </div>
+
                         </div>
                     </div>
                 </div>

@@ -17,6 +17,13 @@
 					<span class="menu-text">Dashboard</span>
 				</a>
 			</li>
+			<li class="{{ request()->routeIs('user.show') ? 'active current-page' : '' }}">
+				<a href="{{ route('user.show', Auth::user()->slug) }}">
+					<i class="ri-user-line"></i>
+					<span class="menu-text">My Profile</span>
+				</a>
+			</li>
+
 			@if(Auth::user()->email_verified_at != "")
 				@if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
 					<li class="treeview {{ request()->routeIs('user.*') ? 'active current-page' : '' }}">
@@ -114,13 +121,7 @@
 			@endif
 
 			
-			<li class="{{ request()->routeIs('user.show') ? 'active current-page' : '' }}">
-				<a href="{{ route('user.show', Auth::user()->slug) }}">
-					<i class="ri-user-line"></i>
-					<span class="menu-text">My Profile</span>
-				</a>
-			</li>
-
+			
 			<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
 					<a href="#!">
 						<i class="ri-file-list-3-line"></i>

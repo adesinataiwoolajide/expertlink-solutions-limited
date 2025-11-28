@@ -135,14 +135,14 @@ class UserController extends Controller
         if(User::where(['slug' => $slug])->exists()){
             
             $userSlug = Auth::user()->hasAnyRole(['Administrator']) ? $slug : Auth::user()->slug;
-            $user     = User::where('slug', $userSlug)->with(['courseSubscriptions', 'studentTasks', 'assignmentsAsStudent', 'courses'])
+            $user = User::where('slug', $userSlug)->with(['courseSubscriptions', 'studentTasks', 'assignmentsAsStudent', 'courses', 'logs'])
             ->firstOrFail();
             $roles = Auth::user()->hasAnyRole(['Administrator']) ? Role::orderBy('name', 'asc')->get() : Role::where('name', $user->role)->get();
             $role = $roles->firstWhere('name', $user->role) ?? Role::where('name', $user->role)->first();
-         
+            $logs =$user->logs()->orderBy('created_at', 'desc')->paginate(100);
             return view('home.users.show')->with([
                 'roles' => $roles,
-                'user' => $user, 'role' => $role
+                'user' => $user, 'role' => $role, 'logs' => $logs
             ]);
         }else{
             return redirect()->back()->with([

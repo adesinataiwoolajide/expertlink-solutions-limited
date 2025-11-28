@@ -44,7 +44,7 @@
                             </div>
                             <div class="mb-3 col-md-4">
                                 <label class="form-label">Phone number:</label>
-                                <input type="text" class="form-control" placeholder="Phone number" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input type="text" class="form-control" placeholder="Phone number" name="phone_number" value="{{ old('phone_number') }}" required  maxlength="11">
                                 <x-input-error :messages="$errors->get('phone_number')" class="mt-2 text-danger" />
                                 <div id="phone-feedback" class="mt-2" style="display: none;"></div>
                             </div>

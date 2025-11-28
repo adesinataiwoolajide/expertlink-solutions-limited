@@ -269,66 +269,21 @@
                         <div class="col-12">
                             <div class="feature-images__two small-mt__10">
                                 <div class="modern-grid-image-box row row--30">
-                                    <!-- Cloud Managed Services -->
-                                    <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
-                                        <a href="cloud-managed-services" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-02-80x83.webp')}}" alt="">
+                                    @foreach($services as $service)
+                                        <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
+                                            <a href="{{ route('website.seeviceDetails',$service['link']) }}" class="ht-box-images style-02">
+                                                <div class="image-box-wrap">
+                                                    <div class="box-image">
+                                                        <img class="img-fluid" src="{{ $service['image'] }}" alt="{{ $service['title'] }}">
+                                                    </div>
+                                                    <div class="content">
+                                                        <h6 class="heading">{{ $service['title'] }}</h6>
+                                                        <div class="text">{{ substr($service['summary'], 0, 135) }}</div>
+                                                    </div>
                                                 </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Cloud Managed Services</h6>
-                                                    <div class="text">Optimize performance and scalability with our fully managed cloud infrastructure.</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-
-                                    <!-- IT Security & Compliance -->
-                                    <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
-                                        <a href="it-security-compliance" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-03-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">IT Security & Compliance</h6>
-                                                    <div class="text">Protect your systems and meet regulatory standards with our security frameworks.</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-
-                                    <!-- Software Development -->
-                                    <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
-                                        <a href="software-development" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-04-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">Software Development</h6>
-                                                    <div class="text">Custom-built applications tailored to your business goals and user experience.</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-
-                                    <!-- IT Consultancy -->
-                                    <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
-                                        <a href="it-consultancy" class="ht-box-images style-02">
-                                            <div class="image-box-wrap">
-                                                <div class="box-image">
-                                                    <img class="img-fulid" src="{{ asset('elsFront/images/icons/mitech-processing-service-image-06-80x83.webp')}}" alt="">
-                                                </div>
-                                                <div class="content">
-                                                    <h6 class="heading">IT Consultancy</h6>
-                                                    <div class="text">Strategic advice to align your technology investments with business growth.</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
 

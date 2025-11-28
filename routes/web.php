@@ -37,6 +37,12 @@ Route::get('/reviews', [WebsiteController::class, 'reviews'])->name('website.rev
 Route::get('/our-teams', [WebsiteController::class, 'teams'])->name('website.teams');
 Route::get('/our-services', [WebsiteController::class, 'seevices'])->name('website.services');
 
+Route::prefix('our-services')->group(function () {
+    Route::get('/', [WebsiteController::class, 'seevices'])->name('website.services');
+    Route::get('/{link}', [WebsiteController::class, 'seeviceDetails'])->name('website.seeviceDetails');
+});
+
+
 Route::prefix('programs')->group(function () {
     Route::get('/', [WebsiteController::class, 'program'])->name('website.programs');
     Route::get('/{slug}', [WebsiteController::class, 'programShow'])->name('website.programs.show');
