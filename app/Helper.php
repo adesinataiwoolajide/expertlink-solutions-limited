@@ -20,6 +20,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/ict.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'it-services'
             ],
             [
@@ -48,6 +49,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/n-icon-2.webp'),
+                'bg-image' => asset('elsFront/images/icons/training.png'),
                 'link' => 'managed-it-service'
             ],
             [
@@ -76,6 +78,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'cybersecurity'
             ],
             [
@@ -104,6 +107,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/cloud.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'cloud-services'
             ],
             [
@@ -132,6 +136,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/software-icon.png'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'software-development'
             ],
                     [
@@ -160,6 +165,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/network-icon.png'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'network-solutions'
             ],
             [
@@ -188,6 +194,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/data-analytics.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'data-analytics'
             ],
             [
@@ -216,6 +223,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/technical-support.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'technical-support'
             ],
             [
@@ -244,6 +252,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/SystemIntegration.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'system-integration'
             ],
             [
@@ -269,6 +278,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/DigitalMarketing.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'digital-marketing'
             ],
 
@@ -298,6 +308,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/it-audit.png'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'it-audit'
             ],
 
@@ -327,6 +338,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/devops.png'),
+                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
                 'link' => 'devops-services'
             ],
         ];

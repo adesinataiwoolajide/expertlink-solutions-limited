@@ -139,7 +139,7 @@
                             <div class="main-blog-wrap">
                                 <div class="single-blog-item">
                                     <div class="post-feature blog-thumbnail wow move-up mb-4">
-                                        <img class="img-fluid rounded shadow" src="{{ $service['image'] }}" alt="{{ $service['title'] }}">
+                                        <img class="img-fluid rounded shadow" src="{{ $service['bg-image'] }}" alt="{{ $service['title'] }}">
                                     </div>
                                     <div class="post-info lg-blog-post-info wow move-up">
                                         <h3 class="post-title fw-bold">{{ $service['title'] }}</h3>
