@@ -3,7 +3,7 @@
 use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
     FaqController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController};
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\{AuthenticatedSessionController, VerificationController};
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
@@ -19,9 +19,11 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
+
+Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
+Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');
+
 Route::post('/create-account', [WebsiteController::class, 'store'])->name('createAccount');
-
-
 Route::post('/Check-Email', [WebsiteController::class, 'checkEmail'])->name('Check.email');
 Route::post('/Check-Phone', [WebsiteController::class, 'checkPhone'])->name('Check.phone');
 
@@ -57,7 +59,7 @@ Route::prefix('our-courses')->group(function () {
 Route::get('/email/resend', [VerificationController::class, 'resend']);
 // Auth::routes(['verify' => true]);
 Auth::routes();
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified']], function() {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified', 'session.locked']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
     Route::group(["prefix" => "users"], function () {

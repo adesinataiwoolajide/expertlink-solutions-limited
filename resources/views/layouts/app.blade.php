@@ -73,6 +73,43 @@
         </style>
 
         <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+        <script>
+          // Set timeout to 2 minutes (120,000 ms)
+          const inactivityTimeout = 2 * 60 * 1000; 
+          const warningTime = 30 * 1000; // Show warning 30 seconds before redirect
+
+          let timeoutId;
+          let warningId;
+
+          function redirectToLockScreen() {
+              window.location.href = '/lock-screen';
+          }
+
+          {{-- function showWarning() {
+              alert("You will be redirected to the lock screen in 30 seconds due to inactivity.");
+          } --}}
+
+          function resetTimer() {
+              clearTimeout(timeoutId);
+              clearTimeout(warningId);
+
+              // Schedule warning popup
+              {{-- warningId = setTimeout(showWarning, inactivityTimeout - warningTime); --}}
+
+              // Schedule redirect
+              timeoutId = setTimeout(redirectToLockScreen, inactivityTimeout);
+          }
+
+          // Reset timer on user activity
+          ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'touchmove', 'resize'].forEach(event => {
+              window.addEventListener(event, resetTimer);
+          });
+
+          // Start timer immediately
+          resetTimer();
+        </script>
+
     </head>
     <body {{ Auth::user()->email == 'tolajide74@gmail.com' ? '' : 'oncontextmenu="return false"' }}>
       <div id="rightClickError" class="alert alert-danger text-center" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999;">
