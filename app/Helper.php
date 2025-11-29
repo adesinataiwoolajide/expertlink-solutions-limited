@@ -20,7 +20,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/ict.webp'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/consultancy.png'),
                 'link' => 'it-services'
             ],
             [
@@ -78,7 +78,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/cyber.webp'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/cyber-security.png'),
                 'link' => 'cybersecurity'
             ],
             [
@@ -107,7 +107,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/cloud.webp'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/cloud-services.png'),
                 'link' => 'cloud-services'
             ],
             [
@@ -136,10 +136,10 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/software-icon.png'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/softwaredev.png'),
                 'link' => 'software-development'
             ],
-                    [
+            [
                 'title' => 'Network Solutions',
                 'summary' => 'We design and implement reliable networking solutions for seamless connectivity. Services include LAN/WAN setup, wireless solutions, firewall and VPN configuration, intrusion detection, and performance monitoring. Our support team ensures quick troubleshooting and minimal downtime.',
                 'description' => '
@@ -165,7 +165,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/network-icon.png'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/network-solutions.png'),
                 'link' => 'network-solutions'
             ],
             [
@@ -194,7 +194,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/data-analytics.webp'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/analytics.png'),
                 'link' => 'data-analytics'
             ],
             [
@@ -223,7 +223,7 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/technical-support.webp'),
-                'bg-image' => asset('elsFront/images/icons/cyber.webp'),
+                'bg-image' => asset('elsFront/images/icons/tech-support.png'),
                 'link' => 'technical-support'
             ],
             [

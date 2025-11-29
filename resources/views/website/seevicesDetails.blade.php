@@ -147,8 +147,6 @@
                                             {!! $service['description'] !!}
                                         </div>
                                     </div>
-
-                                    <!-- Back Button -->
                                     <div class="mt-5">
                                         <a href="{{ url('services') }}" class="btn btn-outline-primary btn-lg rounded-pill shadow-sm">
                                             <i class="fas fa-arrow-left me-2"></i> Back to Our Services
