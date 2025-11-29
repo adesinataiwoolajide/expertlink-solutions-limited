@@ -20,8 +20,12 @@ Route::get('/login', function () {
 });
 
 
-Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
-Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');
+// Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
+// Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
+    Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');
+});
 
 Route::post('/create-account', [WebsiteController::class, 'store'])->name('createAccount');
 Route::post('/Check-Email', [WebsiteController::class, 'checkEmail'])->name('Check.email');

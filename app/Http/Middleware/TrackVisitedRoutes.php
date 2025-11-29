@@ -1,18 +1,28 @@
-<?php
-    namespace App\Http\Middleware;
+<?php 
+namespace App\Http\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Closure;
 
-    use Closure;
-
-    class TrackVisitedRoutes
+class TrackVisitedRoutes
+{
+    public function handle($request, Closure $next)
     {
-        public function handle($request, Closure $next)
-        {
-            if ($request->method() === 'GET') {
-                $routes = session('visited_routes', []);
-                $routes[] = ['url' => $request->fullUrl()];
-                session(['visited_routes' => $routes]);
-            }
+        if ($request->method() === 'GET' && Auth::check()) {
+            $visited = session()->get('visited_routes', []);
+            $visited[] = [
+                'url' => $request->fullUrl(),
+                'route' => $request->route()->getName(),
+                'time' => now()->toDateTimeString(),
+                'user' => Auth::user()->id
+            ];
 
-            return $next($request);
+            $visited = array_slice($visited, -5); // Keep only the last 5
+            session(['visited_routes' => $visited]);
         }
+
+        return $next($request);
     }
+
+} 
+
+?>

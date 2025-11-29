@@ -34,35 +34,36 @@ class AuthenticatedSessionController extends Controller
 
 
     public function unlock(Request $request)
-    {
+{
+        // Ensure user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->withErrors([
+                'auth' => 'Your session has expired. Please log in again.'
+            ]);
+        }
+
         $user = Auth::user();
         $routes = session('visited_routes', []);
+
         if (Hash::check($request->password, $user->password)) {
-            $request->session()->reflash();
+            $request->session()->reflash(); // keep flashed inputs
             session()->forget('locked');
-
-            $excluded = [
-                '-screen', 'login', 'signin', 'clear-cache', 'register', 'forgot-password',
-                'create-account', 'Check-Email', 'Check-Phone', '/', 'aboutus', 'contactus',
-                'sendContactUs', 'faq', 'blogs', 'partners', 'reviews', 'our-teams',
-                'our-services', 'programs', 'courses', 'our-courses'
+            $excludedRoutes = [
+                'lock.screen','unlock','login','createAccount','Check.email','Check.phone',
+                'website','website.aboutus','website.contactus','website.sendContactUs',
+                'website.faq','website.blog','website.partner','website.review','website.teams',
+                'website.services','website.seeviceDetails','website.programs','website.programs.show',
+                'website.programs.courseShow','website.courses','website.courseDetails'
             ];
-
-            $lastValidUrl = collect($routes)->reverse()->first(function ($route) use ($excluded) {
-                foreach ($excluded as $needle) {
-                    if (Str::contains($route['url'], $needle)) {
-                        return false;
-                    }
-                }
-                return true;
+            $lastValid = collect($routes)->reverse()->first(function ($route) use ($excludedRoutes) {
+                return isset($route['route']) && !in_array($route['route'], $excludedRoutes);
             });
 
-            $redirectUrl = $lastValidUrl['url'] ?? route('home');
-            return redirect($redirectUrl)->withInput(); // rehydrate form inputs
+            $redirectUrl = $lastValid['url'] ?? route('home');
+            return redirect($redirectUrl)->withInput();
         }
 
         return back()->withErrors(['password' => 'Incorrect user password']);
-
     }
 
     /**

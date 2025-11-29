@@ -86,18 +86,9 @@
               window.location.href = '/lock-screen';
           }
 
-          {{-- function showWarning() {
-              alert("You will be redirected to the lock screen in 30 seconds due to inactivity.");
-          } --}}
-
           function resetTimer() {
               clearTimeout(timeoutId);
               clearTimeout(warningId);
-
-              // Schedule warning popup
-              {{-- warningId = setTimeout(showWarning, inactivityTimeout - warningTime); --}}
-
-              // Schedule redirect
               timeoutId = setTimeout(redirectToLockScreen, inactivityTimeout);
           }
 
