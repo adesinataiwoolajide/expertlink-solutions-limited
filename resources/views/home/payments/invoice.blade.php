@@ -35,7 +35,6 @@
                 <!-- Invoice Header with Logo -->
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        
                         @include('layouts.logo')
                         <div>
                             <h5 class="card-title mb-0">Invoice #{{ $payment->paymentReference }}</h5>

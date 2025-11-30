@@ -8,6 +8,8 @@ use App\Repositories\GeneralRepository;
 use Illuminate\Support\Facades\{Auth};
 use App\Http\Requests\{StoreAssignmentRequest, UpdateAssignmentRequest};
 
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 class AssignmentController extends Controller
 {
     protected $model;
@@ -81,9 +83,50 @@ class AssignmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Assignment $assignment)
+    public function show($slug, $noteSlug)
     {
-        //
+        $assignment = Assignment::where([
+            'slug'     => $slug,
+            'noteSlug' => $noteSlug,
+        ])->with(['instructor', 'course', 'submissions'])->first();
+
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'No assignment was found.');
+        }
+
+        $user = Auth::user();
+        if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+            // no restriction
+        } elseif ($user->hasAnyRole(['Instructor'])) {
+            
+            if ($assignment->instructorSlug !== $user->slug) {
+                return redirect()->back()->with('error', 'You are not allowed to view this assignment.');
+            }
+        } else {
+           
+            if ($assignment->studentSlug !== $user->slug) {
+                return redirect()->back()->with('error', 'You are not allowed to view this assignment.');
+            }
+        }
+        $allSubmissions = $assignment->submissions() ->with(['student', 'instructor', 'course', 'note', 'assignment'])
+        ->where('assignmentSlug', $slug)->orderBy('created_at', 'desc')->paginate(200);
+        $note = $assignment->note;                 
+        $dueDate = null;
+        if (!empty($assignment->due_date)) {
+            try {
+                // Parse using the actual format of your stored string
+                $dueDate = Carbon::createFromFormat('d/m/Y h:i A', $assignment->due_date);
+            } catch (\Exception $e) {
+                $dueDate = null; // fallback if parsing fails
+            }
+        }
+        $isOverdue   = $dueDate ? $dueDate->isPast() : false;
+        $dueLabel    = $dueDate ? $dueDate->format('D, M j, Y g:i A') : 'No due date';
+        $maxScore    = $assignment->max_score ?? '—';
+        $rawHtmlDescription = $assignment->description; // trusted HTML? keep {!! !!}
+        $plainDescription   = Str::of(strip_tags($assignment->description ?? ''))->trim()->limit(180);
+        
+        return view('home.assignments.show', compact('assignment','allSubmissions','note','dueDate','isOverdue','dueLabel','maxScore','rawHtmlDescription','plainDescription'));
     }
 
     /**

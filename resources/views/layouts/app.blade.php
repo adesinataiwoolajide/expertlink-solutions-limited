@@ -76,7 +76,7 @@
 
         <script>
           // Set timeout to 2 minutes (120,000 ms)
-          const inactivityTimeout = 2 * 60 * 1000; 
+          const inactivityTimeout = 60 * 60 * 1000; 
           const warningTime = 30 * 1000; // Show warning 30 seconds before redirect
 
           let timeoutId;

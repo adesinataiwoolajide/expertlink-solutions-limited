@@ -1,5 +1,4 @@
 <x-app-layout>
-    
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header">
@@ -42,14 +41,14 @@
                             <span class="badge bg-success ms-2 rounded-pill">{{ count($assignments) ?? 0 }}</span>
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-three"
                             data-bs-toggle="tab" data-bs-target="#badge-content-three" type="button" role="tab"
                             aria-controls="badge-content-three" aria-selected="false">
                             <i class="ri-award-line me-2"></i> Results
                             <span class="badge bg-warning ms-2 rounded-pill">!</span>
                         </button>
-                    </li>
+                    </li> --}}
                 </ul>
                 @include('layouts.alert')
                 <div class="tab-content border border-danger rounded p-4" id="tabs-with-badges-content">
@@ -118,6 +117,7 @@
                                             
                                                 @if(Auth::user()->hasAnyRole(['Administrator','Instructor']))
                                                     <a href="" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $assignment->slug }}">Edit</a>
+                                                    <a href="{{ route('show.course.assignments',[$assignment->slug,$assignment->noteSlug])}}" class="btn btn-outline-success">View</a>
                                                     @if($assignment->submissions->count() > 0)
                                                         <a href="" class="btn btn-outline-primary">Grade</a>
                                                     @endif

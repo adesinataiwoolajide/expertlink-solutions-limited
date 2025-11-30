@@ -44,7 +44,7 @@
                     <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
                         <div class="card shadow-sm mb-3 border-0">
                             
-                            <div class="card-body d-flex align-items-start gap-3">
+                            {{-- <div class="card-body d-flex align-items-start gap-3">
                                 <div class="icon-box sm bg-danger-subtle rounded-circle d-flex align-items-center justify-content-center" style="width:45px; height:45px;">
                                     <i class="ri-notification-2-line text-danger fs-5"></i>
                                 </div>
@@ -70,7 +70,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             @if(Auth::user()->hasAnyRole(['Administrator','Student']))
                                 @if(count($submitted) == 0)
                                     <form action="{{ route('submission.course.store',$assignment->slug) }}" method="POST" enctype="multipart/form-data">
