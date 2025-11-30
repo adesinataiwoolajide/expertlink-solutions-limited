@@ -35,7 +35,8 @@
                 <!-- Invoice Header with Logo -->
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('elsAdmin/images/els.png')}}" alt="Company Logo" height="100" width="100" class="me-3">
+                        
+                        @include('layouts.logo')
                         <div>
                             <h5 class="card-title mb-0">Invoice #{{ $payment->paymentReference }}</h5>
                             <small class="text-muted">Issued on {{ $payment->created_at->format('d M, Y') }}</small>

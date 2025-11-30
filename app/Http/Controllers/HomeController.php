@@ -72,15 +72,35 @@ class HomeController extends Controller
         }
     }
 
-    public function logout()
+    // public function logout()
+    // {
+    //     if (Auth::check()) {
+    //         Auth::logout();
+    //         session()->forget('cart');
+    //         return redirect()->route("login");
+    //     }else{
+    //         return redirect()->route('dashboard');
+    //     }
+
+    // }
+    public function logout(Request $request)
     {
         if (Auth::check()) {
+            // Log out the user
             Auth::logout();
-            session()->forget('cart');
-            return redirect()->route("login");
-        }else{
-            return redirect()->route('dashboard');
+
+            // Clear custom session data
+            $request->session()->forget('cart');
+            $request->session()->forget('visited_routes');
+
+            // Invalidate and regenerate session for security
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login');
         }
 
+        return redirect()->route('dashboard');
     }
+
 }
