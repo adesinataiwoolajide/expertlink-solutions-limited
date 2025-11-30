@@ -40,11 +40,7 @@
                                 <td>
                                     <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-info text-white">View</a> 
                                     @if(Auth::user()->hasAnyRole(['Administrator','Admin', 'Instructor']))
-
-                                        {{-- <a href="{{ route('note.course.assignments',$assignment->noteSlug) }}" class="btn btn-info text-white">View</a>     --}}
-                                        <a href="{{ route('show.course.assignments',[$assignment->slug,$assignment->noteSlug])}}" class="btn btn-primary text-white">Submission</a>
-                                    @else
-                                        <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-info text-white">View</a>    
+                                        <a href="{{ route('show.course.assignments',[$assignment->slug,$assignment->noteSlug])}}" class="btn btn-primary text-white">Submission</a> 
                                     @endif
                                 </td>
                             </tr>

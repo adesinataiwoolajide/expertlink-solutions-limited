@@ -122,20 +122,6 @@
 
 			
 			
-			<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
-					<a href="#!">
-						<i class="ri-file-list-3-line"></i>
-						<span class="menu-text">Course Assignments</span>
-					</a>
-					<ul class="treeview-menu">
-						<li class="{{ request()->routeIs('assignment.course.index') ? 'active' : '' }}">
-							<a href="{{ route('assignment.course.index') }}">View assignments</a>
-						</li>
-						<li class="{{ request()->routeIs('submission.course.index') ? 'active' : '' }}">
-							<a href="{{ route('submission.course.index') }}">View submissions</a>
-						</li>
-					</ul>
-				</li>
 			
 			@if (Auth::user()->hasAnyRole(['Student']))
 
@@ -162,6 +148,22 @@
 				</li>
 
 			@endif
+
+			<li class="treeview {{ request()->routeIs('assignment.course.index','submission.course.index') ? 'active' : '' }}">
+				<a href="#!">
+					<i class="ri-file-list-3-line"></i>
+					<span class="menu-text">Course Assignments</span>
+				</a>
+				<ul class="treeview-menu">
+					<li class="{{ request()->routeIs('assignment.course.index') ? 'active' : '' }}">
+						<a href="{{ route('assignment.course.index') }}">View assignments</a>
+					</li>
+					<li class="{{ request()->routeIs('submission.course.index') ? 'active' : '' }}">
+						<a href="{{ route('submission.course.index') }}">View submissions</a>
+					</li>
+				</ul>
+			</li>
+			
 
 			<li class="{{ request()->routeIs('signout') ? 'active current-page' : '' }}">
 				<a href="{{ route('signout') }}">

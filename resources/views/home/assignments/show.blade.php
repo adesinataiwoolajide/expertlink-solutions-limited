@@ -125,15 +125,19 @@
                                         </div>
 
                                         <p class="mt-2 mb-1">
-                                            <strong>Answer:</strong> {{ Str::limit($submission->answer_text, 150) }}
+                                            <strong>Answer:</strong> {!! Str::limit($submission->answer_text, 150) !!}
                                         </p>
 
-                                        <div class="mt-2">
+                                        <div class="mt-2 d-flex justify-content-between align-items-center">
                                             <small class="text-secondary">
-                                                Instructor: {{ $submission->instructor->email ?? 'N/A' }} |
-                                                Course: {{ $submission->course->title ?? 'N/A' }} |
-                                                Note: {{ $submission->note->title ?? 'N/A' }}
+                                                Instructor: {{ $submission->instructor->email ?? 'N/A' }}
                                             </small>
+
+                                            {{-- Add link to create route --}}
+                                            <a href="{{ route('submission.course.create', $submission->assignmentSlug) }}" 
+                                            class="btn btn-sm btn-outline-primary">
+                                                View Submission
+                                            </a>
                                         </div>
                                     </div>
                                 @empty

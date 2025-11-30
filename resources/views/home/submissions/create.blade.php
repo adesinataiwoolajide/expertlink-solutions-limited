@@ -39,7 +39,7 @@
                             data-bs-toggle="tab" data-bs-target="#badge-content-two" type="button" role="tab"
                             aria-controls="badge-content-two" aria-selected="false">
                             <i class="ri-message-3-line me-2"></i> Submission
-                            <span class="badge bg-success ms-2 rounded-pill">12</span>
+                            <span class="badge bg-success ms-2 rounded-pill">{{ $submitted->count() }}</span>
                         </button>
                     </li>
                     
@@ -135,34 +135,56 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <img src="assets/images/user1.png" class="img-3x rounded-circle" alt="User">
-                            <div>
-                            <h6 class="mb-1">Emily Davis</h6>
-                            <p class="mb-0 small">When will the project documents be ready for review?
-                            </p>
-                            <span class="small text-muted">Just now</span>
+                        <h5 class="fw-bold mb-4 text-primary">Your Submission</h5>
+                        
+                        @forelse($submitted as $submission)
+                            <div class="card shadow-sm mb-4 border-0">
+                                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark">
+                                        Submitted on {{ \Carbon\Carbon::parse($submission->created_at)->format('D, M j, Y g:i A') }}
+                                    </span>
+                                    <span class="badge 
+                                        @if($submission->submission_status === 'submitted') bg-warning text-white 
+                                        @elseif($submission->submission_status === 'approved') bg-success 
+                                        @else bg-secondary @endif">
+                                        {{ ucfirst($submission->submission_status) }}
+                                    </span>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <strong>Score:</strong>
+                                            <span class="badge bg-secondary-subtle text-secondary">
+                                                {{ $submission->student_score ?? 'Not graded yet' }}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>Remark:</strong>
+                                            <span class="text-muted">{{ $submission->submission_remark ?? '—' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <strong>Answer:</strong>
+                                        <div class="mt-2">
+                                            {!! $submission->answer_text !!}
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    
+                                    <a href="" class="btn btn-sm btn-outline-primary">
+                                        Grade Assignment
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-start gap-3 mb-3">
-                            <img src="assets/images/user3.png" class="img-3x rounded-circle" alt="User">
-                            <div>
-                            <h6 class="mb-1">Jason Taylor</h6>
-                            <p class="mb-0 small">The client approved our proposal! We can start next
-                                week.</p>
-                            <span class="small text-muted">30 minutes ago</span>
+                        @empty
+                            <div class="alert alert-warning">
+                                You haven’t submitted anything for this assignment yet.
                             </div>
-                        </div>
-                        <div class="d-flex align-items-start gap-3">
-                            <img src="assets/images/user5.png" class="img-3x rounded-circle" alt="User">
-                            <div>
-                            <h6 class="mb-1">Sandra Chen</h6>
-                            <p class="mb-0 small">Please review the updated marketing materials ASAP.</p>
-                            <span class="small text-muted">2 hours ago</span>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
-                   
                 </div>
             </div>
         </div>
