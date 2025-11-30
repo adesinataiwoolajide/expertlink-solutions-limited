@@ -119,7 +119,6 @@
                                                     Submitted: {{ $submission->created_at->format('D, M j, Y g:i A') }}
                                                 </small>
                                             </div>
-
                                             <span class="badge {{ $submission->submission_status === 'approved' ? 'bg-success' : 'bg-warning' }}">
                                                 {{ ucfirst($submission->submission_status) }}
                                             </span>

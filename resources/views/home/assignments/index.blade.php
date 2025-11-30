@@ -38,8 +38,14 @@
                                     <br> By: {{ $assignment->instructor ? $assignment->instructor->first_name . ' ' . $assignment->instructor->last_name : 'NIL' }}
                                 </td>
                                 <td>
-                                    <a href="{{ route('note.course.assignments',$assignment->noteSlug) }}" class="btn btn-info text-white">View</a>
-                                    <a href="{{ route('show.course.assignments',[$assignment->slug,$assignment->noteSlug])}}" class="btn btn-primary text-white">Submission</a>
+                                    <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-info text-white">View</a> 
+                                    @if(Auth::user()->hasAnyRole(['Administrator','Admin', 'Instructor']))
+
+                                        {{-- <a href="{{ route('note.course.assignments',$assignment->noteSlug) }}" class="btn btn-info text-white">View</a>     --}}
+                                        <a href="{{ route('show.course.assignments',[$assignment->slug,$assignment->noteSlug])}}" class="btn btn-primary text-white">Submission</a>
+                                    @else
+                                        <a href="{{ route('submission.course.create',$assignment->slug) }}" class="btn btn-info text-white">View</a>    
+                                    @endif
                                 </td>
                             </tr>
 

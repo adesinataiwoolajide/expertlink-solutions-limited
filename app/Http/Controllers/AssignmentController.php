@@ -104,10 +104,16 @@ class AssignmentController extends Controller
             }
         } else {
            
-            if ($assignment->studentSlug !== $user->slug) {
-                return redirect()->back()->with('error', 'You are not allowed to view this assignment.');
+            // if ($assignment->studentSlug !== $user->slug) {
+            //     return redirect()->back()->with('error', 'You are not allowed to view this assignment.');
+            // }
+            $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
+            if (!$mySubs->contains($assignment->courseSlug)) {
+                return redirect()->back()->with('error', 'You are not subscribed to this course.');
             }
+
         }
+    
         $allSubmissions = $assignment->submissions() ->with(['student', 'instructor', 'course', 'note', 'assignment'])
         ->where('assignmentSlug', $slug)->orderBy('created_at', 'desc')->paginate(200);
         $note = $assignment->note;                 

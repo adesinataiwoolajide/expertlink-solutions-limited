@@ -8,6 +8,8 @@ use App\Repositories\GeneralRepository;
 use Illuminate\Support\Facades\{Auth};
 use App\Http\Requests\{StoreAssignmentSubmissionRequest, UpdateAssignmentSubmissionRequest};
 
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 class AssignmentSubmissionController extends Controller
 {
     protected $model;
@@ -57,8 +59,21 @@ class AssignmentSubmissionController extends Controller
         }
 
         $submitted = $assignment->submissions()->where('studentSlug', Auth::user()->slug)->get();
-        
-        return view('home.submissions.create', compact( 'assignment', 'submitted'));
+         $dueDate = null;
+        if (!empty($assignment->due_date)) {
+            try {
+                // Parse using the actual format of your stored string
+                $dueDate = Carbon::createFromFormat('d/m/Y h:i A', $assignment->due_date);
+            } catch (\Exception $e) {
+                $dueDate = null; // fallback if parsing fails
+            }
+        }
+        $isOverdue   = $dueDate ? $dueDate->isPast() : false;
+        $dueLabel    = $dueDate ? $dueDate->format('D, M j, Y g:i A') : 'No due date';
+        $maxScore    = $assignment->max_score ?? '—';
+        $rawHtmlDescription = $assignment->description; // trusted HTML? keep {!! !!}
+        $plainDescription   = Str::of(strip_tags($assignment->description ?? ''))->trim()->limit(180);
+        return view('home.submissions.create', compact( 'assignment', 'submitted', 'dueDate','isOverdue','dueLabel','maxScore','rawHtmlDescription','plainDescription'));
     }
 
     /**

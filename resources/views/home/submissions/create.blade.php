@@ -18,6 +18,10 @@
                     class="btn btn-sm btn-outline-info">
                         <i class="ri-book-line me-1"></i> All Notes
                     </a>
+                    <a href="{{ route('note.course.assignments', [$assignment->noteSlug]) }}" 
+                    class="btn btn-sm btn-outline-danger">
+                        <i class="ri-book-line me-1"></i> All Assignments
+                    </a>
                 </div>
             </div>
 
@@ -44,49 +48,69 @@
                     <div class="tab-pane fade show active" id="badge-content-one" role="tabpanel" aria-labelledby="badge-tab-one">
                         <div class="card shadow-sm mb-3 border-0">
                             
-                            {{-- <div class="card-body d-flex align-items-start gap-3">
-                                <div class="icon-box sm bg-danger-subtle rounded-circle d-flex align-items-center justify-content-center" style="width:45px; height:45px;">
-                                    <i class="ri-notification-2-line text-danger fs-5"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="mb-0 fw-bold text-dark">Due: {{ $assignment->due_date }}</h6>
-                                        <span class="badge bg-danger-subtle text-danger">Max Score: {{ $assignment->max_score }}</span>
+                            <div class="card shadow-sm mb-3 border-0">
+                                <div class="card-body d-flex align-items-start gap-3">
+                                    <div class="icon-box sm bg-danger-subtle rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:45px; height:45px;" aria-hidden="true">
+                                        <i class="ri-notification-2-line text-danger fs-5"></i>
                                     </div>
-                                    <p class="mb-2 small text-secondary">Question: {!! $assignment->description !!} </p>
-                                    @if($submitted)
-                                        @php $subs = $submitted->first(); @endphp
-                                        <p class="mb-2 small text-secondary">Student Answer: {!! $subs->answer_text !!} </p>
-                                    @endif
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="small text-muted">
-                                            Created On: {{ $assignment->created_at->format('M d, Y') }}
-                                        </span>
-                                       
-                                        @if($submitted)
-                                            <span class="badge bg-success">Submitted</span>
+
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0 fw-bold text-dark">
+                                                Due: <span class="{{ $isOverdue ? 'text-danger' : 'text-success' }}">{{ $dueLabel }}</span>
+                                            </h6>
+
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <span class="badge {{ $isOverdue ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }}">
+                                                    {{ $isOverdue ? 'Overdue' : 'Upcoming' }}
+                                                </span>
+                                                <span class="badge bg-secondary-subtle text-secondary">
+                                                    Max Score: {{ $maxScore }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        @if(Str::length(strip_tags($rawHtmlDescription)) > 180)
+                                            <p class="mb-2 small text-secondary">
+                                                {{ $plainDescription }}
+                                                <a class="text-primary text-decoration-none" data-bs-toggle="collapse"
+                                                href="#desc-{{ $assignment->slug }}" role="button" aria-expanded="false"
+                                                aria-controls="desc-{{ $assignment->slug }}">
+                                                    Show more
+                                                </a>
+                                            </p>
+                                            <div class="collapse" id="desc-{{ $assignment->slug }}">
+                                                <div class="small text-secondary">
+                                                    {!! $rawHtmlDescription !!}
+                                                </div>
+                                            </div>
                                         @else
-                                            <span class="badge bg-warning text-white">Pending</span>
+                                            <div class="small text-secondary">
+                                                {!! $rawHtmlDescription !!}
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             @if(Auth::user()->hasAnyRole(['Administrator','Student']))
                                 @if(count($submitted) == 0)
-                                    <form action="{{ route('submission.course.store',$assignment->slug) }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" name="courseSlug" value="{{ $assignment->courseSlug }}">
-                                        <input type="hidden" name="noteSlug" value="{{ $assignment->noteSlug }}">
-                                        <input type="hidden" name="instructorSlug" value="{{ $assignment->instructorSlug }}">
-                                        <div class="row">
-                                            <div class="mb-3 col-md-12">
-                                                <label class="form-label fw-bold text-dark">Assignment Answer:</label>
-                                                <textarea class="form-control summernote" name="answer_text" required>{!! old('answer_text') ?? 'Enter your answer here...' !!}</textarea>
-                                                <x-input-error :messages="$errors->get('answer_text')" class="mt-2 text-danger" />
+                                    @if($isOverdue == false)
+                                        <form action="{{ route('submission.course.store',$assignment->slug) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="courseSlug" value="{{ $assignment->courseSlug }}">
+                                            <input type="hidden" name="noteSlug" value="{{ $assignment->noteSlug }}">
+                                            <input type="hidden" name="instructorSlug" value="{{ $assignment->instructorSlug }}">
+                                            <div class="row">
+                                                <div class="mb-3 col-md-12">
+                                                    <label class="form-label fw-bold text-dark">Assignment Answer:</label>
+                                                    <textarea class="form-control summernote" name="answer_text" required>{!! old('answer_text') ?? 'Enter your answer here...' !!}</textarea>
+                                                    <x-input-error :messages="$errors->get('answer_text')" class="mt-2 text-danger" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit Assignment</button>
-                                    </form>
+                                            <button type="submit" class="btn btn-primary">Submit Assignment</button>
+                                        </form>
+                                    @endif
                                 @else
                                     @php $subs = $submitted->first(); @endphp
                                     @if(optional($subs)->status != 'Graded')

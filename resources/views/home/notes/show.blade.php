@@ -31,6 +31,10 @@
                                 <a href="{{ route('mycourse.note.read', [$notes->slug, $course->slug]) }}" class="btn btn-sm btn-outline-info">
                                     Read Course Note
                                 </a>
+                                <a href="{{ route('note.course.assignments', [$notes->slug]) }}" 
+                                    class="btn btn-sm btn-outline-danger">
+                                        <i class="ri-book-line me-1"></i> All Assignments
+                                </a>
                             @endif
 
                             @if(Auth::user()->hasAnyRole(['Administrator']))
