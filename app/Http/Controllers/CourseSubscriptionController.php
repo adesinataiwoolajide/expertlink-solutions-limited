@@ -176,21 +176,33 @@ class CourseSubscriptionController extends Controller
      */
     public function show($slug)
     {
-        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' ])->where(['slug' => $slug])->first();
+        $user = Auth::user();
+        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user', 'assignments'])->where(['slug' => $slug])->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
        
         $filePath = 'course_videos/' . $course->course_introduction;
-        $notes = $course->notes()->with(['course','allocation','materials','instructor'])
+        $notes = $course->notes()->with(['course','allocation','materials','instructor', 'assignments', 'submissions'])
         ->withCount([
             'submissions as student_assignments_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
             'tasksubmission as student_tasks_count' => fn($q) => $q->where('studentSlug', Auth::user()->slug),
         ])
         ->where('status', 1)
         ->orderBy('created_at','desc')->paginate(20);
-        $assignmentProgress = $course->progressForStudent();
-        $taskProgress = $course->taskProgressForStudent();
+        // $assignmentProgress = $course->progressForStudent();
+        // $taskProgress = $course->taskProgressForStudent();
+        if ($user->hasRole('Administrator')) {
+            $assignmentProgress = $course->progressForStudent(); // cumulative
+            $taskProgress = $course->taskProgressForStudent();   // cumulative
+        } elseif ($user->hasRole('Instructor')) {
+            $assignmentProgress = $course->progressForStudent(null, $user->slug); // instructorSlug
+            $taskProgress = $course->taskProgressForStudent(null, $user->slug);
+        } else {
+            $assignmentProgress = $course->progressForStudent($user->slug); // studentSlug
+            $taskProgress = $course->taskProgressForStudent($user->slug);
+        }
+        
         return view('home.notes.courseIndex', compact('course', 'notes','filePath', 'assignmentProgress', 'taskProgress'));
     }
     /**

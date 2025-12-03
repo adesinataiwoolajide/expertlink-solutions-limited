@@ -47,21 +47,20 @@ class AssignmentSubmissionController extends Controller
         $query = Assignment::with(['instructor', 'course', 'submissions'])->where('slug', $slug);
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
             $assignment = $query->first();
-            $submitted = $assignment->submissions()->where('AssignmentSlug', $slug)->get();
+            $submitted = $assignment->submissions()->with('student')->where('AssignmentSlug', $slug)->get();
         } elseif ($user->hasAnyRole(['Instructor'])) {
             $assignment = $query->where('instructorSlug', $user->slug)->first();
-            $submitted = $assignment->submissions()->where('instructorSlug', Auth::user()->slug)->get();
+            $submitted = $assignment->submissions()->with('student')->where('instructorSlug', Auth::user()->slug)->get();
         } else {
             $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
             $assignment = $query->whereIn('courseSlug', $mySubs)->first();
-            $submitted = $assignment->submissions()->where('studentSlug', Auth::user()->slug)->get();
+            $submitted = $assignment->submissions()->with('student')->where('studentSlug', Auth::user()->slug)->get();
         }
 
         if (!$assignment) {
             return redirect()->back()->with('error', 'No assignment was found.');
         }
 
-        
         $dueDate = null;
         if (!empty($assignment->due_date)) {
             try {

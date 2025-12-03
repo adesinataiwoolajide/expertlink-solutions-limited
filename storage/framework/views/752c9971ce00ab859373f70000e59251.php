@@ -1,24 +1,34 @@
-<x-app-layout>
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
      <div class="col-sm-12">
         <div class="card mb-3">
-            @include('layouts.alert')
+            <?php echo $__env->make('layouts.alert', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 
                 <h5 class="card-title mb-0 fw-bold text-primary">
-                    {{ $assignment->note->topic ?? 'No Topic' }}
+                    <?php echo e($assignment->note->topic ?? 'No Topic'); ?>
+
                 </h5>
 
                 <!-- Actions -->
                 <div class="btn-group" role="group">
-                    <a href="{{ route('mycourse.note.read', [$assignment->noteSlug, $assignment->courseSlug]) }}" 
+                    <a href="<?php echo e(route('mycourse.note.read', [$assignment->noteSlug, $assignment->courseSlug])); ?>" 
                     class="btn btn-sm btn-outline-primary">
                         <i class="ri-eye-line me-1"></i> Read Note
                     </a>
-                    <a href="{{ route('mycourse.note.index', [$assignment->courseSlug]) }}" 
+                    <a href="<?php echo e(route('mycourse.note.index', [$assignment->courseSlug])); ?>" 
                     class="btn btn-sm btn-outline-info">
                         <i class="ri-book-line me-1"></i> All Notes
                     </a>
-                    <a href="{{ route('note.course.assignments', [$assignment->noteSlug]) }}" 
+                    <a href="<?php echo e(route('note.course.assignments', [$assignment->noteSlug])); ?>" 
                     class="btn btn-sm btn-outline-danger">
                         <i class="ri-book-line me-1"></i> All Assignments
                     </a>
@@ -39,7 +49,7 @@
                             data-bs-toggle="tab" data-bs-target="#badge-content-two" type="button" role="tab"
                             aria-controls="badge-content-two" aria-selected="false">
                             <i class="ri-message-3-line me-2"></i> Submission
-                            <span class="badge bg-success ms-2 rounded-pill">{{ $allSubmissions->total() }}</span>
+                            <span class="badge bg-success ms-2 rounded-pill"><?php echo e($allSubmissions->total()); ?></span>
                         </button>
                     </li>
                     
@@ -57,39 +67,44 @@
                                 <div class="flex-grow-1">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
                                         <h6 class="mb-0 fw-bold text-dark">
-                                            Due: <span class="{{ $isOverdue ? 'text-danger' : 'text-success' }}">{{ $dueLabel }}</span>
+                                            Due: <span class="<?php echo e($isOverdue ? 'text-danger' : 'text-success'); ?>"><?php echo e($dueLabel); ?></span>
                                         </h6>
 
                                         <div class="d-flex gap-2 align-items-center">
-                                            <span class="badge {{ $isOverdue ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }}">
-                                                {{ $isOverdue ? 'Overdue' : 'Upcoming' }}
+                                            <span class="badge <?php echo e($isOverdue ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'); ?>">
+                                                <?php echo e($isOverdue ? 'Overdue' : 'Upcoming'); ?>
+
                                             </span>
                                             <span class="badge bg-secondary-subtle text-secondary">
-                                                Max Score: {{ $maxScore }}
+                                                Max Score: <?php echo e($maxScore); ?>
+
                                             </span>
                                         </div>
                                     </div>
 
-                                    {{-- Short preview + collapsible full content (choose one based on trust level) --}}
-                                    @if(Str::length(strip_tags($rawHtmlDescription)) > 180)
+                                    
+                                    <?php if(Str::length(strip_tags($rawHtmlDescription)) > 180): ?>
                                         <p class="mb-2 small text-secondary">
-                                            {{ $plainDescription }}
+                                            <?php echo e($plainDescription); ?>
+
                                             <a class="text-primary text-decoration-none" data-bs-toggle="collapse"
-                                            href="#desc-{{ $assignment->slug }}" role="button" aria-expanded="false"
-                                            aria-controls="desc-{{ $assignment->slug }}">
+                                            href="#desc-<?php echo e($assignment->slug); ?>" role="button" aria-expanded="false"
+                                            aria-controls="desc-<?php echo e($assignment->slug); ?>">
                                                 Show more
                                             </a>
                                         </p>
-                                        <div class="collapse" id="desc-{{ $assignment->slug }}">
+                                        <div class="collapse" id="desc-<?php echo e($assignment->slug); ?>">
                                             <div class="small text-secondary">
-                                                {!! $rawHtmlDescription !!}
+                                                <?php echo $rawHtmlDescription; ?>
+
                                             </div>
                                         </div>
-                                    @else
+                                    <?php else: ?>
                                         <div class="small text-secondary">
-                                            {!! $rawHtmlDescription !!}
+                                            <?php echo $rawHtmlDescription; ?>
+
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
 
                                    
                                 </div>
@@ -99,44 +114,49 @@
                     <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
                         <div class="card shadow-sm mb-3 border-0">
                             <div class="card-body">
-                                <h5 class="fw-bold mb-3">Submissions ({{ $allSubmissions->total() }})</h5>
+                                <h5 class="fw-bold mb-3">Submissions (<?php echo e($allSubmissions->total()); ?>)</h5>
 
-                                @forelse($allSubmissions as $submission)
+                                <?php $__empty_1 = true; $__currentLoopData = $allSubmissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $submission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <div class="border-bottom py-3">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
-                                                <strong>Student:</strong> {{ $submission->student->email ?? 'Unknown' }} <br>
+                                                <strong>Student:</strong> <?php echo e($submission->student->email ?? 'Unknown'); ?> <br>
                                                 <small class="text-muted">
-                                                    Submitted: {{ $submission->created_at->format('D, M j, Y g:i A') }}
+                                                    Submitted: <?php echo e($submission->created_at->format('D, M j, Y g:i A')); ?>
+
                                                 </small>
                                             </div>
-                                            <span class="badge {{ $submission->submission_status === 'approved' ? 'bg-success' : 'bg-warning' }}">
-                                                {{ ucfirst($submission->submission_status) }}
+                                            <span class="badge <?php echo e($submission->submission_status === 'approved' ? 'bg-success' : 'bg-warning'); ?>">
+                                                <?php echo e(ucfirst($submission->submission_status)); ?>
+
                                             </span>
                                         </div>
 
                                         <p class="mt-2 mb-1">
-                                            <strong>Answer:</strong> {!! Str::limit($submission->answer_text, 150) !!}
+                                            <strong>Answer:</strong> <?php echo Str::limit($submission->answer_text, 150); ?>
+
                                         </p>
 
                                         <div class="mt-2 d-flex justify-content-between align-items-center">
                                             <small class="text-secondary">
-                                                Instructor: {{ $submission->instructor->email ?? 'N/A' }}
+                                                Instructor: <?php echo e($submission->instructor->email ?? 'N/A'); ?>
+
                                             </small>
 
-                                            {{-- Add link to create route --}}
-                                            <a href="{{ route('submission.course.create', $submission->assignmentSlug) }}" 
+                                            
+                                            <a href="<?php echo e(route('submission.course.create', $submission->assignmentSlug)); ?>" 
                                             class="btn btn-sm btn-outline-primary">
                                                 View Submission
                                             </a>
                                         </div>
                                     </div>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <p class="text-danger">No submissions yet.</p>
-                                @endforelse
+                                <?php endif; ?>
 
                                 <div class="mt-3">
-                                    {{ $allSubmissions->links() }}
+                                    <?php echo e($allSubmissions->links()); ?>
+
                                 </div>
                             </div>
                         </div>
@@ -146,4 +166,13 @@
         </div>
     </div>
         
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?><?php /**PATH C:\xampp\htdocs\expertlink_solutions\resources\views/home/assignments/show.blade.php ENDPATH**/ ?>

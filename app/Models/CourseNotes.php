@@ -56,17 +56,55 @@ class CourseNotes extends Model
         return $this->hasMany(TaskSubmission::class, 'noteSlug', 'slug');
     }
 
-    public function progressForStudent($studentSlug = null)
+    public function progressForStudent($studentSlug = null, $instructorSlug = null)
     {
-        $studentSlug = $studentSlug ?? Auth::user()->slug;
-        $totalAssignments = $this->submissions()->where('studentSlug', $studentSlug)->count();
-        $completedAssignments = $this->submissions()->where('studentSlug', $studentSlug)
-        ->where(function($q) {
-            $q->where('status', 'completed')->orWhere('submission_status', 'graded');
-        })->count();
+        $user = Auth::user();
+
+        // Administrator → cumulative progress across all submissions
+        if ($user->hasRole('Administrator')) {
+            $totalAssignments = $this->submissions()->count();
+
+            $completedAssignments = $this->submissions()
+                ->where(function($q) {
+                    $q->where('status', 'submitted')
+                    ->orWhere('submission_status', 'graded');
+                })->count();
+        }
+
+        // Instructor → progress for submissions tied to their instructorSlug
+        elseif ($user->hasRole('Instructor')) {
+            $instructorSlug = $instructorSlug ?? $user->slug;
+
+            $totalAssignments = $this->submissions()
+                ->where('instructorSlug', $instructorSlug)->count();
+
+            $completedAssignments = $this->submissions()
+                ->where('instructorSlug', $instructorSlug)
+                ->where(function($q) {
+                    $q->where('status', 'submitted')
+                    ->orWhere('submission_status', 'graded');
+                })->count();
+        }
+
+        // Student → progress for their own submissions
+        else {
+            $studentSlug = $studentSlug ?? $user->slug;
+
+            $totalAssignments = $this->submissions()
+                ->where('studentSlug', $studentSlug)->count();
+
+            $completedAssignments = $this->submissions()
+                ->where('studentSlug', $studentSlug)
+                ->where(function($q) {
+                    $q->where('status', 'submitted')
+                    ->orWhere('submission_status', 'graded');
+                })->count();
+        }
+
         if ($totalAssignments === 0) {
             return 0;
         }
+
         return round(($completedAssignments / $totalAssignments) * 100, 2);
     }
 

@@ -41,14 +41,7 @@
                             <span class="badge bg-success ms-2 rounded-pill">{{ count($assignments) ?? 0 }}</span>
                         </button>
                     </li>
-                    {{-- <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4 py-2 d-flex align-items-center" id="badge-tab-three"
-                            data-bs-toggle="tab" data-bs-target="#badge-content-three" type="button" role="tab"
-                            aria-controls="badge-content-three" aria-selected="false">
-                            <i class="ri-award-line me-2"></i> Results
-                            <span class="badge bg-warning ms-2 rounded-pill">!</span>
-                        </button>
-                    </li> --}}
+                    
                 </ul>
                 @include('layouts.alert')
                 <div class="tab-content border border-danger rounded p-4" id="tabs-with-badges-content">
@@ -98,6 +91,7 @@
                                             <th>Question</th>
                                             <th>Due Date</th>
                                             <th>Total Grade</th>
+                                            <th>Total Score</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
@@ -110,6 +104,7 @@
                                             
                                             <td>{{ $assignment->due_date }}</td>
                                             <td>{{ $assignment->max_score }}</td>
+                                            <td>{{ $assignments->submissions->student_score ?? 0 }}</td>
                                             <td>{{ $assignment->created_at }}
                                                 <br> By: {{ $assignment->instructor ? $assignment->instructor->first_name . ' ' . $assignment->instructor->last_name : 'NIL' }}
                                             </td>

@@ -75,7 +75,7 @@ class CoursesController extends Controller
     }
     public function startLearning($slug)
     {
-        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' ])->where(['slug' => $slug])->first();
+        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user', 'submissions' ])->where(['slug' => $slug])->first();
         if(!$course){
             return redirect()->back()->with("error", "Course details does not exists");
         }
@@ -88,7 +88,7 @@ class CoursesController extends Controller
     public function viewLearning($noteSlug, $courseSlug)
     {
         $notes = CourseNotes::where(['slug' => $noteSlug, 'courseSlug' => $courseSlug])->with('materials', 'allocation', 'instructor', 'course')->first();
-        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' ])->where(['slug' => $courseSlug])->first();
+        $course = Courses::with([ 'notes.materials', 'notes.instructor', 'allocation.user','program', 'user' , 'submissions'])->where(['slug' => $courseSlug])->first();
         if (!$notes || !$course) {
             return redirect()->back()->with("error", "Course note details do not exist");
         }

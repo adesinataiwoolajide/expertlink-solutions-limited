@@ -136,17 +136,17 @@
                     </div>
                     <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
                         <h5 class="fw-bold mb-4 text-primary">Assignment Submission</h5>
-                        
+                        @php $index = 1; @endphp
                         @forelse($submitted as $submission)
                             <div class="card shadow-sm mb-4 border-0">
                                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                     <span class="fw-semibold text-dark">
-                                        Submitted on {{ \Carbon\Carbon::parse($submission->created_at)->format('D, M j, Y g:i A') }}
+                                        {{ $index }}. Submitted on {{ \Carbon\Carbon::parse($submission->created_at)->format('D, M j, Y g:i A') }} by {{ $submission->student->email }}
                                     </span>
                                     <span class="badge 
                                         @if($submission->submission_status === 'submitted') bg-warning text-white 
-                                        @elseif($submission->submission_status === 'approved') bg-success 
-                                        @else bg-secondary @endif">
+                                        @elseif($submission->submission_status === 'graded') bg-success 
+                                        @else bg-danger @endif">
                                         {{ ucfirst($submission->submission_status) }}
                                     </span>
                                 </div>
@@ -157,11 +157,11 @@
                                             <strong>Assignment Score:</strong>
                                             <span class="badge 
                                                 @if(is_null($submission->student_score))
-                                                    bg-secondary-subtle text-secondary
-                                                @elseif($submission->student_score >= 8)
+                                                    bg-secondary-subtle text-white
+                                                @elseif($submission->student_score >= 7)
                                                     bg-success
                                                 @elseif($submission->student_score >= 5)
-                                                    bg-warning text-dark
+                                                    bg-warning text-white
                                                 @else
                                                     bg-danger
                                                 @endif">

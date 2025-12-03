@@ -105,8 +105,8 @@
                                         <a href="{{ route('note.course.assignments', $note->slug) }}"
                                             class="badge bg-info text-white px-3 py-2 rounded-pill shadow-sm text-decoration-none"
                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="View your {{ $note->student_assignments_count }} submitted assignments">
-                                                📝 {{ $note->student_assignments_count }} Assignments
+                                            title="View your {{ $note->assignments->count() }} submitted assignments">
+                                                📝 {{ $note->assignments->count() }} Assignments
                                         </a>
 
                                         <!-- Progress badge -->
