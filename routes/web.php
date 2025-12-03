@@ -204,6 +204,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified', '
                 Route::get('/create/{slug}', [AssignmentSubmissionController::class, 'create'])->name('submission.course.create');
                 Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'store'])->name('submission.course.store');
                 Route::post('/updating/{submissionSlug}', [AssignmentSubmissionController::class, 'update'])->name('submission.course.update');
+
+                Route::prefix('grading')->group(callback: function () {
+                    Route::post('/store/{slug}', [AssignmentSubmissionController::class, 'grade'])->name('submission.grade.store');
+                });
             });
 
             Route::prefix('tasks')->group(function () {

@@ -83,6 +83,25 @@ class AssignmentSubmissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function grade(Request $request, $slug)
+    {
+        if(Auth::user()->hasAnyRole(['Administrator', 'Instructor'])){
+    
+            $student_score = $request->input('max_score');
+            $submission_remark = $request->input('assignment_remark');
+            $submission = AssignmentSubmission::where('slug', $slug)->update([
+                'submission_remark' => $submission_remark, 'student_score' => $student_score,
+                'submission_status' => 'graded'
+            ]);
+            if($submission){
+                return redirect() ->back()->with('success', 'Assignment graded successfully!');
+            }else{
+                return redirect() ->back()->with('error', 'Unable to grade the Assignment at the moment, Please try again later!');
+            }
+        }else{
+
+        }
+    }
     public function store(StoreAssignmentSubmissionRequest $request, $slug)
     {
         $request->user()->fill($request->validated());

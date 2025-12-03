@@ -135,7 +135,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="badge-content-two" role="tabpanel" aria-labelledby="badge-tab-two">
-                        <h5 class="fw-bold mb-4 text-primary">Your Submission</h5>
+                        <h5 class="fw-bold mb-4 text-primary">Assignment Submission</h5>
                         
                         @forelse($submitted as $submission)
                             <div class="card shadow-sm mb-4 border-0">
@@ -154,11 +154,21 @@
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <strong>Score:</strong>
-                                            <span class="badge bg-secondary-subtle text-secondary">
+                                            <strong>Assignment Score:</strong>
+                                            <span class="badge 
+                                                @if(is_null($submission->student_score))
+                                                    bg-secondary-subtle text-secondary
+                                                @elseif($submission->student_score >= 8)
+                                                    bg-success
+                                                @elseif($submission->student_score >= 5)
+                                                    bg-warning text-dark
+                                                @else
+                                                    bg-danger
+                                                @endif">
                                                 {{ $submission->student_score ?? 'Not graded yet' }}
                                             </span>
                                         </div>
+
                                         <div class="col-md-6">
                                             <strong>Remark:</strong>
                                             <span class="text-muted">{{ $submission->submission_remark ?? '—' }}</span>
@@ -171,12 +181,56 @@
                                             {!! $submission->answer_text !!}
                                         </div>
                                     </div>
+                                    @if($isOverdue == false)
+                                        @if(Auth::user()->hasAnyRole(['Administrator', 'Instructor']))
+                                            <hr>
 
-                                    <hr>
-                                    
-                                    <a href="" class="btn btn-sm btn-outline-primary">
-                                        Grade Assignment
-                                    </a>
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal-{{ $submission->slug  }}">Grade Assignment</button>
+                                            </div>
+                                            <div class="modal fade" id="basicModal-{{ $submission->slug  }}" tabindex="-1" aria-labelledby="basicModalLabel"
+                                            aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="basicModalLabel">Grade Student Assignment</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form action="{{ route('submission.grade.store',$submission->slug)}}" method="POST" enctype="multipart/form-data">@csrf
+                                                            <div class="modal-body">
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Assignment Score:</label>
+                                                                    <input type="number" class="form-control" placeholder="0" name="student_score" value="{{ $submission->assignment->max_score }}" readonly>
+                                                                    <x-input-error :messages="$errors->get('student_score')" class="mt-2 text-danger" max="10" />
+                                                                </div>
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Student Score:</label>
+                                                                    <select data-placeholder="Select a score..." class="form-control select-icons" name="max_score" required>
+                                                                        <option value="{{ old('assignment_score') ?? $submission->student_score}}"> {{ old('assignment_score') ?? $submission->student_score }}</option>
+                                                                        <option value=""></option>
+                                                                        @for ($i = $submission->assignment->max_score; $i >= 0; $i--)
+                                                                            <option value="{{ $i }}"> {{ $i }} </option>
+                                                                        @endfor
+                                                                    </select>
+                                                                    <x-input-error :messages="$errors->get('assignment_score')" class="mt-2 text-danger" max="10" />
+                                                                </div>
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Submission Remarks:</label>
+                                                                    <textarea class="form-control" placeholder="Assignment Remarks" name="assignment_remark" required>{{ old('assignment_remark') ?? $submission->submission_remark }}</textarea>
+                                                                    <x-input-error :messages="$errors->get('assignment_remark')" class="mt-2 text-danger" />
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         @empty
