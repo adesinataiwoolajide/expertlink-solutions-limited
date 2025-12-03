@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="col-sm-12">
+    <div class="col-sm-12 mt-3">
         <div class="card mb-3">
             <div class="card-header">
                 <h5 class="card-title">{{ $note->topic }} - Assignments</h5>

@@ -12,7 +12,7 @@
         </nav>
     </div>
     @include('layouts.alert')
-    <div class="col-sm-12">
+    <div class="col-sm-12 mt-3">
         <div class="card mb-3">
             <div class="card-body">
                 <div class="table-responsive">

@@ -16,7 +16,7 @@
         
     </div>
     
-    <div class="row gx-3 mt-2">
+    <div class="row gx-3 mt-3">
         <div class="col-lg-12 col-ms-12">
             @include('layouts.alert')
             <div class="card mb-3">

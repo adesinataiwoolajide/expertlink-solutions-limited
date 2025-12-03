@@ -15,7 +15,7 @@
         </nav>
     </div>
     @include('layouts.alert')   
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-header">
             <h5 class="card-title">{{$program->program_name}}</h5>
         </div>

@@ -1,5 +1,5 @@
 <x-app-layout>
-     <div class="col-sm-12">
+     <div class="col-sm-12 mt-3">
         <div class="card mb-3">
             @include('layouts.alert')
             <div class="card-header bg-light d-flex justify-content-between align-items-center">

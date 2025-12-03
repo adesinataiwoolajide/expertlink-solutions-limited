@@ -4,7 +4,7 @@
     @include('layouts.alert')
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
-    <div class="card-body" style="background-color:#f8f9fa;">
+    <div class="card-body mt-3" style="background-color:#f8f9fa;">
        
         <div class="row">
             <div class="col-lg-12">

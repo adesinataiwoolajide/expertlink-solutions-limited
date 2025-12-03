@@ -14,7 +14,7 @@
     </div>
     @include('layouts.alert')
     
-    <div class="card-body" style="background-color:#f8f9fa;">
+    <div class="card-body mt-3" style="background-color:#f8f9fa;">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
             <h4 style="font-weight:600;">Lets start learning</h4>
             <a href="{{ route('myCourses') }}" style="text-decoration:none; color:#007bff; font-weight:500;">My learning</a>

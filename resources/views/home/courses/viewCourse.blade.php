@@ -13,7 +13,7 @@
         </nav>
     </div>
     @include('layouts.alert')
-     <div class="col-md-12">
+     <div class="col-md-12 mt-3">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0">{{ $course->course_name }} Details</h5>

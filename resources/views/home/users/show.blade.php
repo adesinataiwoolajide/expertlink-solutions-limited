@@ -17,7 +17,7 @@
     </div>
     @include('layouts.alert')
     <div class="row gx-3">
-        <div class="col-xxl-4 col-sm-12">
+        <div class="col-xxl-4 col-sm-12 mt-3">
 
             <!-- Profile Info -->
             <div class="card mb-3">

@@ -15,7 +15,7 @@
         
     </div>
     @include('layouts.alert')
-    <div class="col-md-12">
+    <div class="col-md-12 mt-3">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{$course->course_name}} Details</h5>

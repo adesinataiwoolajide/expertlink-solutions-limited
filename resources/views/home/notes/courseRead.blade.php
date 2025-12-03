@@ -18,7 +18,7 @@
         }
        
     </style>
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-body bg-light">
             <div class="d-flex justify-content-between align-items-center mb-4 ">
                 <h4 class="text-primary fw-bold mb-0">

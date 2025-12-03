@@ -15,7 +15,7 @@
         
     </div>
     @include('layouts.alert')
-    <div class="row gx-3 mt-4">
+    <div class="row gx-3 mt-3">
         <div class="col-lg-12 col-ms-12">
             <!-- Basic Input Fields Column -->
             <div class="card">

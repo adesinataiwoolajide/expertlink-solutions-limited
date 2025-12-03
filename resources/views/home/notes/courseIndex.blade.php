@@ -17,7 +17,7 @@
             box-shadow: 0 1rem 1.5rem rgba(0,0,0,0.1);
         }
     </style>
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-body bg-light">
             {{-- Header --}}
             <div class="d-flex justify-content-between align-items-center mb-4">

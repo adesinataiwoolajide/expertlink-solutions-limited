@@ -16,7 +16,7 @@
     </div>
     @include('layouts.alert')
    
-    <div class="row gx-3 mt-4">
+    <div class="row gx-3 mt-3">
         <ul class="nav nav-tabs" id="bordered-tabs" role="tablist">
             @if(Auth::user()->hasAnyRole(['Administrator',"Admin"]))
 

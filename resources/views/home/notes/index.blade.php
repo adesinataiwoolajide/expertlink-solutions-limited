@@ -16,7 +16,7 @@
     </div>
     @include('layouts.alert')
 
-    <div class="card">
+    <div class="card mt-3">
         <div class="card-body bg-light">
             {{-- Header --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
