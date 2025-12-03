@@ -25,8 +25,11 @@ class CourseAllocationController extends Controller
      */
     public function index()
     {
+       
         $user = Auth::user();
-        $query = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->orderBy('created_at', 'desc');
+        $query = CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])
+            ->orderBy('created_at', 'desc');
+
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
             $allocations = $query->get();
         } elseif ($user->hasRole('Instructor')) {
@@ -36,9 +39,37 @@ class CourseAllocationController extends Controller
                 'message' => 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal'
             ]);
         }
+
+        // 🔹 Group allocations by program
+        $allocationByProgram = $allocations->groupBy('programSlug')->map(function ($group) {
+            return [
+                'program' => $group->first()->program?->program_name ?? $group->first()->programSlug,
+                'count'   => $group->count()
+            ];
+        });
+
+        // 🔹 Group allocations by course
+        $allocationByCourse = $allocations->groupBy('courseSlug')->map(function ($group) {
+            return [
+                'course' => $group->first()->course?->course_name ?? $group->first()->courseSlug,
+                'count'  => $group->count()
+            ];
+        });
+
+        $allocationByInstructor = $allocations->groupBy('userSlug')->map(function ($group) {
+            return [
+                'instructor' => $group->first()->user?->email ?? $group->first()->userSlug,
+                'count'      => $group->count()
+            ];
+        });
+
         return view('home.allocations.index')->with([
-            'allocations' => $allocations
+            'allocations'           => $allocations,
+            'allocationByProgram'   => $allocationByProgram,
+            'allocationByCourse'    => $allocationByCourse,
+            'allocationByInstructor'=> $allocationByInstructor,
         ]);
+
         
     }
 

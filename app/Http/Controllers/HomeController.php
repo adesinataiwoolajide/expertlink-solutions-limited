@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories};
+use App\Models\{Courses, User, Programs, CourseAllocation, CourseAllocationHistories, Payment, CourseSubscription};
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -34,7 +34,19 @@ class HomeController extends Controller
             $totalUsers = User::count();
             $totalAllocations = CourseAllocation::count();
             $totalAllocationHistories = CourseAllocationHistories::count();
+            $totalPayment = Payment::orderBy('created_at', 'desc');
+            $paymentSums = $totalPayment->selectRaw('paymentProvider, SUM(totalAmount) as totalSum')
+            ->groupBy('paymentProvider')
+            ->orderByDesc('totalAmount')
+            ->get();
+            $programRevenue = CourseSubscription::selectRaw('programSlug, SUM(course_amount) as totalSum')->groupBy('programSlug')->with('program')->orderByDesc('totalSum')->get();
+            $courseRevenue = CourseSubscription::selectRaw('courseSlug, SUM(course_amount) as totalSum')
+            ->groupBy('courseSlug')
+            ->with('course') // eager load course details
+            ->orderByDesc('totalSum')
+            ->get();
 
+            
             return view('dashboard')->with([
                 'success' => "Dear {$user->first_name}, welcome to your {$user->role} dashboard.",
                 'totalUsers' => $totalUsers,
@@ -42,7 +54,8 @@ class HomeController extends Controller
                 'totalCourses' => $totalCourses,
                 'totalAllocations' => $totalAllocations,
                 'totalAllocationHistories' => $totalAllocationHistories,
-                'totalInstructors' => $totalInstructors,
+                'totalInstructors' => $totalInstructors,'totalPayment' => $totalPayment->sum('totalAmount'), 'paymentSums' => $paymentSums,
+                'programRevenue' => $programRevenue, 'courseRevenue' => $courseRevenue
             ]);
         }elseif(Auth::user()->hasAnyRole(['Instructor'])){
             

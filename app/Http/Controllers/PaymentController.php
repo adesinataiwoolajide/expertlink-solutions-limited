@@ -33,7 +33,9 @@ class PaymentController extends Controller
             ]);
         }
         $payments = $query->with('user', 'courseSubscriptions')->orderBy('created_at', 'desc')->paginate();
-        return view('home.payments.index', compact('payments', ));
+        $paymentSums = $query->selectRaw('paymentProvider, SUM(totalAmount) as totalSum')->groupBy('paymentProvider')->orderByDesc('totalAmount')->get();
+        
+        return view('home.payments.index', compact('payments', 'paymentSums'));
     }
 
     public function show($slug)
