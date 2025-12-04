@@ -23,23 +23,40 @@ class AssignmentController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+        
+    //     $user = Auth::user();
+    //     $query = null;
+    //     if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+    //         $query = Assignment::orderBy('created_at', 'desc')->paginate(400);
+    //     } elseif ($user->hasAnyRole(['Instructor'])) {
+    //         $query =Assignment::where('instructorSlug', $user->slug);;
+    //     } else {
+    //         $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
+    //         $query = Assignment::whereIn('courseSlug', $mySubs);
+    //     }
+    //     $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
+    //     return view('home.assignments.index', compact( 'assignments'));
+    // }
+
     public function index()
     {
-        
         $user = Auth::user();
-        $query = null;
+        $query = Assignment::with(['instructor', 'course', 'submissions', 'note'])
+            ->orderBy('created_at', 'desc');
+
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
-            $query = Assignment::orderBy('created_at', 'desc')->paginate(400);
+            $assignments = $query->paginate(400);
         } elseif ($user->hasAnyRole(['Instructor'])) {
-            $query =Assignment::where('instructorSlug', $user->slug);;
+            $assignments = $query->where('instructorSlug', $user->slug)->paginate(400);
         } else {
             $mySubs = CourseSubscription::where('userSlug', $user->slug)->pluck('courseSlug');
-            $query = Assignment::whereIn('courseSlug', $mySubs);
+            $assignments = $query->whereIn('courseSlug', $mySubs)->paginate(400);
         }
-        $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
-        return view('home.assignments.index', compact( 'assignments'));
-    }
 
+        return view('home.assignments.index', compact('assignments'));
+    }
     /**
      * Show the form for creating a new resource.
      */

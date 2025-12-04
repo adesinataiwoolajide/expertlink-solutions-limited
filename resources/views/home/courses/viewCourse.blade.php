@@ -13,6 +13,15 @@
         </nav>
     </div>
     @include('layouts.alert')
+    <style>
+        .rating-icons input:checked + label i {
+            color: gold; /* Highlight selected star */
+        }
+        .rating-icons label:hover i {
+            color: orange; /* Hover effect */
+        }
+    </style>
+
      <div class="col-md-12 mt-3">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -202,7 +211,54 @@
                                     <div class="mb-3 col-md-12">
                                         <label class="form-label fw-bold">Benefits:</label>
                                         <div class="border p-2 rounded bg-light">{!! $course->benefits !!}</div>
+                                        @if(Auth::user()->hasAnyRole(['Administrator',"Student"]))
+                                            @if(Auth::user()->hasAnyRole(["Student"]))
+                                                @if(count($ratings) == 0)
+                                                    <div>
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rateCourseModal">
+                                                            Rate the course
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div class="modal fade" id="rateCourseModal" tabindex="-1" aria-labelledby="rateCourseModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <form action="{{ route('course.ratings', $course->slug) }}" method="POST">
+                                                            @csrf
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="rateCourseModalLabel">Rate This Course</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" name="courseSlug" value="{{ $course->slug }}">
+                                                                    <label for="rating" class="form-label">Select a rating (1 to 10):</label>
+                                                                    <div class="mb-3 col-md-12">
+                                                                        <label for="rangeWithValue" class="form-label fw-bold text-dark">Course Ratings: <span id="rangeValue">0</span>/10</label>
+                                                                        <input type="range" class="form-range" id="rangeWithValue" min="1" max="10" value="{{ old('ratingScore') ?? 0 }}" oninput="document.getElementById('rangeValue').textContent = this.value"
+                                                                        name="ratingScore"> <x-input-error :messages="$errors->get('ratingScore')" class="mt-2 text-danger" />
+                                                                    </div>
+                                                                    <div class="mb-3 col-md-12">
+                                                                        <label class="form-label">Rating Comment:</label>
+                                                                        <input type="text" class="form-control" placeholder="3-Months" name="ratingComment" value="{{ old('ratingComment') ?? 'Nil' }}" required>
+                                                                        <x-input-error :messages="$errors->get('ratingComment')" class="mt-2 text-danger" />
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-success">Submit Rating</button>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @else 
+
+                                            @endif
+                                        @endif
                                     </div>
+                                   
                                 </div>
                                 
                             </div>

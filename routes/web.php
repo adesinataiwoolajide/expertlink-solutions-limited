@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
-    FaqController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController};
+    FaqController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController, InstructorRatingsController, CourseRatingsController};
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{AuthenticatedSessionController, VerificationController};
 Route::get('/clear-cache', function () {
@@ -125,6 +125,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:web','verified', '
            
             Route::get('/{slug}', [CoursesController::class, 'learning'])->name('course.learning');
             Route::get('/{courseSlug}/{slug}', [CoursesController::class, 'learningShow'])->name('course.viewLearning');
+
+            Route::prefix('ratings')->group(function () {
+                Route::post('/course/{slug}', [CourseRatingsController::class, 'store'])->name('course.ratings');
+                Route::get('/courses/{slug}/ratings/filter', [CourseRatingsController::class, 'show'])->name('course.ratings.filter');
+
+                Route::get('/instructor/{slug}', [InstructorRatingsController::class, 'create'])->name('instructor.ratings');
+            });
+            
         
         });
          Route::prefix('performance')->group(callback: function () {

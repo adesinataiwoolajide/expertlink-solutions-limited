@@ -111,7 +111,7 @@
                 'link' => 'cloud-services'
             ],
             [
-                'title' => 'Software Development',
+                'title' => 'Software and Application Development',
                 'summary' => 'We build custom applications tailored to business needs. Our expertise spans web, mobile, and enterprise solutions. We prioritize user experience, follow agile methodologies, and provide seamless integration with existing systems. Post-launch support ensures security and relevance.',
                 'description' => '
                     <p style="text-align: justify;">
@@ -128,7 +128,8 @@
 
                     <ul class="list-group">
                         <li class="list-group-item">Web application development</li>
-                        <li class="list-group-item">Mobile app development</li>
+                        <li class="list-group-item">Desktop application development</li>
+                        <li class="list-group-item">Andriod/IOS app development</li>
                         <li class="list-group-item">Enterprise software solutions</li>
                         <li class="list-group-item">User experience and interface design</li>
                         <li class="list-group-item">Agile development methodologies</li>
@@ -136,8 +137,8 @@
                     </ul>
                 ',
                 'image' => asset('elsFront/images/icons/software-icon.png'),
-                'bg-image' => asset('elsFront/images/icons/softwaredev.png'),
-                'link' => 'software-development'
+                'bg-image' => asset('elsFront/images/icons/software.png'),
+                'link' => 'software-app-development'
             ],
             [
                 'title' => 'Network Solutions',
@@ -340,6 +341,80 @@
                 'image' => asset('elsFront/images/icons/devops.png'),
                 'bg-image' => asset('elsFront/images/icons/devops-service.png'),
                 'link' => 'devops-services'
+            ],
+
+            [
+                'title' => 'IT Governance & Compliance',
+                'summary' => 'We help organizations establish frameworks that align IT operations with business objectives while ensuring compliance with industry regulations and standards.',
+                'description' => '
+                    <p style="text-align: justify;">
+                        Our IT Governance & Compliance services provide organizations with the structure and oversight needed to align technology investments with strategic business goals. We design frameworks that ensure accountability, transparency, and risk management across IT operations. By implementing governance models such as COBIT, ITIL, and ISO standards, we help organizations achieve operational efficiency while maintaining compliance with regulatory requirements.
+                    </p>
+
+                    <p style="text-align: justify;">
+                        Compliance is critical in today’s digital environment, where data privacy, cybersecurity, and industry-specific regulations demand strict adherence. We assist businesses in meeting standards such as GDPR, HIPAA, and PCI-DSS, ensuring that policies, processes, and controls are in place to safeguard sensitive information. Our experts conduct audits, risk assessments, and compliance reviews to identify gaps and recommend corrective measures.
+                    </p>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">IT governance frameworks (COBIT, ITIL, ISO)</li>
+                        <li class="list-group-item">Regulatory compliance (GDPR, HIPAA, PCI-DSS)</li>
+                        <li class="list-group-item">Risk management and internal controls</li>
+                        <li class="list-group-item">Policy development and enforcement</li>
+                        <li class="list-group-item">Compliance audits and reporting</li>
+                    </ul>
+                ',
+                'image' => asset('elsFront/images/icons/governance.webp'),
+                'bg-image' => asset('elsFront/images/icons/governance.png'),
+                'link' => 'it-governance-compliance'
+            ],
+
+            [
+                'title' => 'Enterprise Resource Planning (ERP)',
+                'summary' => 'Our ERP solutions integrate core business processes into a unified system, enhancing efficiency, visibility, and decision-making.',
+                'description' => '
+                    <p style="text-align: justify;">
+                        We deliver ERP solutions that streamline operations by integrating finance, HR, supply chain, sales, and customer service into a single platform. This unified approach eliminates silos, improves collaboration, and provides real-time visibility into organizational performance. Our ERP implementations are tailored to industry-specific needs, ensuring scalability and adaptability.
+                    </p>
+
+                    <p style="text-align: justify;">
+                        From requirements analysis to deployment and training, we guide organizations through every stage of ERP adoption. Our solutions enable automation of routine tasks, reduce operational costs, and provide advanced analytics for informed decision-making. Whether deploying SAP, Oracle, or Microsoft Dynamics, we ensure seamless integration with existing systems and workflows.
+                    </p>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">ERP system implementation and customization</li>
+                        <li class="list-group-item">Integration of finance, HR, and supply chain</li>
+                        <li class="list-group-item">Automation of business processes</li>
+                        <li class="list-group-item">Real-time analytics and reporting</li>
+                        <li class="list-group-item">Training and post-deployment support</li>
+                    </ul>
+                ',
+                'image' => asset('elsFront/images/icons/erp.webp'),
+                'bg-image' => asset('elsFront/images/icons/erp.png'),
+                'link' => 'enterprise-resource-planning'
+            ],
+            [
+                'title' => 'E-learning Platforms & LMS Integration',
+                'summary' => 'We design and integrate e-learning platforms and Learning Management Systems (LMS) to support digital education and corporate training.',
+                'description' => '
+                    <p style="text-align: justify;">
+                        Our E-learning and LMS solutions empower organizations to deliver training, education, and skill development through digital platforms. We design interactive, user-friendly systems that support multimedia content, assessments, and progress tracking. Whether for schools, universities, or corporate training programs, our platforms enhance accessibility and engagement.
+                    </p>
+
+                    <p style="text-align: justify;">
+                        We specialize in integrating LMS platforms such as Moodle, Blackboard, and Canvas with existing IT infrastructure, ensuring seamless user experiences. Our solutions support mobile learning, gamification, and analytics to measure learner performance. By enabling remote and hybrid learning models, we help organizations adapt to the evolving demands of digital education.
+                    </p>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">Custom e-learning platform development</li>
+                        <li class="list-group-item">LMS integration (Moodle, Blackboard, Canvas)</li>
+                        <li class="list-group-item">Interactive content and multimedia support</li>
+                        <li class="list-group-item">Gamification and learner engagement tools</li>
+                        <li class="list-group-item">Analytics and performance tracking</li>
+                    </ul>
+                ',
+                'image' => asset('elsFront/images/icons/elearning.webp'),
+                'bg-image' => asset('elsFront/images/icons/elearning.png'),
+                'link' => 'elearning-lms-integration'
             ],
         ];
 

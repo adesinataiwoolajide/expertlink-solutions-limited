@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Programs, Courses, User, CourseAllocationHistories, CourseSubscription,CourseNotes};
+use App\Models\{Programs, Courses, User, CourseAllocationHistories, CourseSubscription,CourseNotes, CourseRatings};
 use Illuminate\Http\Request;
 use App\Repositories\GeneralRepository;
 
@@ -132,8 +132,13 @@ class CoursesController extends Controller
             return redirect()->back()->with('error', 'course details do not exist');
         }
         $courses = $program->courses()->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->orderBy('course_name', 'desc')->paginate(15);
-        
-        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses'));
+        if(Auth::user()->hasAnyRole(["Student"])){
+            $ratings = CourseRatings::where(['courseSlug' => $courseSlug, 'studentSlug' => Auth::user()->slug])->get();
+        }else{
+            $ratings = CourseRatings::where(['courseSlug' => $courseSlug])->get();
+
+        }
+        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses', 'ratings'));
 
     }
     public function addToCart($slug)
@@ -291,13 +296,13 @@ class CoursesController extends Controller
             $totalNotes = $course->total_notes;
             $totalAssignment = $course->total_assignment;
             $students = $course->students()->distinct()->orderBy('created_at', 'desc')->paginate(100);
-           
+            $ratings = CourseRatings::where(['courseSlug' => $slug])->get();
             return view('home.courses.show')->with([
                 'programs' => $program, 'course' => $course, 'selectedType' => $selectedTypes, 'program_name' => $program_name,
                 'users' => $users, 'allocations' => $allocations, 'allocationHistories' => $history, 'notes' => $notes,
                 'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress, 'revenue' => $revenue, 
                 'totalStudent' => $totalStudent, 'totalNotes' => $totalNotes, 'totalAssignment' => $totalAssignment,
-                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress, 'students' => $students
+                'assignmentProgress' => $assignmentProgress, 'taskProgress' => $taskProgress, 'students' => $students, 'ratings' =>$ratings
             ]);
         }else{
             $message = 'Access Denied. You Do Not Have The Permission To Access This Page on the Portal';

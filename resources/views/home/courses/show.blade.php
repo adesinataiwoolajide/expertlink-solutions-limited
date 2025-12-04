@@ -1,5 +1,6 @@
 @php $title = "Create a course"; $segments = Request::segments(); $number=1;  @endphp
 <x-app-layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <div class="app-hero-header d-flex align-items-center m-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb m-0">
@@ -196,6 +197,20 @@
                                         </div>
                                     </button>
                                 </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStep5-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStepRatings" role="tab" aria-controls="vStepRatings"
+                                        aria-selected="false">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📝</span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Course Ratings</span>
+                                                <small>View Course Ratings</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
                             @endif
 
                             <li class="nav-item mb-3" role="presentation">
@@ -219,6 +234,7 @@
                     <div class="col-lg-9 col-md-12">
                         <div class="tab-content border rounded-2" id="verticalFormStepperContent">
                             <!-- Step 1 Content -->
+                            
                             <div class="tab-pane fade" id="vStepA1" role="tabpanel" aria-labelledby="vStepA1-tab">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h6 class="text-primary">{{ $program_name ?? '' }} Details</h6>
@@ -687,6 +703,61 @@
 
                                 @endif
                             </div>
+
+                            <div class="tab-pane fade" id="vStepRatings" role="tabpanel" aria-labelledby="vStepRatings-tab">
+                               <h2 class="mb-4">Course Ratings: {{ $course->course_name }}</h2>
+
+                                <!-- Filter Form -->
+                                <div class="mb-4">
+                                    <form id="filterForm">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">
+                                                <label for="minRating" class="col-form-label">Show ratings for:</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <select name="minRating" id="minRating" class="form-select">
+                                                    <option value="" selected>All</option>
+                                                    @for ($i = 1; $i <= 10; $i++)
+                                                        <option value="{{ $i }}">{{ $i }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" id="resetFilter" class="btn btn-secondary">Reset Filter</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Average Rating Section -->
+                                <div id="averageRating" class="mb-4">
+                                    @include('home.courses.average_rating', ['ratings' => $ratings])
+                                </div>
+
+                                <!-- Distribution Section (visible by default) -->
+                                <div id="distributionChartWrapper" class="fade-container mb-4">
+                                    <h5>Rating Distribution</h5>
+                                    <div class="mb-3">
+                                        <label for="chartType" class="form-label">Select Chart Type:</label>
+                                        <select id="chartType" class="form-select" style="width:auto; display:inline-block;">
+                                            <option value="bar" selected>Bar</option>
+                                            <option value="line">Line</option>
+                                        </select>
+                                    </div>
+                                    <canvas id="ratingsChart" height="120"></canvas>
+                                </div>
+
+                                <!-- Ratings Counter -->
+                                <div id="ratingsCounter" class="mb-2 fw-bold">
+                                    Showing {{ $ratings->count() }} rating(s)
+                                </div>
+
+                                <!-- Ratings List -->
+                                <div id="ratingsList" class="list-group">
+                                    @include('home.courses.ratings_list', ['ratings' => $ratings])
+                                </div>
+                               
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -694,4 +765,114 @@
         </div>
     </div>
 
+    <script>
+        function loadRatings(minRating = '') {
+            let url = "{{ route('course.ratings.filter', $course->slug) }}";
+
+            fetch(url + "?minRating=" + minRating)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('averageRating').innerHTML = data.average;
+                    document.getElementById('ratingsList').innerHTML = data.list;
+                    document.getElementById('ratingsCounter').innerHTML = data.counter;
+
+                    if (data.distribution.trim() !== '') {
+                        document.getElementById('distributionChart').innerHTML = data.distribution;
+                    } else {
+                        document.getElementById('distributionChart').innerHTML = '';
+                    }
+                });
+        }
+
+        // Filter change
+        document.getElementById('minRating').addEventListener('change', function() {
+            loadRatings(this.value);
+        });
+
+        // Reset filter
+        document.getElementById('resetFilter').addEventListener('click', function() {
+            document.getElementById('minRating').value = '';
+            loadRatings('');
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    let ratingsChart;
+    let chartType = document.getElementById('chartType')?.value || 'bar';
+
+    function renderChart(labels, counts) {
+        const ctx = document.getElementById('ratingsChart').getContext('2d');
+        if (ratingsChart) ratingsChart.destroy();
+
+        ratingsChart = new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Ratings',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: chartType !== 'bar' }
+                },
+                scales: chartType === 'bar' || chartType === 'line' ? {
+                    y: { beginAtZero: true, precision: 0 }
+                } : {}
+            }
+        });
+    }
+
+    function loadRatings(minRating = '') {
+        let url = "{{ route('course.ratings.filter', $course->slug) }}";
+
+        fetch(url + "?minRating=" + minRating)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('averageRating').innerHTML = data.average;
+                document.getElementById('ratingsList').innerHTML = data.list;
+                document.getElementById('ratingsCounter').innerHTML = data.counter;
+
+                const chartWrapper = document.getElementById('distributionChartWrapper');
+
+                // Show chart only when "All" is selected
+                if (minRating === '') {
+                    chartWrapper.classList.remove('hidden');
+                    renderChart(data.labels, data.counts);
+                } else {
+                    chartWrapper.classList.add('hidden');
+                    if (ratingsChart) ratingsChart.destroy();
+                }
+            });
+    }
+
+    // Filter change
+    document.getElementById('minRating').addEventListener('change', function() {
+        loadRatings(this.value);
+    });
+
+    // Reset filter
+    document.getElementById('resetFilter').addEventListener('click', function() {
+        document.getElementById('minRating').value = '';
+        loadRatings('');
+    });
+
+    // Chart type change
+    document.getElementById('chartType').addEventListener('change', function() {
+        chartType = this.value;
+        if (ratingsChart) {
+            let labels = ratingsChart.data.labels;
+            let counts = ratingsChart.data.datasets[0].data;
+            renderChart(labels, counts);
+        }
+    });
+
+    // Initial load (All selected by default)
+    loadRatings('');
+    </script>
 </x-app-layout>

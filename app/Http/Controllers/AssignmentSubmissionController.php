@@ -23,19 +23,43 @@ class AssignmentSubmissionController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     $user = Auth::user();
+    //     $query = null;
+    //     if ($user->hasAnyRole(['Administrator', 'Admin'])) {
+    //         $query = AssignmentSubmission::orderBy('created_at', 'desc')->paginate(400);
+    //     } elseif ($user->hasAnyRole(['Instructor'])) {
+    //         $query =AssignmentSubmission::where('instructorSlug', $user->slug);
+    //     } else {
+    //         $query = AssignmentSubmission::where('studentSlug', $user->slug);
+    //     }
+    //     $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
+    //     return view('home.submissions.index', compact( 'assignments'));
+    // }
+
     public function index()
     {
         $user = Auth::user();
-        $query = null;
+
+        // Base query with eager loading
+        $query = AssignmentSubmission::with(['instructor', 'course', 'assignment', 'note']) ->orderBy('created_at', 'desc');
+
         if ($user->hasAnyRole(['Administrator', 'Admin'])) {
-            $query = AssignmentSubmission::orderBy('created_at', 'desc')->paginate(400);
+            // Admins see all submissions
+            // no extra filter
         } elseif ($user->hasAnyRole(['Instructor'])) {
-            $query =AssignmentSubmission::where('instructorSlug', $user->slug);
+            // Instructors see only their submissions
+            $query->where('instructorSlug', $user->slug);
         } else {
-            $query = AssignmentSubmission::where('studentSlug', $user->slug);
+            // Students see only their own submissions
+            $query->where('studentSlug', $user->slug);
         }
-        $assignments = $query->with(['instructor', 'course', 'submissions', 'note'])->orderBy('created_at', 'desc')->paginate(400);
-        return view('home.submissions.index', compact( 'assignments'));
+
+        // Execute query once at the end
+        $assignments = $query->paginate(400);
+
+        return view('home.submissions.index', compact('assignments'));
     }
 
     /**
@@ -75,7 +99,7 @@ class AssignmentSubmissionController extends Controller
         $maxScore    = $assignment->max_score ?? '—';
         $rawHtmlDescription = $assignment->description; // trusted HTML? keep {!! !!}
         $plainDescription   = Str::of(strip_tags($assignment->description ?? ''))->trim()->limit(180);
-        
+       
         return view('home.submissions.create', compact( 'assignment', 'submitted', 'dueDate','isOverdue','dueLabel','maxScore','rawHtmlDescription','plainDescription'));
     }
 

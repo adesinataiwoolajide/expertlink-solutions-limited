@@ -93,9 +93,11 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(Auth::user()->hasAnyRole(['Administrator','Student']))
+                            @if(Auth::user()->hasAnyRole(['Student']))
+                               
                                 @if(count($submitted) == 0)
                                     @if($isOverdue == false)
+
                                         <form action="{{ route('submission.course.store',$assignment->slug) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="courseSlug" value="{{ $assignment->courseSlug }}">
@@ -113,7 +115,7 @@
                                     @endif
                                 @else
                                     @php $subs = $submitted->first(); @endphp
-                                    @if(optional($subs)->status != 'Graded')
+                                    @if(optional($subs)->submission_status != 'graded')
                                         
                                         <form action="{{ route('submission.course.update',$subs->slug) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
@@ -131,6 +133,7 @@
                                         </form>
                                     @endif
                                 @endif
+                                
                             @endif
                         </div>
                     </div>
