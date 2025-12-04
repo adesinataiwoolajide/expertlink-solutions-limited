@@ -131,7 +131,9 @@
                                     data-bs-toggle="pill" data-bs-target="#vStep1" role="tab" aria-controls="vStep1"
                                     aria-selected="true">
                                     <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📘</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                            <i class="fa-solid fa-book"></i>
+                                        </span>
                                         <div class="ms-2">
                                             <span class="step-title fw-semibold d-block">Course Info</span>
                                             <small>Course details</small>
@@ -139,42 +141,48 @@
                                     </div>
                                 </button>
                             </li>
-                            @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                             @if (Auth::user()->hasAnyRole(['Administrator', 'Admin']))
+                                <li class="nav-item mb-3" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStep2-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStep2" role="tab" aria-controls="vStep2"
+                                        aria-selected="false">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                                <i class="fa-solid fa-user-graduate"></i>
+                                            </span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Our Students</span>
+                                                <small>List of Students</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
 
-                            <li class="nav-item mb-3" role="presentation">
-                                <button type="button" class="nav-link w-100 text-start" id="vStep2-tab"
-                                    data-bs-toggle="pill" data-bs-target="#vStep2" role="tab" aria-controls="vStep2"
-                                    aria-selected="false">
-                                    <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">🧑‍🎓</span>
-                                        <div class="ms-2">
-                                            <span class="step-title fw-semibold d-block">Our Students</span>
-                                            <small>List of Students</small>
+                                <li class="nav-item" role="presentation">
+                                    <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
+                                        data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
+                                        aria-selected="false">
+                                        <div class="d-flex align-items-center">
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                                <i class="fa-solid fa-clipboard-list"></i>
+                                            </span>
+                                            <div class="ms-2">
+                                                <span class="step-title fw-semibold d-block">Course Allocation</span>
+                                                <small>Allocate course to an instructor</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                            </li>
-                            
-                            <li class="nav-item" role="presentation">
-                                <button type="button" class="nav-link w-100 text-start" id="vStep3-tab"
-                                    data-bs-toggle="pill" data-bs-target="#vStep3" role="tab" aria-controls="vStep3"
-                                    aria-selected="false">
-                                    <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📋</span>
-                                        <div class="ms-2">
-                                            <span class="step-title fw-semibold d-block">Course Allocation</span>
-                                            <small>Allocate course to an instructor</small>
-                                        </div>
-                                    </div>
-                                </button>
-                            </li>
+                                    </button>
+                                </li>
                             @endif
+                            
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStep4-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStep4" role="tab" aria-controls="vStep4"
                                     aria-selected="false">
                                     <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📚</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                            <i class="fa-solid fa-book-open"></i>
+                                        </span>
                                         <div class="ms-2">
                                             <span class="step-title fw-semibold d-block">Course Allocation History</span>
                                             <small>Course Allocation Histories</small>
@@ -183,13 +191,16 @@
                                 </button>
                             </li>
 
+
                             @if (Auth::user()->hasAnyRole(['Administrator', 'Admin', "Instructor"]))
                                 <li class="nav-item" role="presentation">
                                     <button type="button" class="nav-link w-100 text-start" id="vStep5-tab"
                                         data-bs-toggle="pill" data-bs-target="#vStep5" role="tab" aria-controls="vStep5"
                                         aria-selected="false">
                                         <div class="d-flex align-items-center">
-                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📝</span>
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                                <i class="fa-solid fa-note-sticky"></i>
+                                            </span>
                                             <div class="ms-2">
                                                 <span class="step-title fw-semibold d-block">Course Notes</span>
                                                 <small>View Course Notes</small>
@@ -199,11 +210,13 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button type="button" class="nav-link w-100 text-start" id="vStep5-tab"
+                                    <button type="button" class="nav-link w-100 text-start" id="vStepRatings-tab"
                                         data-bs-toggle="pill" data-bs-target="#vStepRatings" role="tab" aria-controls="vStepRatings"
                                         aria-selected="false">
                                         <div class="d-flex align-items-center">
-                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📝</span>
+                                            <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                                <i class="fa-solid fa-star"></i>
+                                            </span>
                                             <div class="ms-2">
                                                 <span class="step-title fw-semibold d-block">Course Ratings</span>
                                                 <small>View Course Ratings</small>
@@ -213,12 +226,16 @@
                                 </li>
                             @endif
 
+                           
+
                             <li class="nav-item mb-3" role="presentation">
                                 <button type="button" class="nav-link w-100 text-start" id="vStepA1-tab"
                                     data-bs-toggle="pill" data-bs-target="#vStepA1" role="tab" aria-controls="vStepA1"
                                     aria-selected="true">
                                     <div class="d-flex align-items-center">
-                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">📘</span>
+                                        <span class="icon-box md bg-primary-8 text-primary rounded-5 me-2">
+                                            <i class="fa-solid fa-book"></i>
+                                        </span>
                                         <div class="ms-2">
                                             <span class="step-title fw-semibold d-block">Program Info</span>
                                             <small>View Program details</small>
@@ -705,9 +722,7 @@
                             </div>
 
                             <div class="tab-pane fade" id="vStepRatings" role="tabpanel" aria-labelledby="vStepRatings-tab">
-                               <h2 class="mb-4">Course Ratings: {{ $course->course_name }}</h2>
-
-                                <!-- Filter Form -->
+                               
                                 <div class="mb-4">
                                     <form id="filterForm">
                                         <div class="row g-2 align-items-center">
@@ -733,8 +748,6 @@
                                 <div id="averageRating" class="mb-4">
                                     @include('home.courses.average_rating', ['ratings' => $ratings])
                                 </div>
-
-                                <!-- Distribution Section (visible by default) -->
                                 <div id="distributionChartWrapper" class="fade-container mb-4">
                                     <h5>Rating Distribution</h5>
                                     <div class="mb-3">

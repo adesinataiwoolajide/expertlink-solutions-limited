@@ -127,6 +127,22 @@ class Courses extends Model
       return $this->submissions()->count();
    }
 
+      public function ratings()
+   {
+      return $this->hasMany(CourseRatings::class, 'courseSlug', 'slug');
+   }
+
+   public function getAverageRatingAttribute()
+   {
+      return round($this->ratings()->avg('ratingScore'), 1);
+   }
+
+   public function getRatingsCountAttribute()
+   {
+      return $this->ratings()->count();
+   }
+
+
 
 
    public function progressForStudent($studentSlug = null)

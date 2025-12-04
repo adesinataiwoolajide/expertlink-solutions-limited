@@ -18,4 +18,10 @@ class CourseRatings extends Model
         return $this->belongsTo(User::class, 'studentSlug', 'slug');
     }
 
+    public function course()
+    {
+        return $this->belongsTo(Courses::class, 'courseSlug', 'slug');
+    }
+
+
 }

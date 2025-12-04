@@ -15,26 +15,57 @@
     @include('layouts.alert')
     <div class="col-md-12 mt-3">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">{{ $program->program_name }}</h5>
+            <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center py-3 px-4 shadow-sm">
+                <!-- Program Title -->
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-graduation-cap text-primary me-2 fs-4"></i>
+                    <h5 class="card-title mb-0 fw-bold text-dark">
+                        {{ $program->program_name }}
+                    </h5>
+                </div>
 
-                <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('course.index') }}" class="btn btn-primary">
-                        View Courses
+                <!-- Actions -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- View Courses Button -->
+                    <a href="{{ route('course.index') }}" class="btn btn-sm btn-primary d-flex align-items-center">
+                        <i class="fa-solid fa-book-open me-2"></i> View Courses
                     </a>
 
+                    <!-- Cart Dropdown -->
                     @php
-                        $cartCount = count(session()->get('cart', []));
+                        $cartItems = session()->get('cart', []);
+                        $cartCount = count($cartItems);
                     @endphp
                     @if($cartCount > 0)
-                        <a href="{{ route('cart.view') }}" class="btn btn-outline-secondary position-relative">
-                            <i class="ri-shopping-cart-2-line fs-5"></i>
-                            @if($cartCount > 0)
+                        <div class="dropdown">
+                            <a href="{{ route('cart.view') }}" 
+                            class="btn btn-sm btn-outline-primary position-relative d-flex align-items-center dropdown-toggle" 
+                            id="cartDropdown" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false">
+                                <i class="fa-solid fa-cart-shopping fs-6"></i>
+                                <span class="ms-1">MyCart</span>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {{ $cartCount }}
                                 </span>
-                            @endif
-                        </a>
+                            </a>
+
+                            <!-- Dropdown Menu -->
+                            <ul class="dropdown-menu dropdown-menu-end p-2 shadow" aria-labelledby="cartDropdown">
+                                @foreach($cartItems as $item)
+                                    <li class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-truncate" style="max-width: 150px;">{{ $item['course_name'] }}</span>
+                                        <span class="badge bg-primary">{{ $item['quantity'] }}</span>
+                                    </li>
+                                @endforeach
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a href="{{ route('cart.view') }}" class="btn btn-sm btn-primary w-100">
+                                        <i class="fa-solid fa-arrow-right me-1"></i> Go to Cart
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -118,9 +149,10 @@
                                         top: 60%;
                                     }
                                 </style>
+                               
                                 @if(count($courses) > 0)
                                     <div class="container py-5">
-                                        <h4 class="mb-4 fw-bold text-primary text-center">Recommended Courses</h4>
+                                        <h2 class="mb-5 fw-bold text-gradient text-center">✨ Recommended Courses ✨</h2>
                                         <div class="row g-4">
                                             @foreach ($courses as $course)
                                                 @php
@@ -138,6 +170,7 @@
                                                             alt="{{ $course->course_name }}"
                                                             class="img-fluid"
                                                             style="height: 180px; object-fit: cover;">
+                                                            
                                                         <div class="card-body">
                                                             <h5 class="fw-semibold text-dark mb-2">
                                                                 <a href="{{ route('course.viewLearning', [$course->slug, $program->slug]) }}"
