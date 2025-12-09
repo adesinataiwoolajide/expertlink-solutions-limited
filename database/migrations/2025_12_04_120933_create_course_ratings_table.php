@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('studentSlug');                // link to student
             $table->string('courseSlug')->nullable(); 
             $table->string('ratingComment')->nullable(); 
+            $table->string('ratingStatus')->default(false); 
             $table->timestamps();
         });
     }

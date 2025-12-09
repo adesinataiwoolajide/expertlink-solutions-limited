@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('courseSlug')->nullable(); 
             $table->string('instructorSlug')->nullable(); 
             $table->string('ratingComment')->nullable(); 
+            $table->string('ratingStatus')->default(false); 
             $table->timestamps();
         });
     }
