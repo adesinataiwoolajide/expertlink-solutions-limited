@@ -21,7 +21,7 @@
                                         <img src="{{ asset('elsAdmin/auth-access/els-logo.png')}}" alt="Company Logo" width="" height="80" style="display:block; border:0; outline:none; text-decoration:none;">
                                     </td>
                                     <td align="right" style="vertical-align:middle; text-align:right;">
-                                        <h2 style="margin:0; font-size:18px; color:#ffffff;">Invoice #{{ $payment->paymentReference }}</h2>
+                                        <h2 style="margin:0; font-size:18px; color:#ffffff;">Invoice #{{ $payment->paymentReference ?? '' }}</h2>
                                         <p style="margin:0; font-size:12px; color:#dbe5ea;">Issued on {{ $payment->created_at->format('d M, Y') }}</p>
                                     </td>
                                 </tr>

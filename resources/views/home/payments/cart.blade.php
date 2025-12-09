@@ -1,7 +1,7 @@
 @php 
     $title = "Learning Cart"; 
     $segments = Request::segments();  
-    $subtotal = collect($cart)->sum('price'); 
+    $subtotal = collect($cart)->sum('discount'); 
     $grandTotal = $subtotal; 
 @endphp
 
