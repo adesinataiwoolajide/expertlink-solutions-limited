@@ -161,10 +161,10 @@
                                                 <span class="badge bg-secondary">{{ $payment->paymentMethod }}</span>
                                             @endif
                                         </td>
-                                                                            <td>{{ $payment->currencyCode }}</td>
+                                        <td>{{ $payment->currencyCode }}</td>
                                         <td>{{ $payment->transactionReference }}</td>
                                         <td>
-                                            @if ($payment->paymentStatus === 'success')
+                                            @if (strpos($payment->paymentStatus, 'success') !== false) 
                                                 <span class="badge bg-success bg-opacity-10 text-success">Success</span>
                                             @elseif ($payment->paymentStatus === 'pending')
                                                 <span class="badge bg-warning bg-opacity-10 text-warning">Pending</span>

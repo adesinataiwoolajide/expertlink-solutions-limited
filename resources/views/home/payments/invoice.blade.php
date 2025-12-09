@@ -90,7 +90,7 @@
 
                                 <dt class="col-sm-5">Status:</dt>
                                 <dd class="col-sm-7">
-                                    @if ($payment->paymentStatus === 'success')
+                                    @if (strpos($payment->paymentStatus, 'success') !== false) 
                                         <span class="badge bg-success">Success</span>
                                     @elseif ($payment->paymentStatus === 'pending')
                                         <span class="badge bg-warning text-dark">Pending</span>

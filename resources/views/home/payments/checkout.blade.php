@@ -240,7 +240,7 @@
                 tx_ref: "tx-" + Date.now(),
                 amount: {{ $grandTotal }},
                 currency: "NGN",
-                payment_options: "card, banktransfer, ussd, opay",
+                payment_options: "card, banktransfer, ussd",
                 customer: {
                     email: '{{ auth()->user()->email }}',
                     phone_number: '{{ auth()->user()->phone_number }}',
@@ -248,9 +248,9 @@
                 },
                 callback: function (data) {
                     console.log(data);
-                    // Redirect to Laravel verify route with transaction_id
                     window.location.href = "{{ route('flutterwave.verify') }}?transaction_id=" + data.transaction_id;
-                },
+                }
+
                 customizations: {
                     title: "Expert Link Solutions",
                     description: "Payment for courses",

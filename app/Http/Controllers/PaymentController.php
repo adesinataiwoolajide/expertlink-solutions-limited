@@ -156,24 +156,48 @@ class PaymentController extends Controller
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
 
-     public function verifyFlutterWave(Request $request)
-    {
-        $cartCount = count(session()->get('cart', []));
-        $transactionId = $request->query('transaction_id'); 
-        $response = Http::withToken(env('FLWSECK_TEST-0e0d6efb78f08f0352a8f6a20a367cf0-X'))->get("https://api.flutterwave.com/v3/transactions/$transactionId/verify");
+   public function verifyFlutterWave(Request $request)
+{
+    $transactionId = $request->query('transaction_id');
+    $cartCount = count(session()->get('cart', []));
+    $response = Http::withToken(env('FLUTTERWAVE_SECRET_KEY'))->get("https://api.flutterwave.com/v3/transactions/{$transactionId}/verify");
+    if ($response->successful()) {
+        $data = $response->json();
+        if ($cartCount > 0 && $data['status'] === 'success' && $data['data']['status'] === 'successful') {
+            $cart = session()->get('cart', []);
+            $paymentSlug = $data['data']['flw_ref'];  $totalAmount = $data['data']['amount'];
+            $userSlug = Auth::user()->slug;
 
-        if ($response->successful()) {
-            $data = $response->json();
-            dd($data);
-            // if ($data['status'] === 'success' && $data['data']['amount'] == $expectedAmount) {
-            //     // ✅ Payment verified
-            // } else {
-            //     // ❌ Payment failed or mismatched
-            // }
+            foreach ($cart as $id => $item) {
+                $courseSlug = $item['slug']; $course_name = $item['course_name'];
+                $price = $item['price']; $programSlug = $item['programSlug'];
+                $slug = RandomString(12);
+                if (CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()) {
+                    createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
+                    createLog('Made Payment for ' . $course_name . ' with Slug ' . $slug);
+                }
+            }
+
+            if (Payment::where(['slug' => $paymentSlug])->doesntExist()) {
+                createPayment($userSlug, $paymentSlug, $totalAmount, $data['data']['payment_type'], $data['data']['currency'], 
+                'Course payment via Flutterwave', $data['data']['tx_ref'], $data['data']['flw_ref'], $data['data']['status'], 'Flutterwave');
+                createLog('Made Payment of ' . $totalAmount . ' with Reference ' . $paymentSlug);
+            }
+
+            $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
+            session()->forget('cart');
+            $details = [
+                "payment" => Payment::where('transactionReference', $paymentSlug)->with('user', 'courseSubscriptions')->first()
+            ];
+            $email = Auth::user()->email;
+            Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org']) ->send(new PaymentNotification($details));
+            return redirect($redirectRoute)->with('success', 'Payment completed successfully.');
         }
-
+        return redirect()->back()->with('error', 'Payment verification failed.');
+    }else{
+        return redirect()->back()->with('error', 'Unable to verify Payment at the moment, Please try again later.');
     }
-
+}
     public function verifyOPay(Request $request)
     {
         $reference = $request->query('reference');
