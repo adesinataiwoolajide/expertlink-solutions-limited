@@ -215,7 +215,7 @@
                                             @if(Auth::user()->hasAnyRole(["Student"]))
                                                 @if(count($ratings) == 0)
                                                     <div>
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rateCourseModal">
+                                                        <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#rateCourseModal">
                                                             Rate the course
                                                         </button>
                                                     </div>

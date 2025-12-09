@@ -115,68 +115,69 @@ class PaymentController extends Controller
     }
 
     public function verifyMonnify(Request $request)
-{
-    $reference = $request->query('paymentReference');
-    $cartCount = count(session()->get('cart', []));
-    $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY')) ->post('https://sandbox.monnify.com/api/v1/auth/login');
+    {
+        $reference = $request->query('paymentReference');
+        $cartCount = count(session()->get('cart', []));
+        $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY')) ->post('https://sandbox.monnify.com/api/v1/auth/login');
 
-    if (!$auth->successful()) {
-        return redirect()->back()->with('error', 'Unable to authenticate with Monnify.');
-    }
-
-    $token = $auth->json()['responseBody']['accessToken'];
-    $verify = Http::withToken($token)
-    ->get('https://sandbox.monnify.com/api/v2/merchant/transactions/query', [
-        'paymentReference' => $reference
-    ]);
-
-    if ($verify->successful()) {
-        $data = $verify->json()['responseBody'];
-        if ($cartCount > 0 && $data['paymentStatus'] === 'PAID') {
-            $cart = session()->get('cart', []);
-            $paymentSlug = $data['paymentReference']; // Monnify unique reference
-            $totalAmount = $data['amountPaid'];
-            $userSlug = Auth::user()->slug;
-
-            foreach ($cart as $id => $item) {
-                $courseSlug   = $item['slug'];
-                $course_name  = $item['course_name'];
-                $price        = $item['price'];
-                $programSlug  = $item['programSlug'];
-                $slug         = RandomString(12);
-
-                if (CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()) {
-                    createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
-                    createLog('Made Payment for ' . $course_name . ' with Slug ' . $slug);
-                }
-            }
-
-            if (Payment::where(['slug' => $paymentSlug])->doesntExist()) {
-                createPayment($userSlug, $paymentSlug, $totalAmount, $data['paymentMethod'], $data['currency'], 
-                $data['paymentDescription'], $data['transactionReference'], $data['paymentReference'], $data['paymentStatus'], 'Monnify');
-                createLog('Made Payment of ' . $totalAmount . ' with Reference ' . $paymentSlug);
-            }
-
-            $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
-            session()->forget('cart');
-            $details = [
-                "payment" => Payment::where('transactionReference', $paymentSlug)
-                    ->with('user', 'courseSubscriptions')
-                    ->first()
-            ];
-            $email = Auth::user()->email;
-            Mail::to($email)
-                ->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])
-                ->send(new PaymentNotification($details));
-
-            return redirect($redirectRoute)->with('success', 'Monnify payment completed successfully.');
+        if (!$auth->successful()) {
+            return redirect()->back()->with('error', 'Unable to authenticate with Monnify.');
         }
 
-        return redirect()->back()->with('error', 'Payment verification failed.');
-    } else {
-        return redirect()->back()->with('error', 'Unable to verify Payment at the moment, Please try again later.');
+        $token = $auth->json()['responseBody']['accessToken'];
+        $verify = Http::withToken($token)
+        ->get('https://sandbox.monnify.com/api/v2/merchant/transactions/query', [
+            'paymentReference' => $reference
+        ]);
+
+        if ($verify->successful()) {
+            $data = $verify->json()['responseBody'];
+           
+            if ($cartCount > 0 && $data['paymentStatus'] === 'PAID') {
+                $cart = session()->get('cart', []);
+                $paymentSlug = $data['paymentReference']; // Monnify unique reference
+                $totalAmount = $data['amountPaid'];
+                $userSlug = Auth::user()->slug;
+
+                foreach ($cart as $id => $item) {
+                    $courseSlug   = $item['slug'];
+                    $course_name  = $item['course_name'];
+                    $price        = $item['price'];
+                    $programSlug  = $item['programSlug'];
+                    $slug         = RandomString(12);
+
+                    if (CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()) {
+                        createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
+                        createLog('Made Payment for ' . $course_name . ' with Slug ' . $slug);
+                    }
+                }
+
+                if (Payment::where(['slug' => $paymentSlug])->doesntExist()) {
+                    createPayment($userSlug, $paymentSlug, $totalAmount, $data['paymentMethod'], $data['currency'], 
+                    $data['paymentDescription'], $data['transactionReference'], $data['paymentReference'], $data['paymentStatus'], 'Monnify');
+                    createLog('Made Payment of ' . $totalAmount . ' with Reference ' . $paymentSlug);
+                }
+
+                $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
+                session()->forget('cart');
+                $details = [
+                    "payment" => Payment::where('slug', $paymentSlug)
+                        ->with('user', 'courseSubscriptions')
+                        ->first()
+                ];
+                $email = Auth::user()->email;
+                Mail::to($email)
+                    ->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])
+                    ->send(new PaymentNotification($details));
+
+                return redirect($redirectRoute)->with('success', 'Monnify payment completed successfully.');
+            }
+
+            return redirect()->back()->with('error', 'Payment verification failed.');
+        } else {
+            return redirect()->back()->with('error', 'Unable to verify Payment at the moment, Please try again later.');
+        }
     }
-}
 
     public function verifyFlutterWave(Request $request)
     {
@@ -209,7 +210,7 @@ class PaymentController extends Controller
                 $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
                 session()->forget('cart');
                 $details = [
-                    "payment" => Payment::where('transactionReference', $paymentSlug)->with('user', 'courseSubscriptions')->first()
+                    "payment" => Payment::where('slug', $paymentSlug)->with('user', 'courseSubscriptions')->first()
                 ];
                 $email = Auth::user()->email;
                 Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org']) ->send(new PaymentNotification($details));

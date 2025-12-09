@@ -35,6 +35,14 @@
                         <i class="fa fa-clock me-1"></i>
                         {{ $rating->created_at->format('d M Y, h:i A') }}
                     </small>
+                    <span class="badge bg-success">
+                        <a href="#" class="text-white text-decoration-none">Publish Rating</a>
+                    </span>
+
+                    <span class="badge bg-warning">
+                        <a href="#" class="text-white text-decoration-none">UnPublish Rating</a>
+                    </span>
+
                 </div>
             </div>
         </div>

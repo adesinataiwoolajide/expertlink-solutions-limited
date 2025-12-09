@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Invoice</title>
 </head>
+{{-- @dd($payment); --}}
 <body style="margin:0; padding:0; width:100%; background-color:#f4f6f8; font-family: Arial, sans-serif;">
 
     <!-- Invoice Container -->
