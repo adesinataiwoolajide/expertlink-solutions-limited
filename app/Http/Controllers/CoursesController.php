@@ -134,11 +134,12 @@ class CoursesController extends Controller
         $courses = $program->courses()->with('allocation', 'courseSubscriptions', 'notes', 'tasks', 'assignments', 'tasksubmission', 'submissions')->orderBy('course_name', 'desc')->paginate(15);
         if(Auth::user()->hasAnyRole(["Student"])){
             $ratings = CourseRatings::where(['courseSlug' => $courseSlug, 'studentSlug' => Auth::user()->slug])->get();
+            $otherRatings = CourseRatings::where(['courseSlug' => $courseSlug, 'ratingStatus' => true])->orderBy('created_at', 'desc')->get();
         }else{
-            $ratings = CourseRatings::where(['courseSlug' => $courseSlug])->get();
-
+            $ratings = CourseRatings::where(['courseSlug' => $courseSlug])->orderBy('created_at', 'desc')->get();
+            $otherRatings = $ratings;
         }
-        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses', 'ratings'));
+        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses', 'ratings', 'otherRatings' => $otherRatings));
 
     }
     public function addToCart($slug)

@@ -65,6 +65,7 @@ class CourseRatingsController extends Controller
                 'studentSlug'   => $studentSlug,
                 'courseSlug'    => $courseSlug,
                 'ratingComment' => $request->input('ratingComment'),
+                'ratingStatus' => false,
             ]);
             return redirect()->back()->with('success', 'Your rating has been submitted successfully!');
         }else{

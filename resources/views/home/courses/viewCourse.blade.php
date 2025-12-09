@@ -211,6 +211,8 @@
                                     <div class="mb-3 col-md-12">
                                         <label class="form-label fw-bold">Benefits:</label>
                                         <div class="border p-2 rounded bg-light">{!! $course->benefits !!}</div>
+                                        @dd($otherRatings)
+                                        {{-- Fetch good ratings here --}}
                                         @if(Auth::user()->hasAnyRole(['Administrator',"Student"]))
                                             @if(Auth::user()->hasAnyRole(["Student"]))
                                                 @if(count($ratings) == 0)
