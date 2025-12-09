@@ -87,10 +87,14 @@
                                         <span class="badge bg-secondary">{{ $payment->paymentProvider }}</span>
                                     @endif
                                 </dd>
-
                                 <dt class="col-sm-5">Status:</dt>
                                 <dd class="col-sm-7">
-                                    @if (strpos($payment->paymentStatus, 'success') !== false) 
+                                    @php
+                                        $status = strtolower($payment->paymentStatus);
+                                    @endphp
+
+                                    @if (str_contains($status, 'success') || $status === 'paid')
+
                                         <span class="badge bg-success">Success</span>
                                     @elseif ($payment->paymentStatus === 'pending')
                                         <span class="badge bg-warning text-dark">Pending</span>

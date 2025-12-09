@@ -56,35 +56,10 @@ class PaymentController extends Controller
         // Return single payment to invoice view
         return view('home.payments.invoice', compact('payment'));
     }
-    public function initializeMonnify(Request $request)
-    {
-        $auth = base64_encode(env('MONNIFY_API_KEY') . ':' . env('MONNIFY_SECRET_KEY'));
-
-        $token = Http::withHeaders([
-            'Authorization' => 'Basic ' . $auth
-        ])->post(env('MONNIFY_BASE_URL') . '/api/v1/auth/login');
-
-        $accessToken = $token['responseBody']['accessToken'];
-
-        $payment = Http::withToken($accessToken)->post(env('MONNIFY_BASE_URL') . '/api/v1/merchant/transactions/init-transaction', [
-            'amount' => $request->amount,
-            'customerName' => $request->name,
-            'customerEmail' => $request->email,
-            'paymentReference' => uniqid('MONNIFY_'),
-            'paymentDescription' => 'Course Payment',
-            'currencyCode' => 'NGN',
-            'contractCode' => env('MONNIFY_CONTRACT_CODE'),
-            'redirectUrl' => route('monnify.callback')
-        ]);
-
-        return redirect($payment['responseBody']['checkoutUrl']);
-    }
-
     public function showCheckout()
     {
         $cart = session()->get('cart', []);
-        $subtotal = collect($cart)->sum('price');
-        $discount = $subtotal * 0.10;
+        $subtotal = collect($cart)->sum('discount');
         $grandTotal = $subtotal;
         return view('home.payments.checkout', compact('grandTotal', 'cart'));
     }
@@ -112,7 +87,7 @@ class PaymentController extends Controller
                    
                     $courseSlug = $item['slug'];
                     $course_name = $item['course_name'];
-                    $price = $item['price'];
+                    $price = $item['discount'];
                     $programSlug = $item['programSlug'];
                     $slug = RandomString(12);
                     if(CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()){
@@ -140,38 +115,36 @@ class PaymentController extends Controller
     }
 
     public function verifyMonnify(Request $request)
-    {
-        $reference = $request->query('paymentReference');
+{
+    $reference = $request->query('paymentReference');
+    $cartCount = count(session()->get('cart', []));
+    $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY')) ->post('https://sandbox.monnify.com/api/v1/auth/login');
 
-        $auth = Http::withBasicAuth(env('MONNIFY_API_KEY'), env('MONNIFY_SECRET_KEY'))->post('https://api.monnify.com/api/v1/auth/login');
-        $token = $auth['responseBody']['accessToken'];
-        $verify = Http::withToken($token)->get('https://api.monnify.com/api/v2/merchant/transactions/query', [
-            'paymentReference' => $reference
-        ]);
-        dd($verify['responseBody']);
-        if ($verify['responseBody']['paymentStatus'] === 'PAID') {
-            session()->forget('cart');
-            // return redirect()->route('course.index')->with('success', 'Monnify payment verified.');
-        }
-        return redirect()->back()->with('error', 'Payment verification failed.');
+    if (!$auth->successful()) {
+        return redirect()->back()->with('error', 'Unable to authenticate with Monnify.');
     }
 
-   public function verifyFlutterWave(Request $request)
-{
-    $transactionId = $request->query('transaction_id');
-    $cartCount = count(session()->get('cart', []));
-    $response = Http::withToken(env('FLUTTERWAVE_SECRET_KEY'))->get("https://api.flutterwave.com/v3/transactions/{$transactionId}/verify");
-    if ($response->successful()) {
-        $data = $response->json();
-        if ($cartCount > 0 && $data['status'] === 'success' && $data['data']['status'] === 'successful') {
+    $token = $auth->json()['responseBody']['accessToken'];
+    $verify = Http::withToken($token)
+    ->get('https://sandbox.monnify.com/api/v2/merchant/transactions/query', [
+        'paymentReference' => $reference
+    ]);
+
+    if ($verify->successful()) {
+        $data = $verify->json()['responseBody'];
+        if ($cartCount > 0 && $data['paymentStatus'] === 'PAID') {
             $cart = session()->get('cart', []);
-            $paymentSlug = $data['data']['flw_ref'];  $totalAmount = $data['data']['amount'];
+            $paymentSlug = $data['paymentReference']; // Monnify unique reference
+            $totalAmount = $data['amountPaid'];
             $userSlug = Auth::user()->slug;
 
             foreach ($cart as $id => $item) {
-                $courseSlug = $item['slug']; $course_name = $item['course_name'];
-                $price = $item['price']; $programSlug = $item['programSlug'];
-                $slug = RandomString(12);
+                $courseSlug   = $item['slug'];
+                $course_name  = $item['course_name'];
+                $price        = $item['price'];
+                $programSlug  = $item['programSlug'];
+                $slug         = RandomString(12);
+
                 if (CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()) {
                     createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
                     createLog('Made Payment for ' . $course_name . ' with Slug ' . $slug);
@@ -179,25 +152,74 @@ class PaymentController extends Controller
             }
 
             if (Payment::where(['slug' => $paymentSlug])->doesntExist()) {
-                createPayment($userSlug, $paymentSlug, $totalAmount, $data['data']['payment_type'], $data['data']['currency'], 
-                'Course payment via Flutterwave', $data['data']['tx_ref'], $data['data']['flw_ref'], $data['data']['status'], 'Flutterwave');
+                createPayment($userSlug, $paymentSlug, $totalAmount, $data['paymentMethod'], $data['currency'], 
+                $data['paymentDescription'], $data['transactionReference'], $data['paymentReference'], $data['paymentStatus'], 'Monnify');
                 createLog('Made Payment of ' . $totalAmount . ' with Reference ' . $paymentSlug);
             }
 
             $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
             session()->forget('cart');
             $details = [
-                "payment" => Payment::where('transactionReference', $paymentSlug)->with('user', 'courseSubscriptions')->first()
+                "payment" => Payment::where('transactionReference', $paymentSlug)
+                    ->with('user', 'courseSubscriptions')
+                    ->first()
             ];
             $email = Auth::user()->email;
-            Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org']) ->send(new PaymentNotification($details));
-            return redirect($redirectRoute)->with('success', 'Payment completed successfully.');
+            Mail::to($email)
+                ->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])
+                ->send(new PaymentNotification($details));
+
+            return redirect($redirectRoute)->with('success', 'Monnify payment completed successfully.');
         }
+
         return redirect()->back()->with('error', 'Payment verification failed.');
-    }else{
+    } else {
         return redirect()->back()->with('error', 'Unable to verify Payment at the moment, Please try again later.');
     }
 }
+
+    public function verifyFlutterWave(Request $request)
+    {
+        $transactionId = $request->query('transaction_id');
+        $cartCount = count(session()->get('cart', []));
+        $response = Http::withToken(env('FLUTTERWAVE_SECRET_KEY'))->get("https://api.flutterwave.com/v3/transactions/{$transactionId}/verify");
+        if ($response->successful()) {
+            $data = $response->json();
+            if ($cartCount > 0 && $data['status'] === 'success' && $data['data']['status'] === 'successful') {
+                $cart = session()->get('cart', []);
+                $paymentSlug = $data['data']['flw_ref'];  $totalAmount = $data['data']['amount'];
+                $userSlug = Auth::user()->slug;
+
+                foreach ($cart as $id => $item) {
+                    $courseSlug = $item['slug']; $course_name = $item['course_name'];
+                    $price = $item['discount']; $programSlug = $item['programSlug'];
+                    $slug = RandomString(12);
+                    if (CourseSubscription::where(['courseSlug' => $courseSlug, 'userSlug' => $userSlug])->doesntExist()) {
+                        createCourseSubscription($userSlug, $slug, $paymentSlug, $courseSlug, $programSlug, $price);
+                        createLog('Made Payment for ' . $course_name . ' with Slug ' . $slug);
+                    }
+                }
+
+                if (Payment::where(['slug' => $paymentSlug])->doesntExist()) {
+                    createPayment($userSlug, $paymentSlug, $totalAmount, $data['data']['payment_type'], $data['data']['currency'], 
+                    'Course payment via Flutterwave', $data['data']['tx_ref'], $data['data']['flw_ref'], $data['data']['status'], 'Flutterwave');
+                    createLog('Made Payment of ' . $totalAmount . ' with Reference ' . $paymentSlug);
+                }
+
+                $redirectRoute = $cartCount > 1 ? route('myCourses') : route('mycourse.note.index', $courseSlug);
+                session()->forget('cart');
+                $details = [
+                    "payment" => Payment::where('transactionReference', $paymentSlug)->with('user', 'courseSubscriptions')->first()
+                ];
+                $email = Auth::user()->email;
+                Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org']) ->send(new PaymentNotification($details));
+                return redirect($redirectRoute)->with('success', 'Payment completed successfully.');
+            }
+            return redirect()->back()->with('error', 'Payment verification failed.');
+        }else{
+            return redirect()->back()->with('error', 'Unable to verify Payment at the moment, Please try again later.');
+        }
+    }
     public function verifyOPay(Request $request)
     {
         $reference = $request->query('reference');

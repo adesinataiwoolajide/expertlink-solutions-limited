@@ -10,7 +10,12 @@
         <div class="card border-0 shadow-lg rounded-4 mb-5">
             <div class="card-body p-4">
                 <div class="row g-4">
-                    
+                    @if(session('success'))
+                        <div class="alert alert-success rounded-pill shadow-sm">{{ session('success') }}</div>
+                    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger rounded-pill shadow-sm">{{ session('error') }}</div>
+                    @endif
                     <!-- Payment Options -->
                     @if(count($cart) > 0)
                         <div class="col-md-3">
@@ -38,6 +43,10 @@
                                         onclick="payWithOpay()">
                                     <i class="ri-money-dollar-circle-line me-2 fs-5"></i> Pay with Opay
                                 </button>
+
+                                <a href="{{ route('course.index') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                                    <i class="ri-add-line me-1"></i> Add More Courses
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -249,7 +258,7 @@
                 callback: function (data) {
                     console.log(data);
                     window.location.href = "{{ route('flutterwave.verify') }}?transaction_id=" + data.transaction_id;
-                }
+                },
 
                 customizations: {
                     title: "Expert Link Solutions",

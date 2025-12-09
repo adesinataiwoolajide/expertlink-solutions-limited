@@ -164,7 +164,12 @@
                                         <td>{{ $payment->currencyCode }}</td>
                                         <td>{{ $payment->transactionReference }}</td>
                                         <td>
-                                            @if (strpos($payment->paymentStatus, 'success') !== false) 
+                                            @php
+                                                $status = strtolower($payment->paymentStatus);
+                                            @endphp
+
+                                            @if (str_contains($status, 'success') || $status === 'paid')
+
                                                 <span class="badge bg-success bg-opacity-10 text-success">Success</span>
                                             @elseif ($payment->paymentStatus === 'pending')
                                                 <span class="badge bg-warning bg-opacity-10 text-warning">Pending</span>
