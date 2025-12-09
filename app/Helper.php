@@ -1,5 +1,39 @@
 <?php
 
+    function getWork(){
+        $steps = [
+            [
+                "number" => 1,
+                "title" => "01. Discovery & Assessment",
+                "text" => "We begin by understanding your business goals, technical challenges, and training needs to tailor the right solution.",
+                "link" => "/discovery",
+                "delay" => "0.1s"
+            ],
+            [
+                "number" => 2,
+                "title" => "02. Strategy & Solution Design",
+                "text" => "Our consultants craft a customized roadmap—whether for IT training, digital transformation, or technical upskilling.",
+                "link" => "/strategy",
+                "delay" => "0.15s"
+            ],
+            [
+                "number" => 3,
+                "title" => "03. Training & Enablement",
+                "text" => "We deliver hands-on training sessions, workshops, and mentoring to equip your team with the skills they need.",
+                "link" => "/training",
+                "delay" => "0.20s"
+            ],
+            [
+                "number" => 4,
+                "title" => "04. Implementation & Support",
+                "text" => "We help integrate solutions into your workflow and provide ongoing support to ensure long-term success.",
+                "link" => "/implementation",
+                "delay" => "0.25s"
+            ]
+        ];
+        return $steps;
+
+    }
     function ourServices(){
 
         $services = [

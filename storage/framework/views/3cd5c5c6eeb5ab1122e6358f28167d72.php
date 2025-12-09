@@ -1,5 +1,4 @@
-@extends('layouts.front')
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div id="main-wrapper">
         <div class="site-wrapper-reveal">
             <div class="machine-learning-hero machine-learning-hero-bg">
@@ -16,7 +15,7 @@
                                 </p>
 
                                 <div class="hero-button mt-30">
-                                    <a href="{{ route('website.services'); }}" class="btn btn--secondary">Our Services</a>
+                                    <a href="<?php echo e(route('website.services')); ?>" class="btn btn--secondary">Our Services</a>
                                     <div class="hero-popup-video video-popup">
                                         <a href="https://www.youtube.com/watch?v=vqZuSUtczbU" class="video-link">
                                             <div class="video-content">
@@ -38,111 +37,7 @@
                 </div>
             </div>
 
-            {{-- <div class="brand-logo-slider-area section-space--ptb_60">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- brand logo slider -->
-                            <div class="brand-logo-slider__container-area">
-                                <div class="swiper-container brand-logo-slider__container">
-                                    <div class="swiper-wrapper brand-logo-slider__one">
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-01.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-01-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-02.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-02-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-03.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-03-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-04.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-04-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-05.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-05-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-06.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-06-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-07.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-07-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-08.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-08-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide brand-logo brand-logo--slider">
-                                            <a href="#">
-                                                <div class="brand-logo__image">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-09.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                                <div class="brand-logo__image-hover">
-                                                    <img src="{{ asset('elsFront/images/brand/mitech-client-logo-09-hover.webp')}}" class="img-fluid" alt="">
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+            
 
             <div class="feature-large-images-wrapper section-space--ptb_100">
                 <div class="container">
@@ -269,26 +164,26 @@
                         <div class="col-12">
                             <div class="feature-images__two small-mt__10">
                                 <div class="modern-grid-image-box row row--30">
-                                    @foreach($services as $service)
+                                    <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="single-item wow move-up col-lg-6 col-md-6 section-space--mt_60">
-                                            <a href="{{ route('website.seeviceDetails',$service['link']) }}" class="ht-box-images style-02">
+                                            <a href="<?php echo e(route('website.seeviceDetails',$service['link'])); ?>" class="ht-box-images style-02">
                                                 <div class="image-box-wrap">
                                                     <div class="box-image">
-                                                        <img class="img-fluid" src="{{ $service['image'] }}" alt="{{ $service['title'] }}">
+                                                        <img class="img-fluid" src="<?php echo e($service['image']); ?>" alt="<?php echo e($service['title']); ?>">
                                                     </div>
                                                     <div class="content">
-                                                        <h6 class="heading">{{ $service['title'] }}</h6>
-                                                        <div class="text">{{ substr($service['summary'], 0, 135) }}</div>
+                                                        <h6 class="heading"><?php echo e($service['title']); ?></h6>
+                                                        <div class="text"><?php echo e(substr($service['summary'], 0, 135)); ?></div>
                                                     </div>
                                                 </div>
                                             </a>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                             </div>
 
                             <div class="section-under-heading text-center section-space--mt_60">
-                                Ready to elevate your IT strategy? <a href="{{ route('website.services')}}">Learn more about our services</a>
+                                Ready to elevate your IT strategy? <a href="<?php echo e(route('website.services')); ?>">Learn more about our services</a>
                             </div>
 
                         </div>
@@ -305,7 +200,7 @@
                             </div>
                             <div class="contact-info-two mt-40 text-left">
                                 <div class="contact-us-button mt-20">
-                                    <a href="{{ route('website.contactus') }}" class="btn btn--secondary">Contact us</a>
+                                    <a href="<?php echo e(route('website.contactus')); ?>" class="btn btn--secondary">Contact us</a>
                                 </div>
                             </div>
                         </div>
@@ -333,8 +228,8 @@
                         <div class="col-lg-12">
                             <div class="ht-gradation style-01">
                                 <!-- Step 1 -->
-                                @foreach (getWork() as $step)
-                                    <div class="item item-1 animate wow fadeInRight" data-wow-delay="{{ $step['delay'] }}">
+                                <?php $__currentLoopData = getWork(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="item item-1 animate wow fadeInRight" data-wow-delay="<?php echo e($step['delay']); ?>">
                                         <div class="line"></div>
                                         <div class="circle-wrap">
                                             <div class="mask">
@@ -342,18 +237,18 @@
                                                 <div class="wave-pulse wave-pulse-2"></div>
                                                 <div class="wave-pulse wave-pulse-3"></div>
                                             </div>
-                                            <h6 class="circle">{{ $step['number'] }}</h6>
+                                            <h6 class="circle"><?php echo e($step['number']); ?></h6>
                                         </div>
                                         <div class="content-wrap">
-                                            <h6 class="heading"> {{ $step['title'] }}</h6>
-                                            <div class="text">{{ $step['text'] }}</div>
+                                            <h6 class="heading"> <?php echo e($step['title']); ?></h6>
+                                            <div class="text"><?php echo e($step['text']); ?></div>
                                             <a class="gradation-btn" href="#">
                                                 <span class="button-text" data-text="Learn more">Learn more</span>
                                                 <span class="button-icon fas fa-arrow-right"></span>
                                             </a>
                                         </div>
                                     </div>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                             </div>
                         </div>
@@ -370,8 +265,8 @@
                                 <p class="text mt-30">Expert Link Solutions Limited specializes in technological and IT-related services such as product engineering, warranty management, building cloud, infrastructure, network, etc. </p>
 
                                 <div class="sider-title-button-box mt-30">
-                                    <a href="{{ route('website.contactus') }}" class="ht-btn ht-btn-md">Contact Us</a>
-                                    <a href="{{ route('website.teams') }}" class="btn-text font-weight--bold small-mt__20">View all team <i class="ml-1 button-icon fas fa-arrow-right"></i></a>
+                                    <a href="<?php echo e(route('website.contactus')); ?>" class="ht-btn ht-btn-md">Contact Us</a>
+                                    <a href="<?php echo e(route('website.teams')); ?>" class="btn-text font-weight--bold small-mt__20">View all team <i class="ml-1 button-icon fas fa-arrow-right"></i></a>
                                 </div>
 
                             </div>
@@ -382,7 +277,7 @@
                                     <div class="grid-item">
                                         <div class="ht-team-member">
                                             <div class="team-image">
-                                                <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
+                                                <img class="img-fluid" src="<?php echo e(asset('elsAdmin/images/my-passport.jpeg')); ?>" alt="">
                                                 <div class="social-networks">
                                                     <div class="inner">
                                                         <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -405,7 +300,7 @@
                                     <div class="grid-item">
                                         <div class="ht-team-member">
                                             <div class="team-image">
-                                                <img class="img-fluid" src="{{ asset('elsAdmin/images/my-passport.jpeg')}}" alt="">
+                                                <img class="img-fluid" src="<?php echo e(asset('elsAdmin/images/my-passport.jpeg')); ?>" alt="">
                                                 <div class="social-networks">
                                                     <div class="inner">
                                                         <a target="_blank" href="#" class=" hint--bounce  hint--top hint--theme-two" aria-label="Facebook"><i class="fab fa-facebook"></i>
@@ -433,4 +328,5 @@
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.front', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\expertlink_solutions\resources\views/welcome.blade.php ENDPATH**/ ?>

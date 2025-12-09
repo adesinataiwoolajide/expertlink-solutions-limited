@@ -54,15 +54,8 @@
 			</div>
 		</div>
 	</form>
-    <div class="mb-3">
-    <label class="form-label" for="full_name">Full Name <span class="text-danger">*</span></label>
-    <input type="text" class="form-control" id="full_name" name="full_name" value="{{ old('full_name') }}" required autofocus autocomplete="name"
-        placeholder="Enter your full name" />
-    <div id="name-feedback" class="mt-2 text-danger" style="display: none;"></div>
-    <x-input-error :messages="$errors->get('full_name')" class="mt-2 text-danger" style="color: red" />
-</div>
-
-<script>
+   
+    <script>
     document.addEventListener('DOMContentLoaded', function () {
         const fullNameInput = document.getElementById('full_name');
         const emailInput = document.querySelector('input[name="email"]');
@@ -199,21 +192,35 @@
             }, 500);
         });
 
-        // Password match validation
+        // Password match & progressive validation
         function validatePasswordMatch() {
             const pwd = password.value;
             const confirm = confirmPassword.value;
 
-            if (pwd.length < 7) {
-                feedbackPassword.textContent = 'Password must be at least 7 characters.';
+            const hasUppercase = /[A-Z]/.test(pwd);
+            const hasNumber = /\d/.test(pwd);
+            const hasSpecial = /[!@#$%^&*()_\-+=<>?{}[\]~]/.test(pwd);
+            const hasLength = pwd.length >= 7;
+
+            let messages = [];
+
+            if (!hasLength) messages.push("At least 7 characters");
+            if (!hasUppercase) messages.push("At least 1 uppercase letter");
+            if (!hasNumber) messages.push("At least 1 number");
+            if (!hasSpecial) messages.push("At least 1 special character");
+
+            if (messages.length > 0) {
+                feedbackPassword.textContent = "Missing: " + messages.join(", ");
                 feedbackPassword.className = 'mt-2 text-danger';
                 feedbackPassword.style.display = 'block';
                 isPasswordValid = false;
             } else if (confirm === '') {
-                feedbackPassword.style.display = 'none';
+                feedbackPassword.textContent = 'Please confirm your password.';
+                feedbackPassword.className = 'mt-2 text-warning';
+                feedbackPassword.style.display = 'block';
                 isPasswordValid = false;
             } else if (pwd === confirm) {
-                feedbackPassword.textContent = 'Passwords match.';
+                feedbackPassword.textContent = 'Passwords match and meet all requirements.';
                 feedbackPassword.className = 'mt-2 text-success';
                 feedbackPassword.style.display = 'block';
                 isPasswordValid = true;

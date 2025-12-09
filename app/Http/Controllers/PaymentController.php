@@ -156,6 +156,24 @@ class PaymentController extends Controller
         return redirect()->back()->with('error', 'Payment verification failed.');
     }
 
+     public function verifyFlutterWave(Request $request)
+    {
+        $cartCount = count(session()->get('cart', []));
+        $transactionId = $request->query('transaction_id'); 
+        $response = Http::withToken(env('FLWSECK_TEST-0e0d6efb78f08f0352a8f6a20a367cf0-X'))->get("https://api.flutterwave.com/v3/transactions/$transactionId/verify");
+
+        if ($response->successful()) {
+            $data = $response->json();
+            dd($data);
+            // if ($data['status'] === 'success' && $data['data']['amount'] == $expectedAmount) {
+            //     // ✅ Payment verified
+            // } else {
+            //     // ❌ Payment failed or mismatched
+            // }
+        }
+
+    }
+
     public function verifyOPay(Request $request)
     {
         $reference = $request->query('reference');
@@ -167,6 +185,7 @@ class PaymentController extends Controller
         ])->post('https://api.opaycheckout.com/api/v1/inquire', [
             'orderId' => $reference,
         ]);
+        dd($response);
 
         $data = $response->json();
 
