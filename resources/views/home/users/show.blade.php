@@ -183,22 +183,14 @@
                                             <x-input-error :messages="$errors->get('last_name')" class="mt-2 text-danger" />
                                         </div>
                                         
-                                        <div class="mb-3 col-md-4">
+                                        <div class="mb-3 col-md-6">
                                             <label class="form-label">Phone number:</label>
                                             <input type="text" class="form-control" placeholder="Phone number" name="phone_number" value="{{ old('phone_number') ?? $user->phone_number }}" required>
                                             <x-input-error :messages="$errors->get('phone_number')" class="mt-2 text-danger" />
                                             <div id="phone-feedback" class="mt-2" style="display: none;"></div>
                                         </div>
 
-                                        <div class="mb-3 col-md-4">
-                                            <label class="form-label">Email:</label>
-                                            <input type="email" class="form-control" placeholder="taiwo.adesina@expertlinksolutions.com" name="email" value="{{ old('email') ?? $user->email}}" required
-                                            @unless(Auth::user()->hasAnyRole(['Administrator'])) readonly @endunless
-                                            >
-                                            <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
-                                            <div id="email-feedback" class="mt-2 text-danger" style="display: none;"></div>
-                                        </div>
-
+                                        
                                         <div class="mb-3 col-md-4">
                                             <label class="form-label">Role name:</label>
                                             <select data-placeholder="Select a role..." class="form-control select-icons" name="role" required>
@@ -213,6 +205,15 @@
                                             <x-input-error :messages="$errors->get('role')" class="mt-2 text-danger" />
                                         </div>
                                         
+                                        <div class="mb-3 col-md-12">
+                                            <label class="form-label">Email:</label>
+                                            <input type="email" class="form-control" placeholder="taiwo.adesina@expertlinksolutions.com" name="email" value="{{ old('email') ?? $user->email}}" required
+                                            @unless(Auth::user()->hasAnyRole(['Administrator'])) readonly @endunless
+                                            >
+                                            <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
+                                            <div id="email-feedback" class="mt-2 text-danger" style="display: none;"></div>
+                                        </div>
+
                                     </div>
                                 
                                     <button type="submit" class="btn btn-primary">Update Information</button>

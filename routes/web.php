@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
+use App\Http\Controllers\{SocialAuthController, PaymentController,WebsiteController ,ProfileController, HomeController, UserController, BlogController, ProgramsController, CoursesController, CourseAllocationController, CourseNotesController, 
     FaqController, CourseSubscriptionController, TaskController, AssignmentController, AssignmentSubmissionController, InstructorRatingsController, CourseRatingsController};
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{AuthenticatedSessionController, VerificationController};
@@ -19,6 +19,18 @@ Route::get('/login', function () {
     return view('auth.login');
 });
 
+// Google
+// Google
+Route::get('auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
+// Facebook
+Route::get('auth/facebook', [SocialAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('auth/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
+
+// GitHub
+Route::get('auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
+Route::get('auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
 
 // Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
 // Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');

@@ -139,7 +139,7 @@ class CoursesController extends Controller
             $ratings = CourseRatings::where(['courseSlug' => $courseSlug])->orderBy('created_at', 'desc')->get();
             $otherRatings = $ratings;
         }
-        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses', 'ratings', 'otherRatings' => $otherRatings));
+        return view('home.courses.viewCourse', compact('program', 'course', 'program_name', 'courses', 'ratings', 'otherRatings'));
 
     }
     public function addToCart($slug)
