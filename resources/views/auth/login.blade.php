@@ -46,12 +46,16 @@
 					<i class="fab fa-google me-2"></i> Google
 				</a>
 
-				<a href="{{ route('auth.facebook') }}" class="btn btn-outline-primary mx-1">
+				{{-- <a href="{{ route('auth.facebook') }}" class="btn btn-outline-primary mx-1">
 					<i class="fab fa-facebook me-2"></i> Facebook
-				</a>
+				</a> --}}
 
 				<a href="{{ route('auth.github') }}" class="btn btn-outline-dark mx-1">
 					<i class="fab fa-github me-2"></i> GitHub
+				</a>
+
+				<a href="{{ route('auth.twitter') }}" class="btn btn-outline-info mx-1">
+					<i class="fab fa-twitter me-2"></i> Twitter
 				</a>
 			</div>
 		</div>

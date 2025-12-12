@@ -119,4 +119,58 @@ class SocialAuthController extends Controller
         $user->syncRoles([$role]);
         return redirect()->route('myCourses')->with('success', 'Logged in with GitHub successful');
     }
+
+    public function redirectToTwitter()
+    {
+        return Socialite::driver('twitter-oauth-2')->redirect();
+    }
+
+    public function handleTwitterCallback()
+    {
+        try {
+            $socialUser = Socialite::driver('twitter-oauth-2')->user();
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Unable to login with Twitter.');
+        }
+        
+        $fullName = $socialUser->getName() ?? $socialUser->getNickname();
+        $nameParts = explode(' ', $fullName, 2);
+
+        $first_name = $nameParts[0] ?? '';
+        $last_name  = $nameParts[1] ?? '';
+
+        // Default role
+        $role = 'Student';
+
+        // Generate slug
+        $slug = RandomString(8);
+
+        // Twitter often does NOT return email → fallback
+        $email = $socialUser->getEmail() ?? ($socialUser->getId() . '@twitter.local');
+
+        // Create or get user
+        $user = User::firstOrCreate(
+            ['email' => $email],
+            [
+                'first_name'       => $first_name,
+                'last_name'        => $last_name,
+                'password'         => bcrypt(str()->random(16)),
+                'role'             => $role,
+                'email_verified_at'=> now(),
+                'status'           => true,
+                'change_password'  => false,
+                'slug'             => $slug,
+                'phone_number'     => $socialUser->getId(), // storing Twitter ID like Google/GitHub
+            ]
+        );
+
+        // Login user
+        Auth::login($user);
+
+        // Assign + sync role
+        $user->assignRole($role);
+        $user->syncRoles([$role]);
+
+        return redirect()->route('myCourses')->with('success', 'Logged in with Twitter successful');
+    }
 }

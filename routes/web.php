@@ -32,6 +32,9 @@ Route::get('auth/facebook/callback', [SocialAuthController::class, 'handleFacebo
 Route::get('auth/github', [SocialAuthController::class, 'redirectToGithub'])->name('auth.github');
 Route::get('auth/github/callback', [SocialAuthController::class, 'handleGithubCallback']);
 
+Route::get('/auth/twitter', [SocialAuthController::class, 'redirectToTwitter'])->name('auth.twitter');
+Route::get('/auth/twitter/callback', [SocialAuthController::class, 'handleTwitterCallback']);
+
 // Route::get('/lock-screen', [AuthenticatedSessionController::class, 'show'])->name('lock.screen');
 // Route::post('/unlock-screen', [AuthenticatedSessionController::class, 'unlock'])->name('unlock');
 Route::middleware(['web', 'auth'])->group(function () {
