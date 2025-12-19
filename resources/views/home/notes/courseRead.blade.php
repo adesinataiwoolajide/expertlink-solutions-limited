@@ -80,18 +80,23 @@
                     @endforeach
                     
                     @foreach (['link_one', 'link_two', 'link_three', 'link_four'] as $index => $link)
-                        <div class="video-container" style="width:100%; clear:both; padding:10px;  margin-bottom:20px;">
-                            @php 
-                                $youtubeLink = $note->$link;
-                                if (strpos($youtubeLink, 'watch?v=') !== false) {
-                                    $youtubeLink = str_replace('watch?v=', 'embed/', $youtubeLink);
-                                }
-                            @endphp
-                            @if($youtubeLink != 'https://www.youtube.com/embed/')
-                                <iframe width="100%" height="500" src="{{ $youtubeLink }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                        @php 
+                            $youtubeLink = $note->$link;
+                            if ($youtubeLink && strpos($youtubeLink, 'watch?v=') !== false) {
+                                $youtubeLink = str_replace('watch?v=', 'embed/', $youtubeLink);
+                            }
+                        @endphp
+
+                        @if(!empty($youtubeLink) && $youtubeLink != 'https://www.youtube.com/embed/')
+                            <div class="video-container" style="width:100%; clear:both; padding:10px; margin-bottom:20px;">
+                                <iframe width="100%" height="500" 
+                                        src="{{ $youtubeLink }}" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
                                 </iframe>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
 

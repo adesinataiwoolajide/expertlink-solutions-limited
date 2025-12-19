@@ -64,7 +64,7 @@
                                     </tr>
                                     <tr>
                                         <td style="font-weight:bold;">Allocated By:</td>
-                                        <td>Course Allocation Team</td>
+                                        <td>{{ $send_email }} for the Course Allocation Team</td>
                                     </tr>
                                 </tbody>
                             </table>

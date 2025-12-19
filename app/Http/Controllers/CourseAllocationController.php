@@ -100,7 +100,8 @@ class CourseAllocationController extends Controller
         ]);
         createCourseAllocationHistory($slug, $userSlug, $userSlug);
         createLog("Allocated: $slug for $courseSlug to $userSlug Successfully");
-        $details = ["allocation" => CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $slug)->first()];
+        $details = ["allocation" => CourseAllocation::with(['user', 'course', 'program', 'allocationHistory'])->where('slug', $slug)->first(),
+        'email_sender' => Auth::user()->email];
         $receive = User::where('slug', $userSlug)->first();
         $email = $receive->email;
         Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new CourseAllocationNotification ($details));
@@ -158,7 +159,7 @@ class CourseAllocationController extends Controller
         CourseAllocation::where(['slug' => $slug])->update(['userSlug' => $userSlug,]);
         createLog("Updated Course Allocation with: $slug for $courseSlug to $userSlug Successfully");
         createCourseAllocationHistory($slug, $oldUserSlug, $userSlug);
-        $details = ["allocation" => $course];
+        $details = ["allocation" => CourseAllocation::where(['slug' => $slug])->with(['user', 'course', 'program', 'allocationHistory'])->first(), 'email_sender' => Auth::user()->email];
         $receive = User::where('slug', $userSlug)->first();
         $email = $receive->email;
         Mail::to($email)->cc(['tolajide74@gmail.com','support@expertlinksolutions.org'])->send( new CourseAllocationNotification ($details));

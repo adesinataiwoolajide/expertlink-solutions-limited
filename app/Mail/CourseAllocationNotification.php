@@ -3,13 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
-
 class CourseAllocationNotification extends Mailable implements ShouldQueue
 {
    
@@ -42,7 +42,8 @@ class CourseAllocationNotification extends Mailable implements ShouldQueue
         return new Content(
             view:  'emails.allocations',
             with: [
-                'allocation' => $this->details['allocation']
+                'allocation' => $this->details['allocation'],
+                'send_email' => $this->details['email_sender']
             ]
         );
     }
