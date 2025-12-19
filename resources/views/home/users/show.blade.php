@@ -191,7 +191,7 @@
                                         </div>
 
                                         
-                                        <div class="mb-3 col-md-4">
+                                        <div class="mb-3 col-md-6">
                                             <label class="form-label">Role name:</label>
                                             <select data-placeholder="Select a role..." class="form-control select-icons" name="role" required>
                                                 <option value="{{ old('role') ?? $user->role}}"> {{ old('role') ?? $user->role }}</option>

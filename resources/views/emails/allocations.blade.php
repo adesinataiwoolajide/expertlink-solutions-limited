@@ -57,6 +57,12 @@
                                         <td>{{ $allocation->created_at->format('d M, Y') }}</td>
                                     </tr>
                                     <tr>
+                                        <td style="font-weight:bold;">Total Students:</td>
+                                        <td>{{ $allocation->course->total_student ?? 0 }}
+                                            {{ ($allocation->course->total_student ?? 0) > 1 ? 'Students' : 'Student' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td style="font-weight:bold;">Allocated By:</td>
                                         <td>Course Allocation Team</td>
                                     </tr>
